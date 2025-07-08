@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- TITULO DA PAGINA -->
+    <title>Notificações</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="../static/css/sweealert2.css">
+    <!-- CSS DO BOOTSTRAP -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <!-- STYLES -->
+    <link rel="stylesheet" href="../static/css/principal.css">
+    <link rel="stylesheet" href="../static/css/modais.css">
+    <link rel="stylesheet" href="../static/css/layout-perfil.css">
+    <link rel="stylesheet" href="../static/css/notificacao.css">
+    <!-- BIBLIOTECAS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="{{ tema }}">
+    
+   <!-- CABEÇALHO MOBILE -->
+    <div class="pesquisa-para-mobile">
+        <a href="/inicio">
+        <div class="logo" id="logo-no-mobile">
+            <i class='bx bxs-dog'></i>
+        </div>
+        </a>
+    </div>
+
+    <!-- CABEÇALHO DESKTOP -->
+    <header class="header">
+        <div class="logoSearch">
+            <a href="/inicio">
+                <div class="logo" id="logo">
+                    <i class='bx bxs-dog'></i>
+                </div>
+            </a>
+        </div>
+
+        <!-- OPÇOES NA PARTE INFERIOR DO MOBILE -->
+        <div class="mobile-header-icons">
+
+            <!-- MINHA FOTO -->
+            <div class="minha-foto-mobile">
+                <a href="/inicio">
+                    <img src="{{foto_perfil}}" id="foto-mobile-header" alt="my-photo">
+                </a>
+            </div>
+        
+            <!-- EXPLORAR -->
+            <div class="opcao-mobile">
+                <i class='bx bxs-home'></i>
+            </div>
+                
+            <!-- CHAT -->
+            <a href="/chat">
+                <div class="opcao-mobile">
+                    <i class='bx bxs-chat'></i>
+                </div>
+            </a>
+
+            <!-- VIDEOS -->
+            <div class="opcao-mobile">
+                <i class='bx bxs-videos'></i>
+            </div>
+
+            <!-- NOTIFICAÇÃO -->
+            <div class="opcao-mobile">
+                <i class='bx bxs-bell' ></i>
+            </div>
+        
+            <!-- MENU -->
+            <div class="opcao-mobile1">
+                <i class='bx bx-menu'></i>
+            </div>
+        </div>
+            
+        <!-- OPÇOES DO HEADER -->
+        <div class="mainMenu">
+
+            <!-- EXPLORAR -->
+            <a href="/home">
+                <div class="svg ">
+                    <i class='bx bxs-home'></i>
+                </div>
+            </a>
+
+            <!-- SEGUINDO -->
+            <a href="/post-seguindo">
+                <div class="svg">
+                    <i class='bx bxs-user'></i>
+                </div>
+            </a>
+
+            <!-- VIDEOS -->
+            <a href="/post-video">
+                <div class="svg">
+                    <i class='bx bxs-videos'></i>
+                </div>
+            </a>
+
+            <!-- CURTIDOS -->
+            <a href="/post-curtidos">
+                <div class="svg">
+                    <i class='bx bxs-heart'></i>
+                </div>
+            </a>
+        </div>
+
+        <!-- PERFIL -->
+        <a href="/inicio">
+            <div class="profileTools">
+                <div class="profile active">
+                    <div class="img" style="background-image: url('{{foto_perfil}}');"></div>
+                    <div class="username">Perfil</div>
+            </div>
+        </a>
+
+        <div class="tools">
+
+            <!-- NOTIFICAÇOES -->
+            <div class="svg">
+                <i class='bx bxs-bell'></i>
+            </div>
+
+            <!-- CHAT -->
+            <a href="/chat">
+            <div class="svg">
+                <i class='bx bxs-chat'></i>
+            </div>
+            </a>
+        
+            <!-- CONFIGURAÇOES -->
+            <a href="/configuracao">
+            <div class="svg">
+                <i class='bx bxs-cog'></i>
+            </div>
+            </a>
+
+        </div>
+    </div>
+    </header>
+
+    <!-- MENU ESQUERDO DE OPÇOES -->
+    <div class="sidebar-esquerdo">
+        <div class="aside-esquerdo-mobile">
+
+            <!-- EXPLORAR -->
+            <a href="/home">  
+            <div class="globalProfile ">
+                <i class='bx bxs-home'></i>
+                <div class="name">Explorar</div>
+            </div>
+            </a>
+
+            <!-- SEGUINDO -->
+            <a href="/post-seguindo">
+            <div class="globalProfile">
+                <i class='bx bxs-user'></i>
+            <div class="name">Seguindo</div>
+            </div>
+            </a>
+            
+            <!-- VIDEOS -->
+            <a href="/post-video">
+            <div class="globalProfile">
+                <i class='bx bxs-videos'></i>
+            <div class="name">Videos</div>
+            </div>
+            </a>
+
+            <!-- CURTIDAS -->
+            <a href="/post-curtidos">
+            <div class="globalProfile">
+                <i class='bx bxs-heart'></i>
+            <div class="name">Curtidas</div>
+            </div>
+            </a>
+            
+            <!-- PROCURAR USER -->
+            <a href="/procurar-user">
+            <div class="globalProfile">
+                <i class='bx bxs-user-plus'></i>
+            <div class="name">Procurar</div>
+            </div>
+            </a>
+
+            <!-- CHAT -->
+            <a href="/chat">
+            <div class="globalProfile" style="position:relative;">
+                <i class='bx bxs-chat'></i>
+                <div class="name">Mensagem</div>
+                <span class="badge-nao-vistas" id="badge-chat-notify">0</span>
+            </div>
+            </a>
+
+            <!-- MEU PERFIL -->
+            <a href="/inicio">
+            <div class="globalProfile">
+                <i class='bx bxs-user'></i>
+            <div class="name">Perfil</div>
+            </div>
+            </a>
+
+            <!-- NOTIFICAÇÃO -->
+            <a href="/notificacoes">
+            <div class="globalProfile active">
+                <i class='bx bxs-bell'></i>
+            <div class="name-active">Notificação</div>
+            </div>
+            </a>
+
+            <!-- CONFIGURAÇÃO -->
+            <a href="/configuracao">
+            <div class="globalProfile ">
+                <i class='bx bxs-cog'></i>
+            <div class="name">Configuração</div>
+            </div>
+            </a>
+
+            <!-- SAIR DA CONTA -->
+           <a href="#" id="logout-link">
+                <div class="globalProfile">
+                    <i class='bx bx-log-out'></i>
+                    <div class="name">Sair</div>
+                </div>
+            </a>
+        </div>
+    </div>
+     <!-- ASIDEBAR DIREITO DESKTOP -->
+    <div class="sideBarContainer">
+        <div class="sidebar left"></div>
+        <div class="sidebar right">
+            <div class="container borderNone">
+
+                <div class="mainTitle">
+                    <h3 class="padding">Meu Perfil</h3>
+                </div>
+        
+                <a href="/inicio">
+                    <div class="globalProfile">
+                        <div class="globalRoundProfile" style="background-image: url('{{ foto_perfil }}');"></div>
+                        <div class="name">{{nome_usuario}}</div>
+                    </div>
+                </a> 
+            </div>
+
+            <div class="container borderNone">
+                <div class="mainTitle">
+                    <h3 class="padding">Momento</h3>
+                </div>
+
+                {% if hashtags_top %}
+                    <div class="hashtags-top">
+                        {% for hashtag in hashtags_top %}
+                            <a href="/pesquisar?query={{ hashtag.nome|urlencode }}" class="hashtag-btn" >
+                                <span class="hashtag-nome">
+  <span class="hashtag-nome-truncado" title="{{ hashtag.nome }}">{{ hashtag.nome }}</span> - {{ hashtag.total }}
+</span>
+
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="hashtaginfo">Nenhuma hashtag recente.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ABRIR O SIDEBAR DIREITO MOBILE -->
+    <div class="toggle-sidebar-right" id="toggleSidebarRight">
+        <i class='bx bx-chevron-left'></i>
+    </div>
+
+    <!-- SIDEBAR DIREITO MOBILE -->
+    <div class="aside-direito-mobile" id="asideDireitoMobile">
+        <div class="container borderNone">
+            <div class="mainTitle sem-linha">
+                <h3 class="padding">Meu Perfil</h3>
+            </div>
+            <a href="/inicio">
+                <div class="globalProfile">
+                    <div class="globalRoundProfile" style="background-image: url('{{ foto_perfil }}');"></div>
+                    <div class="name">{{nome_usuario}}</div>
+                </div>
+            </a> 
+        </div>
+        <div class="container borderNone">
+            <div class="mainTitle linha-momento">
+                <h3 class="padding">Momento</h3>
+            </div>
+            {% if hashtags_top %}
+                <div class="hashtags-top">
+                    {% for hashtag in hashtags_top %}
+                        <a href="/pesquisar?query={{ hashtag.nome|urlencode }}" class="hashtag-btn hashtag-btn-mob" >
+                            <span class="hashtag-nome">{{ hashtag.nome }} - {{ hashtag.total }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="hashtaginfo-2">Nenhuma hashtag recente.</p>
+            {% endif %}
+        </div>
+    </div>
+ 
+ 
+    <main class="sectionCenter">
+    {% if itens %}
+        <h4><i class='bx bxs-bell' style="vertical-align: middle; margin-right: 6px;"></i>Notificações</h4>
+        {% for item in itens %}
+            <div class="pedido">
+                <div class="info">
+                    <a href="{{ url_for('info_user.info_user', id_usuario=item.origem_usuario_id) }}">
+                    <img src="{{ item.origem_foto or item.fotos_perfil or url_for('static', filename='img/icone/user.png') }}"
+                        alt="Foto de origem" width="40" height="40" style="border-radius: 50%; margin-right: 10px;">
+                    </a>
+                    <span>
+                        {% if item.tipo == 'curtida' %}
+                            <b>
+                                <a href="{{ url_for('info_user.info_user', id_usuario=item.origem_usuario_id) }}" class="username-link">
+                                    {{ item.origem_username }}
+                                </a>
+                            </b> curtiu seu post.
+                        {% elif item.tipo == 'comentario' or item.tipo == 'resposta' %}
+                            <b>
+                                {% if item.comentario_id %}
+                                    <a href="/post/{{ item.post_id }}?comentario_id={{ item.comentario_id }}" class="notificacao-link">
+                                        {{ item.origem_username }}
+                                    </a>
+                                {% else %}
+                                    <a href="/post/{{ item.post_id }}" class="notificacao-link">
+                                        {{ item.origem_username }}
+                                    </a>
+                                {% endif %}
+                            </b>
+                            {% if item.tipo == 'comentario' %}
+                                comentou no seu post.
+                            {% else %}
+                                respondeu seu comentário.
+                            {% endif %}
+                        {% elif item.tipo == 'seguidor' %}
+                            <b>
+                                <a href="{{ url_for('info_user.info_user', id_usuario=item.origem_usuario_id) }}" class="username-link">
+                                    {{ item.origem_username }}
+                                </a>
+                            </b> começou a te seguir.
+                        {% elif item.tipo == 'mencao' %}
+                            <b>
+                                <a href="{{ url_for('info_user.info_user', id_usuario=item.origem_usuario_id) }}" class="username-link">
+                                    {{ item.origem_username }}
+                                </a>
+                            </b> 
+                            {% if item.comentario_id %}
+                                mencionou você em um comentário.
+                            {% else %}
+                                mencionou você em um post.
+                            {% endif %}
+                        {% elif item.tipo == 'aceite_pedido' %}
+                            <b>
+                                <a href="{{ url_for('info_user.info_user', id_usuario=item.origem_usuario_id) }}" class="username-link">
+                                    {{ item.origem_username }}
+                                </a>
+                            </b> aceitou seu pedido para seguir.
+                        {% elif item.tipo == 'pedido_seguir' %}
+                            <b>
+                                <a href="{{ url_for('info_user.info_user', id_usuario=item.id_usuario) }}" class="username-link">
+                                    {{ item.username }}
+                                </a>
+                            </b> pediu para te seguir.
+                        {% endif %}
+                        <small>
+                            {{ item.data_evento.strftime('%d/%m/%Y %H:%M') if item.data_evento else '' }}
+                        </small>
+                        {% if not item.lida %}<span class="bolinha-vermelha"></span>{% endif %}
+                    </span>
+                </div>
+                {% if item.tipo == 'pedido_seguir' %}
+                    <div class="botoes">
+                        <form action="{{ url_for('seguir_user.aceitar_pedido', id_pedido=item.id, id_usuario=item.id_usuario) }}" method="post">
+                            <button class="btn-aceitar" type="submit">Aceitar</button>
+                        </form>
+                        <form action="{{ url_for('seguir_user.recusar_pedido', id_pedido=item.id) }}" method="post">
+                            <button class="btn-recusar" type="submit">Recusar</button>
+                        </form>
+                    </div>
+                {% endif %}
+{% if item.post_id %}
+    {% if item.comentario_id %}
+        <a href="/post/{{ item.post_id }}?comentario_id={{ item.comentario_id }}" class="btn btn-primary btn-sm">
+            Ver comentário
+        </a>
+    {% else %}
+        <a href="/post/{{ item.post_id }}" class="btn btn-primary btn-sm">
+            Ver post
+        </a>
+    {% endif %}
+{% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div>Nenhuma notificação ainda.</div>
+    {% endif %}
+    
+    </main>
+
+    <!-- Scripts -->
+    <script src="../static/js/geral/contador_novas_mensagens.js"></script>
+    <script src="../static/js/notificacao/notificacao.js"></script> 
+    <script src="../static/js/geral/menu_toggle.js"></script>
+ <script src="../static/js/sweealert2/log_out.js"></script>
+ <script src="../static/js/notificacao/marca_como_lida.js"></script>
+<script src="../static/js/geral/hashtag.js"></script>
+    <!-- jQuery primeiro -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+
+
+
+</body>
+</html>

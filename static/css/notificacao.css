@@ -1,0 +1,305 @@
+:root {
+    --background: #f0f2f5;
+    --roxo: #a76ab6;
+    --roxo11: #d38fe4;
+    --roxo2: #3a1942;
+    --roxo22: #66436e;
+    --cor-secundaria: #583361;
+     --fundo-preto: rgba(0, 0, 0, 0.863);
+    --fundo-branco: rgba(228, 228, 228, 0.973);
+    --cinza: #4e4f5031;
+    --cinza1: #ceced6;
+    --white: #feffff;
+    --black: #0f0d0d;
+    --roxo3: #3a1942;
+    --scrollBar: #656768;
+}
+
+/* Header */
+.header .logoSearch {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    width: auto; 
+}
+.header .logoSearch .logo {
+    margin-right: 0;
+}
+#logo {
+    width: 47px;
+}
+
+/* Main Section (Notificações) */
+.sectionCenter {
+    max-width: 800px;
+    width: calc(100% - 40px); /* Default width, adjusted for padding */
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+body.claro .sectionCenter {
+    background-color: var(--roxo);
+}
+body.escuro .sectionCenter {
+    background-color: var(--roxo2);
+}
+.sectionCenter h4 {
+    font-size: 1.5rem;
+    color: var(--roxo2);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+body.claro .sectionCenter h4 {
+    color: var(--white);
+    border-bottom: 1px solid var(--roxo);
+
+}
+body.escuro .sectionCenter h4 {
+    color: var(--white);
+    border-bottom: 1px solid var(--roxo);
+
+}
+/* Notificação individual */
+.pedido {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--roxo);
+}
+body.claro .pedido {
+background-color: var(--roxo11);
+}
+body.escuro .pedido {
+background-color: var(--roxo22);
+}
+.pedido:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Info do usuário na notificação */
+.info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+body.claro .info img {
+    border: 2px solid var(--roxo2);
+}
+body.escuro .info img {
+    border: 2px solid var(--roxo);
+}
+.info span {
+    flex: 1;
+    font-size: 0.95rem;
+    color: var(--white);
+}
+
+/* Links */
+.username-link,
+.notificacao-link {
+    color: var(--roxo2);
+    text-decoration: none;
+    font-weight: 600;
+}
+.username-link:hover,
+.notificacao-link:hover {
+    text-decoration: underline;
+    color: var(--roxo);
+}
+
+/* Botões de aceitar/recusar */
+.botoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.btn-aceitar,
+.btn-recusar {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.btn-aceitar {
+    background-color: var(--roxo);
+    color: white;
+}
+.btn-aceitar:hover {
+    background-color: var(--roxo2);
+}
+.btn-recusar {
+    background-color: var(--cinza1);
+    color: var(--black);
+}
+.btn-recusar:hover {
+    background-color: #b3b3b3;
+}
+
+/* Botão "Ver post" */
+.btn-primary {
+    align-self: flex-start;
+    margin-top: 10px;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+.btn-primary:hover {
+    background-color: var(--roxo2);
+    color: white;
+} .btn-sm:hover{
+    background-color: var(--cor-secundaria) !important;
+}
+/* Mensagem para nenhuma notificação */
+.sectionCenter > div:not(.pedido) {
+    text-align: center;
+    padding: 40px;
+    color: var(--cinza1);
+    font-size: 1.1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Responsividade */
+
+/* Telas até 768px */
+@media (max-width: 768px) {
+    .sectionCenter {
+        max-width: 600px;
+        width: calc(100% - 20px); /* Reduz lateral no mobile */
+        margin: 10px auto;
+        padding: 15px;
+    }
+    .info,
+    .botoes,
+    .pedido {
+        width: 100%;
+    }
+    .info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .info img {
+        margin-bottom: 10px;
+    }
+    .botoes {
+        flex-direction: column;
+        width: 100%;
+    }
+    .btn-aceitar,
+    .btn-recusar {
+        width: 100%;
+    }
+    .sectionCenter > div:not(.pedido) {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Telas até 480px */
+@media (max-width: 480px) {
+    .sectionCenter {
+        width: calc(100% - 16px);
+        margin: 8px auto;
+    }
+    .sectionCenter h4 {
+        font-size: 1.3rem;
+    }
+    .info span {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+    .pedido {
+        padding: 10px;
+    }
+}
+
+/* Telas médias com sidebar (770px a 1120px) */
+@media (min-width: 770px) and (max-width: 1120px) {
+    .sectionCenter {
+        width: calc(100% - 270px); /* deixa espaço para sidebar */
+        margin-left: 270px;
+        padding-right: 20px;
+    }
+}
+/* ... (restante do CSS) ... */
+
+/* LINKS DE NOTIFICAÇÃO - NÃO FICAR PRETO SE VISITADO */
+.username-link,
+.notificacao-link,
+.btn-primary,
+.btn-primary:visited {
+    color: var(--roxo2) !important;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.username-link:hover,
+.notificacao-link:hover,
+.btn-primary:hover {
+    color: var(--) !important;
+    text-decoration: underline;
+}
+
+/* Garante que o texto dos botões nunca fique preto após visitado */
+.btn.btn-primary:visited,
+.btn.btn-primary {
+    color: #fff !important;
+    background-color: var(--roxo);
+}
+
+/* Caso queira garantir para toda a página, aplique para todos os links dentro do .sectionCenter */
+.sectionCenter a:visited {
+    color: var(--white) !important;
+}
+.notificacao-nao-lida {
+        background-color: rgba(240, 240, 240, 0.5);
+        border-left: 3px solid #ff4757;
+    }
+    
+    .bolinha-vermelha {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: #ff4757;
+        border-radius: 50%;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+            /* Estilo para links não visitados e visitados */
+a:link, 
+a:visited {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* Estilo para links quando passar o mouse */
+a:hover {
+    color: #ccc !important;
+    text-decoration: none !important;
+}
+
+/* Estilo para links ativos (quando clicados) */
+a:active {
+    color: white !important;
+    text-decoration: none !important;
+}

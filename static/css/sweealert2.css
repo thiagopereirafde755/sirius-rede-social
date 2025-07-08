@@ -1,0 +1,148 @@
+/* ================================
+   VARIÁVEIS DE CORES PARA SWEETALERT2
+   ================================ */
+:root {
+  /* Cores principais (roxos) - Mesmas do style1.css */
+  --swal-roxo: #a76ab6;
+  --swal-roxo-escuro: #8a4d97;
+  --swal-roxo-claro: #d8a5e5;
+  --swal-roxo2: #3a1942;
+  
+  /* Cores de fundo - Adaptadas do theme escuro */
+  --swal-fundo-escuro: #222024;
+  --swal-fundo-cards: #2d2a32;
+  
+  /* Cores de texto */
+  --swal-texto-principal: #e0e0e0;
+  --swal-texto-secundario: #b0b0b0;
+  
+  /* Cores auxiliares */
+  --swal-borda: #3d3a40;
+  --swal-sombra: rgba(0, 0, 0, 0.3);
+  --swal-erro: #ff6b6b;
+  --swal-sucesso: #6bff6b;
+}
+
+/* ================================
+   SWEETALERT2 - TEMA ESCURO
+   ================================ */
+.swal2-popup {
+  background-color: var(--swal-fundo-cards) !important;
+  color: var(--swal-texto-principal) !important;
+  border: 1px solid var(--swal-borda) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px var(--swal-sombra) !important;
+}
+
+.swal2-title {
+  color: var(--swal-roxo-claro) !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.swal2-html-container {
+  color: var(--swal-texto-secundario) !important;
+  font-size: 1rem !important;
+}
+
+/* Botões */
+.swal2-confirm {
+  background-color: var(--swal-roxo) !important;
+  color: var(--swal-texto-principal) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 24px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal2-confirm:hover {
+  background-color: var(--swal-roxo-escuro) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 2px 10px rgba(167, 106, 182, 0.5) !important;
+}
+
+.swal2-cancel {
+  background-color: #6c757d !important;
+  color: var(--swal-texto-principal) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 24px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal2-cancel:hover {
+  background-color: #5a6268 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Ícones */
+.swal2-icon.swal2-success .swal2-success-ring {
+  border-color: rgba(167, 106, 182, 0.3) !important;
+}
+
+.swal2-icon.swal2-success [class^="swal2-success-line"] {
+  background-color: var(--swal-roxo) !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: var(--swal-erro) !important;
+  color: var(--swal-erro) !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: var(--swal-roxo-claro) !important;
+  color: var(--swal-roxo-claro) !important;
+}
+
+/* Inputs */
+.swal2-input,
+.swal2-textarea {
+  background-color: var(--swal-fundo-escuro) !important;
+  color: var(--swal-texto-principal) !important;
+  border: 2px solid var(--swal-borda) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal2-input:focus,
+.swal2-textarea:focus {
+  border-color: var(--swal-roxo) !important;
+  box-shadow: 0 0 0 3px rgba(167, 106, 182, 0.3) !important;
+  outline: none !important;
+}
+
+/* ================================
+   SWEETALERT2 - TEMA CLARO
+   ================================ */
+body.claro .swal2-popup {
+  background-color: #ffffff !important;
+  color: #343a40 !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+body.claro .swal2-title {
+  color: var(--swal-roxo) !important;
+}
+
+body.claro .swal2-html-container {
+  color: #6c757d !important;
+}
+
+body.claro .swal2-confirm {
+  background-color: var(--swal-roxo) !important;
+  color: white !important;
+}
+
+body.claro .swal2-icon.swal2-success [class^="swal2-success-line"] {
+  background-color: var(--swal-roxo) !important;
+}
+
+body.claro .swal2-input,
+body.claro .swal2-textarea {
+  background-color: #f8f9fa !important;
+  color: #495057 !important;
+  border: 2px solid #dee2e6 !important;
+}

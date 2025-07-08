@@ -1,0 +1,648 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+.profile-container {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.cover-container {
+    position: relative;
+}
+.cover-photo {
+    width: 100%;
+    height: 300px;
+    background-color: #ccc;
+    object-fit: cover;
+}
+#change-cover-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+#change-cover-btn:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+.profile-details {
+    position: relative;
+    padding: 20px;
+    text-align: center;
+}
+#fot-per {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    position: absolute;
+    top: -75px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.profile-info {
+    margin-top: 80px;
+}
+h3 {
+    margin: 10px 0;
+}
+#bio_per {
+    color: #606770;
+}
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px 0;
+    border-top: 1px solid #ddd;
+}
+.stat-item {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4b4f56;
+}
+/* Estilo para o modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo para o conteúdo do modal, permitindo rolagem */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    height: 500px; /* Altura fixa para o modal */
+    text-align: center;
+    overflow-y: auto; /* Permite rolar se o conteúdo for grande */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para o botão de fechar no modal */
+.close-btn {
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+}
+
+
+/* Estilo para o título dentro do modal */
+.modal-content h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Estilo para o formulário dentro do modal */
+.modal-content form {
+    margin-top: 20px;
+}
+
+/* Estilo para os botões dentro do modal */
+.modal-content label {
+    background-color: #1877f2;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.modal-content label:hover {
+    background-color: #166fe5;
+}
+#foto-perfil-modal {
+    width: 150px; /* Largura igual à da foto de perfil */
+    height: 150px; /* Altura igual à da foto de perfil */
+    border-radius: 50%; /* Borda arredondada */
+    border: 5px solid #fff; /* Borda igual à da foto de perfil */
+    margin-top: 10px;
+}
+/* Estilo para a imagem dentro do modal */
+#foto-capa-modal {
+    width: 350px;
+    height: 100px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Estilo para o botão de fechar no modal */
+.close-btn {
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+}
+.change-cover-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.change-cover-btn:hover {
+    background-color: #166fe5;
+}
+
+/* Estilo para o botão de editar perfil */
+#editar-perfil-btn {
+    background-color: #1877f2;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#editar-perfil-btn:hover {
+    background-color: #166fe5;
+}
+
+/* Estilos para o modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    text-align: center;
+}
+.close-btn {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Outros estilos existentes */
+.profile-container {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.cover-container {
+    position: relative;
+}
+.cover-photo {
+    width: 100%;
+    height: 300px;
+    background-color: #ccc;
+    object-fit: cover;
+}
+.profile-details {
+    position: relative;
+    padding: 20px;
+    text-align: center;
+}
+#fot-per {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    position: absolute;
+    top: -75px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.profile-info {
+    margin-top: 80px;
+}
+#bio_per {
+    color: #606770;
+}
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px 0;
+    border-top: 1px solid #ddd;
+}
+.stat-item {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4b4f56;
+}
+.post-section {
+    background-color: #f4f4f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.post-section h3 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.post-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-section textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    font-size: 1em;
+    resize: none;
+}
+
+.post-section div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.post-section input[type="file"] {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.post-section input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.post-section input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+        /* Estilos gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #posts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .post {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Adiciona espaço abaixo */
+}
+
+.user-info img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px; /* Adiciona espaço à direita da imagem */
+}
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+        }
+
+        .comment-icon {
+            cursor: pointer;
+            color: #007bff;
+            font-size: 18px;
+        }
+
+        .comentarios {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 70%;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .comment-input {
+            position: sticky;
+            bottom: 0;
+            background-color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #ddd;
+        }
+
+        .comment-input input {
+            width: 80%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .submit-comment-btn {
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-comment-btn:hover {
+            background-color: #218838;
+        }
+
+        .comentario {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        /* Estilo do carrossel */
+        .carousel img, .carousel video {
+            width: 100%;
+            height: 250px; /* Definindo altura fixa para as imagens e vídeos */
+            object-fit: contain; /* Garante que a imagem será exibida completamente sem cortar */
+        }
+        /* Estilo do campo de comentário */
+.comment-input {
+    position: sticky;
+    bottom: 0;
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo do campo de texto para comentário */
+.comment-input textarea {
+    width: 90%; /* Faz o campo de texto ficar mais largo */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: none;
+    height: 60px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+/* Efeito ao focar no campo de comentário */
+.comment-input textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Estilo do ícone de enviar */
+.comment-input button {
+    background-color: transparent;
+    color: #28a745;
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* Ícone maior */
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Efeito ao passar o mouse sobre o botão de enviar */
+.comment-input button:hover {
+    transform: scale(1.2);
+}
+
+/* Efeito quando o botão de comentar é pressionado */
+.comment-input button:active {
+    transform: scale(1);
+}
+
+/* Estilo do botão de enviar quando desabilitado */
+.comment-input button:disabled {
+    color: #ccc;
+    cursor: not-allowed;}
+    /* Estilos principais do modal */
+.modal {
+    display: none; /* Inicialmente escondido */
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.4); 
+    padding-top: 60px;
+}
+
+/* Estilos do conteúdo do modal */
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+}
+
+/* Botão de fechar */
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Títulos principais */
+h2, h4 {
+    color: #333;
+}
+
+/* Formatação das imagens */
+#foto-perfil-modal, #foto-capa-modal {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+h4 {
+    margin-top: 20px;
+}
+
+/* Estilos para os formulários */
+form {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+form input[type="text"], 
+form input[type="file"] {
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Estilos para os textos */
+h3 {
+    color: #666;
+}
+
+hr {
+    border: 1px solid #eee;
+    margin: 20px 0;
+}
+
+/* Estilos para o layout do modal */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    color: #007bff;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+}
+
+label:hover {
+    text-decoration: underline;
+}

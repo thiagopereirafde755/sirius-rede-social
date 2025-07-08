@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Cadastro - Sirius</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- ESTILO DA PAGINA -->
+    <link rel="stylesheet" href="../static/css/style1.css" />
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>SIRIUS</h1>
+        <form method="post" action="/cadastrar" id="formCadastro">
+
+            <!-- NOME COMPLETO -->
+            <div class="input-group {% if erros and erros.get('nome') %}invalid{% endif %}">
+                <i class='bx bx-user'></i>
+                <input type="text" placeholder="Nome" id="nome" name="nome" value="{{ form_data.nome if form_data else '' }}" required/>
+                <div class="error-message" id="nome-error" style="display: none;">
+                    {% if erros and erros.get('nome') %}{{ erros['nome'] }}{% endif %}
+                </div>
+            </div>
+
+            <!-- USERNAME -->
+            <div class="input-group {% if erros and erros.get('username') %}invalid{% endif %}">
+                <i class='bx bx-user-circle'></i>
+                <input type="text" placeholder="Usuário" id="username" name="username" value="{{ form_data.username if form_data else '' }}" required/>
+                <div class="error-message" id="username-error" style="display: none;">
+                    {% if erros and erros.get('username') %}{{ erros['username'] }}{% endif %}
+                </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="input-group {% if erros and erros.get('email') %}invalid{% endif %}">
+                <i class='bx bx-envelope'></i>
+                <input type="email" placeholder="E-mail" id="email" name="email" value="{{ form_data.email if form_data else '' }}" required/>
+                <div class="error-message" id="email-error" style="display: none;">
+                    {% if erros and erros.get('email') %}{{ erros['email'] }}{% endif %}
+                </div>
+            </div>
+
+            <!-- DATA -->
+            <div class="input-group {% if erros and erros.get('idade') %}invalid{% endif %}">
+                <i class='bx bx-calendar'></i>
+                <input type="date" placeholder="Data de Nascimento" id="data_nascimento" name="data_nascimento" value="{{ form_data.data_nascimento if form_data else '' }}" required/>
+                <div class="error-message" id="idade-error" style="display: none;">
+                    {% if erros and erros.get('idade') %}{{ erros['idade'] }}{% endif %}
+                </div>
+            </div>
+
+            <!-- SENHA -->
+            <div class="input-group {% if erros and erros.get('senha') %}invalid{% endif %}">
+                <i class='bx bx-lock'></i>
+                <input type="password" placeholder="Senha" id="senha" name="senha" required />
+                <div class="error-message" id="senha-error" style="display: none;">
+                    {% if erros and erros.get('senha') %}{{ erros['senha'] }}{% endif %}
+                </div>
+            </div>
+
+            <!-- SENHA -->
+            <div class="input-group">
+                <i class='bx bx-lock'></i>
+                <input type="password" placeholder="Confirmar Senha" name="confirmar_senha" id="confirmar_senha" required />
+                <div class="error-message" id="confirmar-error" style="display: none;"></div>
+            </div>
+
+            <button type="submit" class="login-btn">Cadastrar</button>
+        </form>
+        
+        <div class="links">
+            <p>
+                Tem conta? <a href="/" class="cadastro">Entrar</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- SCRIPT  -->
+    <script src="../static/js/validacao_cadastro.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Recuperar senha - Sirius</title>
+  <!-- ICONES -->
+  <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
+  <!-- BOXICONS -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- ESTILO DA PÁGINA -->
+  <link rel="stylesheet" href="../static/css/style1.css" />
+</head>
+<body>
+
+    <div class="confirma-conta recuperar-senha"> 
+        <h2>Recuperar senha</h2>
+        <p>Insira o email para receber o código de recuperação</p>
+        <form id="RecupForm" method="post" action="{{ url_for('recuperar_senha.recuperar_senha_part1') }}">
+
+        <div class="input-group">
+            <i class='bx bx-envelope'></i>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" placeholder="Digite o email" value="{{ email|default('') }}" class="{% if erro_email %}erro-campo1{% endif %}" required>
+        </div>
+        <button type="submit">Receber código</button>
+        </form>
+
+        <div class="links">
+        <!-- PARA PODER VOLTAR AO LOGIN -->
+        <p>Se lembrou da senha? <a href="/">Entrar agora</a></p>
+        </div>
+    </div>
+
+    <!-- DADOS PARA O ALERT -->
+    <div id="alert-data" 
+        data-erro="{{ '1' if erro_email else '' }}" 
+        data-sucesso="{{ '1' if sucesso else '' }}"
+        data-url="{{ url_for('recuperar_senha.recuperar_senha_part2') }}"
+        style="display:none;"></div>
+
+    <!-- SCRIPT -->
+    <script src="../static/js/recuperacao_senha/recuperar_senha_nao_logado_1.js"></script>
+
+</body>
+</html>

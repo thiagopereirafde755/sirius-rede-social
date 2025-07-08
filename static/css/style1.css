@@ -1,0 +1,801 @@
+/* ================================
+   VARIÁVEIS DE CORES (TEMA ESCURO)
+   ================================ */
+:root {
+  --roxo: #a76ab6;         
+  --roxo2: #3a1942;      
+  --roxo-escuro: #8a4d97;
+  --roxo-claro: #d8a5e5;
+  --fundo-escuro: #222024;
+  --fundo-cards: #2d2a32;
+  --texto-principal: #e0e0e0;
+  --texto-secundario: #b0b0b0;
+  --borda: #3d3a40;
+  --sombra: rgba(0, 0, 0, 0.3);
+}
+
+/* ================================
+   ESTILOS GERAIS (TEMA ESCURO)
+   ================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--fundo-escuro);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--texto-principal);
+  padding: 40px 20px; /* Adiciona espaçamento interno no body */
+}
+
+/* ================================
+   CONTAINER DE LOGIN (TEMA ESCURO)
+   ================================ */
+.login-container {
+  background-color: var(--fundo-cards);
+  width: 100%;
+  max-width: 420px;
+  padding: 30px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px var(--sombra);
+  text-align: center;
+  transition: transform 0.3s ease;
+  border: 1px solid var(--borda);
+  margin: 5px 0; /* Adiciona margem superior e inferior */
+}
+
+
+.login-container h1 {
+  color: var(--roxo-claro);
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ================================
+   FORMULÁRIO (TEMA ESCURO)
+   ================================ */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 27px; /* Aumente este valor para acomodar a mensagem de erro */
+}
+
+.input-group i {
+  position: absolute;
+  left: 15px;
+  top: 35%; /* Mude de 50% para um valor fixo para não ser afetado pela mensagem */
+  transform: none; /* Remova o translateY */
+  color: var(--roxo);
+  font-size: 1.1rem;
+  z-index: 2; /* Garante que o ícone fique acima do input */
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px 15px 15px 45px;
+  border: 2px solid var(--borda);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background-color: var(--fundo-escuro);
+  color: var(--texto-principal);
+  position: relative;
+  z-index: 1;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  text-align: left;
+  padding-left: 45px;
+  height: 20px;
+  position: absolute;
+  bottom: -30px; /* Posiciona abaixo do campo */
+  left: 0;
+  width: 100%;
+}
+.input-group input:focus {
+  border-color: var(--roxo);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(167, 106, 182, 0.3);
+  background-color: var(--fundo-cards);
+}
+
+.input-group input::placeholder {
+  color: var(--texto-secundario);
+  opacity: 0.8;
+}
+
+/* ================================
+   BOTÃO DE LOGIN (TEMA ESCURO)
+   ================================ */
+.login-btn {
+  background-color: var(--roxo);
+  color: var(--texto-principal);
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.login-btn:hover {
+  background-color: var(--roxo-escuro);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(167, 106, 182, 0.5);
+}
+
+.login-btn:hover::before {
+  left: 100%;
+}
+
+/* ================================
+   LINKS (TEMA ESCURO)
+   ================================ */
+.links {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.links a {
+  color: var(--roxo-claro);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.links a:hover {
+  color: var(--roxo);
+  text-decoration: none;
+}
+
+.links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--roxo);
+  transition: width 0.3s ease;
+}
+
+.links a:hover::after {
+  width: 100%;
+}
+
+.links p {
+  color: var(--texto-secundario);
+  margin-top: 10px;
+}
+
+.cadastro {
+  font-weight: 600;
+}
+
+/* ================================
+   RESPONSIVIDADE
+   ================================ */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 30px 20px;
+    margin: 0 15px;
+    border-radius: 12px;
+  }
+  
+  .login-container h1 {
+    font-size: 2rem;
+  }
+  
+  .input-group input {
+    padding: 12px 12px 12px 40px;
+  }
+  
+  .login-btn {
+    padding: 12px;
+  }
+}
+
+/* ================================
+   EFEITOS ESPECIAIS
+   ================================ */
+
+
+.login-container {
+  animation: float 6s ease-in-out infinite;
+}
+/* Estilo para o campo de data */
+.input-group input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    color: var(--texto-principal);
+}
+
+/* Estilo para o ícone de calendário */
+.input-group .fa-calendar {
+    color: var(--roxo);
+}
+
+/* Estilo para o placeholder da data */
+.input-group input[type="date"]:not(:valid):before {
+    content: attr(placeholder);
+    color: var(--texto-secundario);
+    margin-right: 0.5em;
+}
+.error-message {
+    color: #ff6b6b;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    text-align: left;
+    padding-left: 45px;
+    height: 20px;
+    display: none;
+}
+
+.input-group.invalid input {
+    border-color: #ff6b6b;
+}
+
+.input-group.invalid i {
+    color: #ff6b6b;
+}
+/* Add this to your CSS file */
+.swal2-popup {
+  background-color: var(--fundo-cards) !important;
+  color: var(--texto-principal) !important;
+  border: 1px solid var(--borda) !important;
+  border-radius: 16px !important;
+}
+
+.swal2-title {
+  color: var(--roxo-claro) !important;
+}
+
+.swal2-content {
+  color: var(--texto-secundario) !important;
+}
+
+.swal2-confirm {
+  background-color: var(--roxo) !important;
+  color: var(--texto-principal) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 24px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal2-confirm:hover {
+  background-color: var(--roxo-escuro) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 2px 10px rgba(167, 106, 182, 0.5) !important;
+}
+
+.swal2-icon.swal2-error {
+  color: var(--erro) !important;
+  border-color: var(--erro) !important;
+}
+
+/* ================================
+   CONFIRMAÇÃO DE CONTA (TEMA ESCURO)
+   ================================ */
+.confirma-conta {
+  background-color: var(--fundo-cards);
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px var(--sombra);
+  text-align: center;
+  border: 1px solid var(--borda);
+  margin: 20px auto;
+  animation: float 6s ease-in-out infinite;
+}
+
+.confirma-conta h2 {
+  color: var(--roxo-claro);
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.confirma-conta form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.confirma-conta .input-group {
+  position: relative;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.confirma-conta .input-group i {
+  position: absolute;
+  left: 15px;
+  top: 40px;
+  color: var(--roxo);
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.confirma-conta label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--texto-principal);
+  font-weight: 500;
+  padding-left: 5px;
+}
+
+.confirma-conta input[type="email"] {
+  width: 100%;
+  padding: 15px 15px 15px 45px;
+  border: 2px solid var(--borda);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: var(--fundo-escuro);
+  color: var(--texto-principal);
+  transition: all 0.3s ease;
+}
+
+.confirma-conta input[type="email"]:focus {
+  border-color: var(--roxo);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(167, 106, 182, 0.3);
+  background-color: var(--fundo-cards);
+}
+
+.confirma-conta input[type="email"]::placeholder {
+  color: var(--texto-secundario);
+  opacity: 0.7;
+}
+
+.confirma-conta button[type="submit"] {
+  background-color: var(--roxo);
+  color: var(--texto-principal);
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.confirma-conta button[type="submit"]:hover {
+  background-color: var(--roxo-escuro);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(167, 106, 182, 0.5);
+}
+
+.confirma-conta button[type="submit"]:active {
+  transform: translateY(1px);
+}
+
+.confirma-conta button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.confirma-conta button[type="submit"]:hover::before {
+  left: 100%;
+}
+
+/* ERROR STATES */
+.confirma-conta .input-group.invalid input {
+  border-color: #ff6b6b;
+}
+
+.confirma-conta .input-group.invalid i {
+  color: #ff6b6b;
+}
+
+.confirma-conta .error-message {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  text-align: left;
+  padding-left: 5px;
+  height: 20px;
+  display: none;
+}
+
+.confirma-conta .input-group.invalid .error-message {
+  display: block;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 480px) {
+  .confirma-conta {
+    padding: 30px 20px;
+    margin: 0 15px;
+    border-radius: 12px;
+  }
+  
+  .confirma-conta h2 {
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+  }
+  
+  .confirma-conta input[type="email"] {
+    padding: 12px 12px 12px 40px;
+    font-size: 0.9rem;
+  }
+  
+  .confirma-conta .input-group i {
+    top: 36px;
+    font-size: 1.1rem;
+  }
+  
+  .confirma-conta button[type="submit"] {
+    padding: 13px;
+    font-size: 0.95rem;
+  }
+}
+/* ================================
+   CONFIRMAÇÃO DE CONTA (TEMA ESCURO)
+   ================================ */
+.confirma-conta .input-group {
+  position: relative;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.confirma-conta .input-group i {
+  position: absolute;
+  left: 15px;
+  top: 70%; /* Posiciona no meio vertical */
+  transform: translateY(-50%); /* Centraliza precisamente */
+  color: var(--roxo);
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.confirma-conta input[type="email"] {
+  width: 100%;
+  padding: 15px 15px 15px 45px; /* Mais padding à esquerda para o ícone */
+  border: 2px solid var(--borda);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: var(--fundo-escuro);
+  color: var(--texto-principal);
+  transition: all 0.3s ease;
+  height: 50px; /* Altura fixa para melhor alinhamento */
+}
+
+/* Restante do CSS permanece igual */
+/* ================================
+   CONFIRMAÇÃO DE CÓDIGO (TEMA ESCURO)
+   ================================ */
+.confirma-conta {
+  background-color: var(--fundo-cards);
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px var(--sombra);
+  text-align: center;
+  border: 1px solid var(--borda);
+  margin: 20px auto;
+  animation: float 6s ease-in-out infinite;
+}
+
+.confirma-conta h2 {
+  color: var(--roxo-claro);
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.confirma-conta p {
+  color: var(--texto-secundario);
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+}
+
+.confirma-conta form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.confirma-conta .input-group {
+  position: relative;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.confirma-conta .input-group i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--roxo);
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.confirma-conta label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--texto-principal);
+  font-weight: 500;
+  padding-left: 5px;
+}
+
+.confirma-conta input[type="text"] {
+  width: 100%;
+  padding: 15px 15px 15px 45px;
+  border: 2px solid var(--borda);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: var(--fundo-escuro);
+  color: var(--texto-principal);
+  transition: all 0.3s ease;
+  height: 50px;
+  letter-spacing: 1px;
+}
+
+.confirma-conta input[type="text"]:focus {
+  border-color: var(--roxo);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(167, 106, 182, 0.3);
+  background-color: var(--fundo-cards);
+}
+
+.confirma-conta input[type="text"]::placeholder {
+  color: var(--texto-secundario);
+  opacity: 0.7;
+}
+
+.confirma-conta button[type="submit"] {
+  background-color: var(--roxo);
+  color: var(--texto-principal);
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.confirma-conta button[type="submit"]:hover {
+  background-color: var(--roxo-escuro);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(167, 106, 182, 0.5);
+}
+
+.confirma-conta button[type="submit"]:active {
+  transform: translateY(1px);
+}
+
+.confirma-conta button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.confirma-conta button[type="submit"]:hover::before {
+  left: 100%;
+}
+
+/* ERROR STATES */
+.confirma-conta .input-group.invalid input {
+  border-color: #ff6b6b;
+}
+
+.confirma-conta .input-group.invalid i {
+  color: #ff6b6b;
+}
+
+.confirma-conta .error-message {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  text-align: left;
+  padding-left: 5px;
+  height: 20px;
+  display: none;
+}
+
+.confirma-conta .input-group.invalid .error-message {
+  display: block;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 480px) {
+  .confirma-conta {
+    padding: 30px 20px;
+    margin: 0 15px;
+    border-radius: 12px;
+  }
+  
+  .confirma-conta h2 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+  }
+  
+  .confirma-conta p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .confirma-conta input[type="text"] {
+    padding: 12px 12px 12px 40px;
+    font-size: 0.9rem;
+    height: 45px;
+  }
+  
+  .confirma-conta .input-group i {
+    font-size: 1.1rem;
+    left: 12px;
+  }
+  
+  .confirma-conta button[type="submit"] {
+    padding: 13px;
+    font-size: 0.95rem;
+  }
+}
+/* ================================
+   CONFIRMAÇÃO DE CÓDIGO (COM ÍCONE CENTRALIZADO)
+   ================================ */
+.confirma-conta .input-group {
+  position: relative;
+  margin-bottom: 20px; /* Mais espaço para o erro */
+}
+
+.confirma-conta .input-group i {
+  position: absolute;
+  left: 15px;
+  top: 70%; /* Ajuste para compensar o label */
+  transform: translateY(-50%);
+  color: var(--roxo);
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.confirma-conta input[type="text"] {
+  width: 100%;
+  padding: 15px 15px 15px 45px;
+  margin-top: 8px; /* Espaço entre label e input */
+  border: 2px solid var(--borda);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: var(--fundo-escuro);
+  color: var(--texto-principal);
+  transition: all 0.3s ease;
+  height: 50px;
+  letter-spacing: 1px;
+}
+
+/* Versão Mobile */
+@media (max-width: 480px) {
+  .confirma-conta .input-group i {
+    top: 70%; /* Ajuste menor para mobile */
+    font-size: 1.1rem;
+    left: 12px;
+  }
+  
+  .confirma-conta input[type="text"] {
+    padding-left: 40px;
+    height: 45px;
+    margin-top: 6px;
+  }
+}
+/* Estilo para o link de reenviar código */
+.links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.links a {
+    color: var(--roxo-claro);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.links a:hover {
+    color: var(--roxo);
+    text-decoration: underline;
+}
+
+/* Estilo quando desativado */
+.links a.desativado {
+    color: var(--texto-secundario);
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+.links a.desativado:hover {
+    color: var(--texto-secundario);
+    text-decoration: none;
+}
+
+/* Contador */
+#contador-tempo {
+    font-size: 0.9em;
+    margin-left: 5px;
+    color: var(--texto-secundario);
+}
+    /* Chrome, Safari, Edge, Opera */
+    #data_nascimento::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        opacity: 0.8;
+        cursor: pointer;
+    }
+    .senha-group {
+    position: relative;
+}
+
+.senha-group .olho-senha {
+    position: absolute;
+    left: 90%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    user-select: none;
+}
+.senha-group .olho-senha:hover {
+    color: #333;
+}

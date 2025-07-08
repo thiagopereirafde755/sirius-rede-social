@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Recuperar senha - Sirius</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- ESTILO DA PAGINA -->
+    <link rel="stylesheet" href="../static/css/style1.css" />
+</head>
+<body>
+
+    <div class="confirma-conta recuperar-senha"> 
+        <h2>Recuperar senha</h2>
+        <p>Digite o código que enviamos para o seu email</p>
+        <form method="post" action="{{ url_for('recuperar_senha.recuperar_senha_part2') }}">
+            <div class="input-group">
+                <i class='bx bx-lock-alt'></i>
+                <label for="codigo">Código:</label>
+                <input type="text" id="codigo" name="codigo" placeholder="Digite o código" maxlength="6" required pattern="\d{6}">
+            </div>
+            <button type="submit">Validar código</button>
+        </form>
+
+        <div class="links">
+            <!-- PARA PODER RECEBER OUTRO CODIGO -->
+            <p>
+                Não recebeu o código? 
+                <a href="#" id="reenviar-codigo">Reenviar código</a>
+                <span id="contador-tempo" style="display:none; margin-left: 5px; color: var(--texto-secundario);"></span>
+            </p>
+
+            <!-- PARA PODER VOLTAR AO LOGIN -->
+            <p>Se lembrou da senha? <a href="/">Entrar agora</a></p>
+        </div>
+    </div>
+
+    <!-- DADOS PARA O ALERT  -->
+    <div id="alert-data" 
+        data-erro="{{ '1' if erro_codigo else '' }}" 
+        data-sucesso="{{ '1' if sucesso else '' }}" 
+        data-url="{{ url_for('recuperar_senha.recuperar_senha_part3') }}"
+        style="display: none;"></div>
+
+    <!-- DADOS PARA A URL DO REENVIAR CODIGO DO EMAIL -->
+    <div id="url-data" 
+        data-url="{{ url_for('recuperar_senha.reenviar_codigo_para_recupar_senha_nao_logado') }}" 
+        style="display:none"></div>
+
+    <!-- SCRIPTS -->
+    <script src="../static/js/recuperacao_senha/recuperar_senha_nao_logado_2.js"></script>
+
+</body>
+</html>

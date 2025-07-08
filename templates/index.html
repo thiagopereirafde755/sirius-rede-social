@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - Sirius</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png" />
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- ESTILO DA PAGINA -->
+    <link rel="stylesheet" href="../static/css/style1.css" />
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>SIRIUS</h1>
+
+        {% if erro %}
+            <div class="alert alert-danger" style="color:#ff4c4c; margin-bottom: 10px;">
+                {{ erro }}
+            </div>
+        {% endif %}
+
+        <form method="post" action="/login">
+            <div class="input-group">
+                <i class='bx bx-envelope'></i>
+                <input type="email" id="email" name="email" placeholder="E-mail" required value="{{ email|default('') }}" />
+            </div>
+
+            <div class="input-group senha-group">
+                <i class='bx bx-lock'></i>
+                <input type="password" id="password" name="senha" placeholder="Senha" required />
+                <i class="bx bx-show olho-senha" id="toggleSenha" style="cursor: pointer;"></i>
+            </div>
+
+            <button class="login-btn" type="submit">LOGIN</button>
+        </form>
+
+        <div class="links">
+            <!-- PARA RECUPERAR A SENHA -->
+            <p>Esqueceu a senha? <a href="/recuperar_senha_part1">Recuperar conta</a></p>
+            <!-- PARA IR PARA O CADASTRO DE CONTA -->
+            <p>Não tem conta? <a href="/cadastro" class="cadastro">Cadastre-se</a></p>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="../static/js/visualizar_campo_senha.js"></script>
+
+</body>
+</html>

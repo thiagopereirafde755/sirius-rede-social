@@ -1,0 +1,1003 @@
+/* ==========================
+   VARIÁVEIS CSS (CORES)
+   ========================== */
+:root {
+    --cor-primaria: #a76ab6;         
+    --cor-secundaria: #583361;  
+    --background-escuro1:rgba(16, 16, 16, 0.76)0; 
+    --background-claro1: #f8f9fa; 
+    --roxo2: #3a1942;         
+    --cor-terciaria: #3a1f41;         
+    --cor-quartenaria: #27182b;        
+    --cor-fundo: #eceaec;              
+    --cor-texto: #ffffff;              
+    --cor-borda: #ddd;               
+    --cor-cinza1: rgba(255, 255, 255, 0.5);  
+    --cinza2: rgb(92, 92, 92);
+    --cor-destaque: #007bff;           
+    --cor-erro: #e74c3c;               
+    --cor-sucesso: #2ecc71;            
+    --cor-sombra: rgba(0, 0, 0, 0.1); 
+    --cor-fundo-modal: rgba(0, 0, 0, 0.5);
+    --post-date: rgba(255, 255, 255, 0.7);
+    --preto: black;
+    --azul-link-1: #2196F3;
+    --azul-link-2: #90CAF9;
+    --azul-link-3: #047fe36e;
+    --azul-link-4: #90caf9d1;
+}
+
+/* ==========================
+   GERAL: BUTTONS E FOCUS
+   ========================== */
+button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* ==========================
+   BOTÃO DE LIMPAR PESQUISA
+   ========================== */
+.limpar-pesquisa {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+body.claro .limpar-pesquisa {
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto)!important;
+}
+body.escuro .limpar-pesquisa {
+    background-color: var(--roxo2);
+    color: var(--cor-texto)!important;
+}
+.limpar-pesquisa:hover {
+    text-decoration: none;
+}
+body.claro .limpar-pesquisa:hover {
+    background-color: var(--roxo2);
+}
+body.escuro .limpar-pesquisa:hover {
+    background-color: var(--cor-primaria);
+}
+
+/* ==========================
+   TÍTULO PRINCIPAL DA PÁGINA
+   ========================== */
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* ==========================
+   CONTAINER DOS POSTS
+   ========================== */
+#posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ==========================
+   CARD DE UM POST
+   ========================== */
+.post {
+    border-radius: 8px;
+    margin: 10px;
+    padding: 12px;
+    width: 80%;
+    max-width: 800px;
+}
+body.claro .post {
+    background: var(--cor-primaria);
+    box-shadow: 0 2px 5px var(--cor-sombra);
+}
+body.escuro .post {
+    background: var(--roxo2);
+    box-shadow: 0 2px 5px var(--cor-sombra);
+}
+
+/* ==========================
+   INFORMAÇÕES DO USUÁRIO NO POST
+   ========================== */
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.user-info img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 1px;
+}
+.user-info {
+    display: flex;
+    align-items: flex-start; 
+    margin-bottom: 10px;
+}
+.user-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+.username {
+    margin: 0;
+    font-weight: bold;
+}
+.post-date {
+    margin: 2px 0 0 0;
+    font-size: 0.8em;
+    font-weight: normal;
+}
+body.claro .post-date {
+    color: var(--post-date);
+}
+body.escuro .post-date {
+    color: var(--post-date);
+}
+
+/* ==========================
+   ESTILOS PARA LINKS
+   ========================== */
+.user-info a {
+    color: var(--cor-texto);
+    text-decoration: none;
+}
+body.claro .user-info a {
+    color: var(--cor-texto);
+}
+body.escuro .user-info a {
+    color: var(--cor-texto);
+}
+.user-info a:hover {
+    text-decoration: underline;
+}
+.username a {
+    text-decoration: none !important;
+}
+body.claro .username a {
+    color: var(--cor-texto);
+}
+body.escuro .username a {
+    color: var(--cor-texto);
+}
+.username a:hover {
+    text-decoration: none !important;
+    opacity: 0.9;
+}
+
+/* ==========================
+   MENU DE OPÇÕES DO POST (DROPDOWN)
+   ========================== */
+.dropdown-container {
+    margin-left: auto; 
+    order: 2;
+    z-index: 900;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+#dropdownMenuButton{
+    border: none; 
+    box-shadow: none;
+}
+.dropdown-toggle {
+    background: transparent !important;
+    border: none !important;
+    padding: 5px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+}
+body.claro .dropdown-toggle{
+    color: var(--cor-texto);
+}
+body.escuro .dropdown-toggle{
+    color: var(--cor-texto);
+}
+.dropdown-toggle:hover {
+    transform: scale(1.1);
+}
+.dropdown-menu {
+    min-width: 120px !important;
+    background-color: var(--cor-texto) !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    padding: 5px 0 !important;
+    z-index: 1200;
+}
+.dropdown-item:active, .dropdown-item:focus {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+.dropdown-item {
+    color: var(--cor-texto);
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+.bx-dots-vertical {
+    font-size: 1.5em;
+    color: var(--cor-texto);
+}
+.dropdown-toggle::after {
+    display: none !important;
+}
+.dropdown-menu li {
+    list-style: none;
+}
+.dropdown-item {
+    color: black !important; 
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+.dropdown-menu li:hover {
+    background-color: var(--cor-cinza1);
+}
+.dropdown-item .btn-link {
+    color: inherit ;
+    text-decoration: none ;
+}
+.dropdown-item .btn-link:hover {
+    color: inherit ;
+    text-decoration: none ;
+    background-color: transparent ;
+}
+.dropdown-menu .dropdown-item,
+.dropdown-menu a.dropdown-item {
+    text-decoration: none !important;
+}
+#botao-de-excluir-post:focus{
+    outline: none;
+}
+#botao-de-excluir-post:hover,
+#botao-de-excluir-post:visited{
+    background-color: var(--cor-cinza1) !important;
+}
+
+/* ==========================
+   TEXTO DO POST
+   ========================== */
+body.claro .post p {
+    color: var(--cor-texto);
+}
+body.escuro .post p {
+    color: var(--cor-texto);
+}
+
+/* ==========================
+   ESTILO DOS BOTÕES GERAIS
+   ========================== */
+button {
+    background-color: var(--cor-destaque);
+    color: var(--cor-texto);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:disabled {
+    background-color: #cccccc;
+}
+
+/* ==========================
+   CARROSSEL DE IMAGENS/VÍDEOS
+   ========================== */
+.carousel img, .carousel video {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+}
+.carousel img {
+    max-height: 500px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+body.claro .carousel img {
+    background-color: var(--cor-secundaria);
+}
+body.escuro .carousel img {
+    background-color: var(--cor-primaria);
+}
+
+/* ==========================
+   LINKS GERAIS
+   ========================== */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ==========================
+   ÍCONES DE INTERAÇÃO (CURTIR, COMENTAR, COMPARTILHAR)
+   ========================== */
+.comment-icon {
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.icone-compartilhar {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.icone-compartilhar:hover {
+    transform: scale(0.9);
+    opacity: 0.8;
+}
+.comment-icon img {
+    width: 30px;
+    height: 30px;
+}
+.comment-icon:hover {
+    transform: scale(0.9);
+    opacity: 0.8;
+}
+.curtir-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+.curtir-icon.curtido {
+    filter: brightness(0) invert(1);
+}
+
+/* ==========================
+   CONTAINER DE INTERAÇÕES DO POST
+   ========================== */
+.interaction-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+.interaction-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.count {
+    margin: 0;
+    font-size: 14px;
+}
+.share-link {
+    margin-left: auto;
+}
+.icon-buttons-container {
+    display: flex;
+    gap: 10px;
+}
+.icon-button {
+    display: inline-block;
+}
+
+/* ==========================
+   AVISOS DE PERFIL PRIVADO E SEM POSTS
+   ========================== */
+.perfil.privado, .sem-post {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.perfil.privado i {
+    font-size: 50px;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+.perfil.privado p {
+    margin: 8px 0;
+    color: #495057;
+}
+.perfil.privado p:first-of-type {
+    font-weight: bold;
+    font-size: 18px;
+}
+.perfil.privado p:last-of-type {
+    font-size: 14px;
+    color: #6c757d;
+}
+.sem-post {
+    padding: 30px;
+}
+.sem-post i {
+    font-size: 60px;
+    color: #adb5bd;
+    margin-bottom: 15px;
+}
+.sem-post .no-results {
+    font-size: 16px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* ==========================
+   RESPONSIVIDADE (ATÉ 770PX)
+   ========================== */
+@media screen and (max-width: 770px) {
+    #posts {
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    .post {
+        width: 100%;
+        max-width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    .carousel img,
+    .carousel video {
+        max-height: 300px;
+    }
+    .interaction-container {
+        gap: 10px;
+        padding: 0 5px;
+    }
+    .comment-icon img,
+    .icone-compartilhar,
+    .curtir-icon {
+        width: 24px;
+        height: 24px;
+    }
+    .post-content {
+        font-size: 14px;
+        line-height: 1.4;
+        word-break: break-word !important;
+    }
+    .user-info {
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .user-info p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+    .sidebar.right {
+        display: none;
+    }
+    .sideBarContainer {
+        width: 100%;
+        right: 0;
+        transform: none;
+        margin-top: 60px;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    .sectionCenter {
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+        margin: 5px auto 0;
+    }
+    .aside-esquerdo-mobile {
+        width: 70%;
+    }
+    .no-results {
+        text-align: center;
+        width: 100%;
+        padding: 20px;
+        font-size: 16px;
+        color: #666;
+    }
+    #content nav form .form-input input {
+        transition: all 0.3s ease;
+    }
+}
+
+/* ==========================
+   RESPONSIVIDADE (ATÉ 480PX)
+   ========================== */
+@media screen and (max-width: 480px) {
+    .carousel img,
+    .carousel video {
+        max-height: 250px;
+    }
+    .interaction-container {
+        gap: 8px;
+    }
+    .comment-icon img,
+    .icone-compartilhar,
+    .curtir-icon {
+        width: 22px;
+        height: 22px;
+    }
+    .count {
+        font-size: 12px;
+    }
+}
+
+/* ==========================
+   CONTROLES CARROSSEL SLICK
+   ========================== */
+.post .slick-prev,
+.post .slick-next {
+    width: 50px;
+    height: 50px;
+    z-index: 10;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+body.claro .post .slick-prev,
+body.claro .post .slick-next {
+    background-color: var(--cor-primaria) !important;
+}
+body.escuro .post .slick-prev,
+body.escuro .post .slick-next {
+    background-color: var(--roxo2) !important;
+}
+body.claro .post .slick-prev:hover,
+body.claro .post .slick-next:hover {
+    background-color: var(--cor-quartenaria) !important;
+}
+body.escuro .post .slick-prev:hover,
+body.escuro .post .slick-next:hover {
+    background-color: var(--cor-quartenaria) !important;
+}
+.post .slick-prev {
+    left: 10px;
+}
+.post .slick-next {
+    right: 10px;
+}
+.post .slick-prev:before,
+.post .slick-next:before {
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 25px;
+    color: white;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body.claro .post .slick-prev:before,
+body.claro .post .slick-next:before {
+    color: var(--cor-texto);
+}
+body.escuro .post .slick-prev:before,
+body.escuro .post .slick-next:before {
+    color: var(--cor-texto);
+}
+.post .slick-arrow {
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* Responsividade dos controles do carrossel */
+@media screen and (max-width: 770px) {
+    .post .slick-prev,
+    .post .slick-next {
+        width: 40px;
+        height: 40px;
+    }
+    .post .slick-prev:before,
+    .post .slick-next:before {
+        font-size: 20px;
+    }
+}
+@media screen and (max-width: 480px) {
+    .post .slick-prev,
+    .post .slick-next {
+        width: 35px;
+        height: 35px;
+    }
+    .post .slick-prev:before,
+    .post .slick-next:before {
+        font-size: 18px;
+    }
+    .post .slick-prev {
+        left: 5px;
+    }
+    .post .slick-next {
+        right: 5px;
+    }
+}
+
+/* ==========================
+   BOLINHAS DE NAVEGAÇÃO SLICK
+   ========================== */
+.post .slick-dots {
+    position: relative;
+    bottom: 0;
+    margin-top: 10px;
+    list-style: none;
+    display: flex !important;
+    justify-content: center;
+    padding: 0;
+}
+.post .slick-dots li {
+    margin: 0 4px;
+}
+.post .slick-dots li button {
+    width: 12px;
+    height: 12px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--cor-cinza1);
+    border: none;
+    text-indent: -9999px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.post .slick-dots li.slick-active button {
+    background: var(--cor-texto);
+    transform: scale(1.2);
+}
+.post .slick-dots li button:hover {
+    background: var(--cor-texto);
+    opacity: 0.8;
+}
+@media screen and (max-width: 770px) {
+    .post .slick-dots li button {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+/* Ajuste do dropdown para mobile */
+@media screen and (max-width: 770px) {
+    .dropdown-menu {
+        right: auto !important;
+        left: 0 !important;
+        transform: translateX(-87%) !important;
+    }
+}
+@media screen and (max-width: 480px) {
+    .dropdown-menu {
+        transform: translateX(-75%) !important;
+    }
+}
+
+/* ==========================
+   LINKS DENTRO DO CONTEÚDO DO POST
+   ========================== */
+.post-content a {
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    word-break: break-all; 
+}
+body.claro .post-content a {
+    color: var(--azul-link-2); 
+}
+body.escuro .post-content a {
+    color: var(--azul-link-1); 
+}
+.post-content a:hover {
+    text-decoration: underline;
+}
+body.claro .post-content a:hover {
+    color: var(--azul-link-4); 
+}
+body.escuro .post-content a:hover {
+    color: var(--azul-link-3); 
+}
+
+/* ==========================
+   MENSAGEM DE ACESSO NEGADO
+   ========================== */
+.access-denied-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 70vh;
+    font-family: Arial, sans-serif;
+}
+.access-denied-message i {
+    font-size: 64px;
+    color: var(--cor-erro); 
+    margin-bottom: 16px;
+}
+.access-denied-message p {
+    font-size: 20px;
+}
+body.claro.access-denied-message p {
+    color: var(--preto);
+}
+body.escuro .access-denied-message p {
+    color: var(--cor-texto);
+}
+
+/* ==========================
+   CARTÃO DE RESULTADO VAZIO
+   ========================== */
+.no-results-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+.no-results-card {
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 400px;
+    text-align: center;
+}
+.no-results-card i {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+body.claro .no-results-card i {
+    color: var(--cinza2);
+}
+body.escuro .no-results-card i {
+    color: var(--cor-borda);
+}
+.no-results-message {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+body.claro .no-results-message {
+    color: var(--cinza2);
+}
+body.escuro .no-results-message {
+    color: var(--cor-borda);
+}
+
+/* ==========================
+   SUGESTÕES DE MENÇÕES (COMENTÁRIO)
+   ========================== */
+.mention-suggestions {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.11);
+    border-radius: 6px;
+    position: absolute;
+    z-index: 9999;
+    max-height: 180px;
+    overflow-y: auto;
+    font-size: 15px;
+    color: var(--cor-fundo);
+}
+body.claro .mention-suggestions {
+    background: var(--cor-primaria);
+    border: 2px solid, var(--roxo2);
+}
+body.escuro .mention-suggestions {
+    background: var(--roxo2);
+    border: 2px solid, var(--cor-primaria);
+}
+.mention-suggestion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+body.claro .mention-suggestion:hover {
+    background: var(--roxo2);
+}
+body.escuro .mention-suggestion:hover {
+    background: var(--cor-primaria);
+}
+.mention-suggestion img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.mention-suggestion .username {
+    font-weight: bold;
+}
+
+/* ==========================
+   SEARCH FILTER COMPONENT
+   ========================== */
+
+/* Main container */
+.filtro-pesquisa-centralizado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem auto;
+    gap: 0.625rem;
+    max-width: 100%;
+}
+
+/* Filter tools row */
+.filtro-pesquisa-centralizado .filtro-tools {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Form elements */
+.filtro-pesquisa-centralizado form,
+.filtro-pesquisa-centralizado .limpar-pesquisa {
+    margin: 0;
+    padding: 0.3125rem;
+}
+
+/* Clear search link */
+.filtro-pesquisa-centralizado .limpar-pesquisa {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+}
+.filtro-pesquisa-centralizado .limpar-pesquisa:hover {
+    color: #2563eb;
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Search query text */
+.query {
+    display: block;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin-top: 0.5rem;
+    padding: 0 1rem;
+}
+
+/* Filter select containers */
+.filtro-select-container {
+    position: relative;
+    display: inline-block;
+    min-width: 120px;
+}
+.filtro-select-container select {
+    padding: 0.5rem 0.875rem 0.5rem 2rem;
+    border-radius: 0.375rem;
+    border: 1px solid #d1d5db;
+    font-size: 0.9375rem;
+    background: #f9fafb;
+    transition: all 0.2s ease;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    width: 100%;
+}
+.filtro-select-container select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+/* Filter icon */
+.filtro-select-container .bx-filter {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 1.1em;
+    color: #4b5563;
+    z-index: 1;
+}
+
+/* Theme variations */
+body.claro .query {
+    color: var(--preto, #111827);
+}
+body.escuro .query {
+    color: var(--cor-texto, #f3f4f6);
+}
+body.escuro .filtro-select-container select {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f3f4f6;
+}
+body.escuro .filtro-select-container .bx-filter {
+    color: #9ca3af;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .filtro-pesquisa-centralizado .filtro-tools {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+    }
+    .filtro-select-container {
+        width: 100%;
+    }
+    .filtro-select-container select {
+        width: 100%;
+    }
+    .limpar-pesquisa {
+        align-self: center;
+    }
+}
+
+/* ==========================
+   DESTAQUE DE COMENTÁRIO (ANIMAÇÃO)
+   ========================== */
+.comentario-destaque {
+    transition: background 0.7s, box-shadow 0.7s;
+    animation: destaqueAnim 2s;
+    padding: 12px;
+    border-radius: 8px;
+}
+body.claro .comentario-destaque {
+    background: #8d5d99!important;
+}
+body.escuro .comentario-destaque {
+    background: var(--cor-quartenaria)!important;
+}
+
+/* ==========================
+   CURSOR MODAL CURTIDA
+   ========================== */
+.curso-modal-curtida{
+    cursor: pointer;
+}
+.post-content {
+    word-wrap: break-word;       /* Quebra palavras muito longas */
+    overflow-wrap: break-word;   /* Melhor tratamento para quebra */
+    white-space: pre-wrap;       /* Mantém quebras de linha originais */
+    word-break: break-word;      /* Quebra palavras quando necessário */
+    max-width: 100%;             /* Garante que não ultrapasse o container */
+}
+/* Ícone de visualizações */
+.view-icon {
+    font-size: 22px;
+}
+
+/* Posiciona o item de visualizações no canto direito */
+.interaction-container {
+    position: relative;
+}
+
+.interaction-item:last-child {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: row;
+    gap: 5px;
+    display: flex;
+    align-items: center;
+}
+
+/* Responsivo */
+@media screen and (max-width: 770px) {
+    .view-icon {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .view-icon {
+        font-size: 18px;
+    }
+
+    .interaction-item:last-child {
+        right: 5px;
+    }
+}
+.bx-bar-chart {
+    font-size: 22px;
+    color: white !important;
+}
+.visu-count{
+    cursor: pointer !important;
+}
+
+

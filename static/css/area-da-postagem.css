@@ -1,0 +1,276 @@
+:root {
+    --background: #f0f2f5;
+    --roxo:  #a76ab6;
+    --cor-secundaria: #583361;
+    --roxo2: #3a1942;
+    --cinza: #4e4f5080;
+    --cinza1: #ceced6;
+    --white: #feffff;
+    --black: #0f0d0d;
+    --roxo3: #3a1942;
+    --scrollBar: #656768;
+}
+/* Estilos gerais */
+.postagem-secao {
+    background-color: var(--roxo);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    padding: 12px 16px 10px;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto 16px;
+}
+body.claro .postagem-secao {
+    background-color: var(--roxo);
+}
+body.escuro .postagem-secao {
+    background-color: var(--roxo2);
+}
+/* Header */
+.postagem-secao-header h3 {
+    color: var(--white);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+}
+body.claro .postagem-secao-header h3 {
+    border-bottom: 1px solid var(--roxo2);
+}
+body.escuro .postagem-secao-header h3 {
+    border-bottom: 1px solid var(--roxo);
+}
+/* Formulário */
+.postagem-secao-form-container {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+/* Avatar */
+.postagem-secao-avatar {
+    flex-shrink: 0;
+}
+.postagem-secao-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+body.claro .postagem-secao-avatar img {
+    border: 2px solid var(--roxo2);
+}
+body.escuro .postagem-secao-avatar img {
+    border: 2px solid var(--roxo);
+}
+/* Textarea */
+.postagem-secao-form-content {
+    flex-grow: 1;
+    width: 100%;
+}
+.postagem-secao form textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    font-size: 1.0625rem;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #ebebeb;
+    min-height: 80px;
+    margin-bottom: 8px;
+    outline: none;
+    font-family: inherit;
+}
+.postagem-secao form textarea::placeholder {
+    color: #65676b;
+}
+/* Botões de mídia */
+.icon-buttons-container {
+    display: flex;
+    padding: 8px 0;
+    
+    margin-bottom: 12px;
+}
+body.claro .icon-buttons-container {
+    border-top: 1px solid var(--roxo2);
+    border-bottom: 1px solid var(--roxo2);
+}
+body.escuro .icon-buttons-container {
+    border-top: 1px solid var(--roxo);
+    border-bottom: 1px solid var(--roxo);
+}
+.icon-button {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    color: var(--white);
+    font-weight: 500;
+}
+.icon-button:hover {
+    background-color: var(--cor-secundaria);
+}
+.icon-button i {
+    font-size: 1.25rem;
+    margin-right: 8px;
+}
+body.claro .icon-button i {
+    color: var(--roxo3);
+}
+body.escuro .icon-button i {
+    color: var(--roxo);
+}
+.icon-button input[type="file"] {
+    display: none;
+}
+
+/* Botão de postar */
+.postagem-secao form input[type="submit"] {
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+body.claro .postagem-secao form input[type="submit"] {
+    background-color: var(--roxo3);
+}
+body.escuro .postagem-secao form input[type="submit"] {
+    background-color: var(--roxo);
+}
+body.claro .postagem-secao form input[type="submit"]:hover {
+    background-color: var(--cor-secundaria);
+}
+body.escuro .postagem-secao form input[type="submit"]:hover {
+    background-color: var(--cor-secundaria);
+}
+/* Preview */
+.preview-container {
+    margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.preview-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 100%;
+    background-color: var(--roxo3);
+    margin-bottom: 8px;
+}
+.preview-image {
+    display: block;
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+.preview-video {
+    display: block;
+    max-width: 100%;
+    max-height: 400px;
+    margin: 0 auto;
+    border-radius: 8px;
+    background-color: #000;
+}
+.remove-preview {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+.remove-preview:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+/* Responsividade */
+@media (max-width: 768px) {
+    .postagem-secao {
+        box-shadow: none;
+        margin-bottom: 8px;
+        padding: 8px;
+    }
+    .postagem-secao-header h3 {
+        font-size: 1.125rem;
+    }
+    .icon-button {
+        padding: 6px 8px;
+        font-size: 0.875rem;
+    }
+    .icon-button i {
+        font-size: 1.1rem;
+    }
+    .preview-container {
+        margin: 8px 0;
+    }
+    .preview-image,
+    .preview-video {
+        max-height: 300px;
+    }
+    .remove-preview {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+}
+@media (max-width: 480px) {
+    .postagem-secao-avatar img {
+        width: 36px;
+        height: 36px;
+    }
+    .postagem-secao form textarea {
+        font-size: 1rem;
+        padding: 10px;
+    }
+    .icon-buttons-container {
+        justify-content: space-around;
+    }
+    .icon-button {
+        flex-direction: column;
+        padding: 6px;
+        margin-right: 4px;
+    }
+    .icon-button span {
+        font-size: 0.75rem;
+    }
+    .icon-button i {
+        margin-right: 0;
+        margin-bottom: 4px;
+    }
+    .postagem-secao-form-container {
+        gap: 8px;
+    }
+    .preview-image,
+    .preview-video {
+        max-height: 250px;
+    }
+    .preview-item {
+        border-radius: 6px;
+    }
+    .remove-preview {
+        width: 22px;
+        height: 22px;
+        top: 6px;
+        right: 6px;
+    }
+}

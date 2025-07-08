@@ -1,0 +1,527 @@
+:root {
+    --background: #f0f2f5;
+    --roxo: #a76ab6;
+    --roxo2: #3a1942;
+    --cor-secundaria: #583361;
+    --cinza: #4e4f5080;
+    --cinza1: #ceced6;
+    --white: #feffff;
+    --black: #0f0d0d;
+    --roxo3: #3a1942;
+    --scrollBar: #656768;
+}
+.profile-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+body.claro .profile-container {
+    background-color: var(--roxo);
+}
+body.escuro .profile-container {
+    background-color: var(--roxo2);
+}
+#nome_completo {
+    margin-top: 50px;
+}
+#fot-per{
+    cursor: pointer;
+}
+.cover-container {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+.cover-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.cover-form {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    margin: 0;
+}
+.file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.change-cover-btn {
+    position: relative;
+    z-index: 1;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0;
+    border: none;
+    display: inline-block;
+}
+body.claro .change-cover-btn {
+    background-color: var(--roxo);
+}
+body.escuro .change-cover-btn {
+    background-color: var(--roxo2);
+}
+.change-cover-btn:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+    transform: scale(1.05);
+}
+.profile-details {
+    display: flex;
+    padding: 20px;
+    position: relative;
+    margin-top: -50px;
+}
+#fot-per {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+body.claro #fot-per {
+    border: 4px solid var(--roxo3);
+}
+body.escuro #fot-per {
+    border: 4px solid var(--roxo);
+}
+#fot-per:hover {
+    transform: scale(1.05);
+}
+.profile-info {
+    margin-left: 20px;
+    flex-grow: 1;
+}
+.profile-info h3 {
+    margin: 5px 0;
+    color: var(--white);
+}
+.profile-info h3#nome_completo {
+    font-weight: 600;
+}
+.profile-info h3 span#nome_user {
+    color: var(--white);
+    font-weight: 500;
+}
+.profile-info h4#bio_per {
+    color: var(--white);
+    font-weight: 400;
+    margin: 10px 0;
+    line-height: 1.4;
+}
+#editar-perfil-btn {
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 5px;
+    outline: none;
+}
+body.claro #editar-perfil-btn {
+    background-color: var(--roxo3);
+}
+body.escuro #editar-perfil-btn {
+    background-color: var(--roxo);
+}
+#editar-perfil-btn:hover {
+    transform: scale(1.05);
+}
+body.claro #editar-perfil-btn:hover {
+    background-color: #3a1942a5;
+}
+body.escuro #editar-perfil-btn:hover {
+    background-color: var(--cor-secundaria);
+}
+.stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 20px;
+    margin-top: 10px;
+}
+body.claro .stats{
+    border-top: 1px solid var(--roxo2);
+}
+body.escuro .stats{
+    border-top: 1px solid var(--roxo);
+}
+.stat-item, .post-stats {
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 5px;
+    flex: 1;
+    min-width: 0;
+}
+
+body.claro .stat-item:hover, 
+body.claro  .post-stats:hover {
+    background-color: #3a1942a5;
+}
+body.escuro .stat-item:hover, 
+body.escuro .post-stats:hover {
+    background-color: var(--cor-secundaria);
+}
+.stat-item3 {
+    font-weight: 600;
+    color: var(--white);
+    display: block;
+    margin-bottom: 3px;
+}
+.total {
+    color: var(--white);
+}
+@media (max-width: 768px) {
+    .cover-container {
+        height: 200px;
+    }
+    .profile-details {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: -70px;
+    }
+    #fot-per {
+        width: 100px;
+        height: 100px;
+    }
+    .profile-info {
+        margin-left: 0;
+        margin-top: 15px;
+    }
+    x
+    .stats {
+        flex-wrap: nowrap;
+        gap: 5px;
+    }
+    .stat-item, .post-stats {
+        padding: 8px 5px;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .stat-item3 {
+        display: inline;
+        margin-right: 4px;
+        margin-bottom: 0;
+    }
+    #nome_completo {
+        margin-top: 0px;
+    }
+}
+@media (max-width: 480px) {
+    .stat-item, .post-stats {
+        font-size: 13px;
+        padding: 8px 3px;
+    }
+    .stat-item3 {
+        margin-right: 3px;
+    }
+    .cover-container {
+        height: 150px;
+    }
+    #fot-per {
+        width: 80px;
+        height: 80px;
+    }
+    .profile-info h3#nome_completo {
+        font-size: 22px;
+    }
+    .profile-info h3 span#nome_user {
+        font-size: 20px;
+    }
+    .profile-info h4#bio_per {
+        font-size: 16px;
+    }
+    #editar-perfil-btn {
+        padding: 6px 15px;
+        font-size: 13px;
+    }
+    .change-cover-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+        bottom: 10px;
+        right: 10px;
+    }
+    #nome_completo {
+        margin-top: 0px;
+    }
+}
+/* Menu principal centralizado */
+.header .mainMenu {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+/* Container dos ícones de perfil */
+.header .profileTools {
+    flex: 0 0 auto;
+    margin-left: 40px; /* Espaço entre menu e ícones */
+    display: flex;
+}
+.pesquisa-para-mobile {
+    justify-content: flex-end; /* Alinha à esquerda */
+    padding-left: 20px; /* Espaçamento consistente */
+}
+@media (max-width: 768px) {
+    .header .profileTools {
+        display: none;
+    }
+    .header .mainMenu {
+        display: none;
+    }
+}
+.btn-container {
+    display: flex;
+    justify-content: center;
+    margin: 3px 0;
+    
+}
+.btn-seguir {
+    padding: 8px 16px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+body.claro .btn-seguir {
+    background-color: var(--roxo3);
+}
+body.escuro .btn-seguir {
+    background-color: var(--roxo);
+}
+body.claro .btn-seguir:hover {
+    background-color: var(--cor-secundaria);
+}
+body.escuro .btn-seguir:hover {
+    background-color: var(--cor-secundaria);
+}
+.bloqueado-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    margin: auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1;
+}
+
+.bloqueado-message i {
+    font-size: 3rem;
+    color: #dc3545;
+    margin-bottom: 1rem;
+}
+
+.bloqueado-message p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    color: #495057;
+}
+.profile-info h3,
+.profile-info h4#bio_per,
+#bio_per,
+#nome_completo,
+#nome_user,
+.post-content,
+.stat-item,
+.post-stats,
+.total {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+.bio-textarea, .nome-textarea, .user-textarea {
+    resize: none;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 60px;
+    max-height: 60px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px 12px 25px 12px;
+    box-sizing: border-box;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+.bio-counter, .nome-counter, .user-counter {
+    position: absolute;
+    right: 20px;
+    bottom: 7px;
+    font-size: 12px;
+    color: #999;
+    pointer-events: none;
+    background: transparent;
+}
+#contador-caracteres,
+#limite-caracteres,
+.barra {
+    color: #fff !important;
+}
+ .mention-suggestions {
+    position: absolute;
+     margin-top: -75px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    width: 250px;
+    padding: 5px 0;
+    
+}
+
+.mention-suggestion {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.mention-suggestion:hover {
+    background-color: #f5f5f5;
+}
+
+.mention-suggestion img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.mention-suggestion .username {
+    font-weight: 500;
+    color: var(--white);
+}
+
+/* Scrollbar styling */
+.mention-suggestions::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mention-suggestions::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.mention-suggestions::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.mention-suggestions::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+.bx-info-circle{
+    color: var(--background);
+    font-size: 25px;
+}
+.hashtag-link {
+    color: #1da1f2;
+    text-decoration: none;
+    font-weight: bold;
+}
+.hashtag-link:hover {
+    text-decoration: underline;
+}
+.hashtag-suggestions {
+    position:absolute;
+    z-index:10;
+    max-height:200px;
+    overflow-y:auto;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+    color: var(--white);
+    margin-top: 12vh;
+}
+body.claro .hashtag-suggestions {
+    background-color: var(--roxo);
+    border: 2px solid, var(--roxo2);
+}
+body.escuro .hashtag-suggestions {
+    background-color: var(--roxo2);
+    border: 2px solid, var(--roxo);
+}
+.hashtag-suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+body.claro .hashtag-suggestion-item:hover {
+    background: var(--cor-secundaria);
+}
+body.escuro .hashtag-suggestion-item:hover {
+    background: var(--roxo);
+}
+.hashtag-count {
+    color: var(--white);
+    font-size: 0.85em;
+    float: right;
+}
+body.claro .no-results-sub{
+    color: var(--black);
+}
+body.escuro .no-results-sub{
+    color: var(--white);
+}
+.btn-desbloquear {
+    padding: 8px 16px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+body.claro .btn-desbloquear {
+    background-color: var(--roxo);
+}
+body.escuro .btn-desbloquear {
+    background-color: var(--roxo3);
+}
+body.claro .btn-desbloquear:hover {
+    background-color: var(--cor-secundaria);
+}
+body.escuro .btn-desbloquear:hover {
+    background-color: var(--cor-secundaria);
+}
