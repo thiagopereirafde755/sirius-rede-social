@@ -1,7 +1,28 @@
-// static/js/configuracao/alterar_senha.js
 document.addEventListener('DOMContentLoaded', function() {
     const btnSalvarSenha = document.getElementById('btnSalvarSenha');
-    
+
+    function toggleSenha(inputId, toggleId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(toggleId);
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('bx-show');
+            icon.classList.add('bx-hide');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('bx-hide');
+            icon.classList.add('bx-show');
+        }
+    }
+
+    document.getElementById('toggleSenhaAtual').addEventListener('click', function () {
+        toggleSenha('senhaAtual', 'toggleSenhaAtual');
+    });
+
+    document.getElementById('toggleNovaSenha').addEventListener('click', function () {
+        toggleSenha('novaSenha', 'toggleNovaSenha');
+    });
+
     if (btnSalvarSenha) {
         btnSalvarSenha.addEventListener('click', function() {
             const senhaAtual = document.getElementById('senhaAtual').value;
@@ -18,7 +39,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 return;
             }
-            
+
+            if (novaSenha.length < 6 || novaSenha.length > 12) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Senha inválida',
+                    text: 'A nova senha deve ter entre 6 e 12 caracteres.',
+                    confirmButtonColor: '#3085d6'
+                });
+                return;
+            }
+
             if (novaSenha !== confirmarSenha) {
                 Swal.fire({
                     icon: 'error',

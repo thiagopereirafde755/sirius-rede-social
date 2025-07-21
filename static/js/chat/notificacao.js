@@ -7,7 +7,6 @@ function liberarAudio() {
 
 window.addEventListener('click', liberarAudio);
 
-// Função para tocar o áudio só se estiver habilitado
 function tocarAudioNotificacao() {
     if (!audioEnabled) return;
     let audio = document.getElementById('badge-audio');
@@ -17,7 +16,6 @@ function tocarAudioNotificacao() {
     }
 }
 
-// Guarda os últimos contadores para cada contato
 let lastCounts = {};
 
 function atualizarBadges() {
@@ -33,7 +31,6 @@ function atualizarBadges() {
                     let count = data.counts[contatoId] || 0;
                     let usernameBadge = item.querySelector('.username-badge');
 
-                    // Verifica se o contador aumentou e toca som
                     if (lastCounts[contatoId] !== undefined && count > lastCounts[contatoId]) {
                         tocarAudioNotificacao();
                     }

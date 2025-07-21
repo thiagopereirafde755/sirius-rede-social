@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const campo = campos[id];
 
         if (id === 'senha') {
-            // Ao digitar em senha, valida senha e confirmar_senha
             campo.input.addEventListener('input', () => {
                 if (!campo.validacao()) {
                     exibirErro(campo);
@@ -82,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     esconderErro(campo);
                 }
 
-                // Também valida confirmar_senha para atualizar o erro se as senhas agora batem
                 const confirmar = campos.confirmar_senha;
                 if (!confirmar.validacao()) {
                     exibirErro(confirmar);
@@ -92,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         } else if (campo.regex) {
             campo.input.addEventListener('input', () => {
-                if (!campo.regex.test(campo.input.value) && campo.input.value.trim() !== '') {
+                if (!campo.regex.test(campo.input.value.trim())) {
                     campo.error.textContent = campo.mensagem;
                     exibirErro(campo);
                 } else {
@@ -113,10 +111,18 @@ document.addEventListener('DOMContentLoaded', function () {
     form.addEventListener('submit', function (e) {
         let isValid = true;
 
-        Object.values(campos).forEach(campo => {
-            if (campo.validacao && !campo.validacao()) {
+        Object.keys(campos).forEach(id => {
+            const campo = campos[id];
+
+            if (campo.regex && !campo.regex.test(campo.input.value.trim())) {
+                campo.error.textContent = campo.mensagem;
                 exibirErro(campo);
                 isValid = false;
+            } else if (campo.validacao && !campo.validacao()) {
+                exibirErro(campo);
+                isValid = false;
+            } else {
+                esconderErro(campo);
             }
         });
 
@@ -126,12 +132,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 icon: 'error',
                 title: 'Erro no formulário',
                 text: 'Por favor, corrija os erros antes de enviar o formulário.',
-                confirmButtonColor: '#a76ab6'
+                confirmButtonColor: '#a76ab6',
+                background: '#2d2a32',
+                color: '#e0e0e0'
             });
         }
     });
 
-    // Reexibe erros do back-end (já inseridos via Jinja)
+    // Exibe erros vindos do back-end (ex: falha ao validar no servidor)
     document.querySelectorAll('.error-message').forEach(el => {
         if (el.textContent.trim() !== '') {
             el.style.display = 'block';

@@ -706,7 +706,7 @@ body.claro .conf-conta {
 }
 
 body.escuro .conf-conta {
-    background-color: var(--fundo-preto);
+    background-color: #222024;
     color: var(--white);
     border: 1px solid var(--roxo);
 }
@@ -770,7 +770,7 @@ body.escuro .conf-conta[href*="Excluir"] {
     border-radius: 12px;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
     padding: 2rem;
-    max-width: 500px;
+    max-width: 100%;
     margin: 2rem auto;
 }
 
@@ -780,7 +780,8 @@ body.claro .container-recuperacao {
 }
 
 body.escuro .container-recuperacao {
-    background-color: var(--fundo-preto);
+    background-color: #4e4f5031;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
     color: var(--white);
 }
 
@@ -954,4 +955,139 @@ body.escuro .btn-cancelar {
     .form-control {
         padding: 0.75rem 1rem;
     }
+}
+body.claro .botao-recuperar-senha-logado{
+    border: 1px solid var(--roxo2);
+}
+body.escuro .botao-recuperar-senha-logado{
+    border: 1px solid var(--roxo);
+}
+/* Statistics list styling */
+.list-group {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+body.claro .list-group {
+    background-color: var(--fundo-branco);
+    border: 1px solid var(--roxo2);
+}
+
+body.escuro .list-group {
+    background-color: var(--cinza);
+    border: 1px solid var(--roxo);
+}
+
+.list-group-item {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+body.claro .list-group-item {
+    background-color: var(--fundo-branco);
+    border-bottom-color: var(--roxo2);
+    color: var(--black);
+}
+
+body.escuro .list-group-item {
+    background-color: var(--cinza);
+    border-bottom-color: var(--roxo);
+    color: var(--white);
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item:hover {
+    background-color: rgba(167, 106, 182, 0.1);
+}
+
+.list-group-item strong {
+    font-weight: 600;
+}
+
+body.claro .list-group-item strong {
+    color: var(--roxo2);
+}
+
+body.escuro .list-group-item strong {
+    color: var(--roxo);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .list-group-item {
+        padding: 1rem 1.25rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .list-group-item {
+        padding: 0.875rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .list-group-item strong {
+        align-self: flex-end;
+    }
+}
+/* Password input container */
+.password-container {
+    position: relative;
+}
+
+/* Container for input + icon */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Eye icon styling */
+.eye-icon {
+    position: absolute;
+    right: 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--roxo2);
+    transition: color 0.3s ease;
+    z-index: 2;
+}
+
+body.escuro .eye-icon {
+    color: var(--roxo);
+}
+
+.eye-icon:hover {
+    color: var(--cor-secundaria);
+}
+
+/* Adjust input padding to prevent text under icon */
+.form-control[type="password"],
+.form-control[type="text"] {
+    padding-right: 40px !important;
+    width: 100%;
+}
+
+/* Form text styling */
+.form-text {
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+}
+
+body.claro .form-text {
+    color: var(--roxo2) !important;
+}
+
+body.escuro .form-text {
+    color: var(--cinza1) !important;
 }

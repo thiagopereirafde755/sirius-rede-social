@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- LOADING DA PAGINA -->
+    <script src="../static/js/carregamento/loading.js"></script>
     <!-- TITULO DA PAGINA -->
     <title>{% if destinatario_username %}Chat com {{ destinatario_username }}{% else %}Chat{% endif %}</title>
     <!-- ICONES -->
@@ -14,135 +16,146 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../static/css/sweealert2.css">
     <!-- BOXICONS PARA ICONES -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- PARA ICONES -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> 
     <!-- ESTILO DA PAGINA -->
     <link rel="stylesheet" href="../static/css/chat.css">
+    <link rel="stylesheet" href="../static/css/loading.css">
 </head>
 <body class="{{ tema }}">
     <div class="container">
 
+        <!-- TELA DE CARREGAMENTO -->
+        <div id="loadingScreen">
+            <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
+        </div>
+
         <!-- MENU LATERAL DESKTOP E MOBILE INFERIOR -->
         <div class="aside">
 
+        <!-- CHAT -->
         <a href="/chat" class="opcao-aside no-mobile" id="logo-no-mobile">
             <i class='bx bxs-dog'></i>
         </a>
 
+        <!-- MINHA PAGINA DE PERFIL -->
         <a href="/inicio" class="minha-foto no-desktop">
             <img src="{{foto_perfil}}" id="foto-aside" alt="my-photo">
         </a>
 
+        <!-- HOME -->
         <a href="/home" class="opcao-aside">
             <i class='bx bxs-home'></i>
         </a>
 
+        <!-- PARA IR AO POST DE QUEM EU SIGO -->
         <a href="/post-seguindo" class="opcao-aside no-mobile">
             <i class='bx bxs-user'></i>
         </a>
 
+        <!-- PARA IR PARA POST DE VIDEO -->
         <a href="/post-video" class="opcao-aside">
             <i class='bx bxs-videos'></i>
         </a>
 
+        <!-- PARA IR A POST QUE EU CURTIR -->
         <a href="/post-curtidos" class="opcao-aside no-mobile">
             <i class='bx bxs-heart'></i>
         </a>
 
+        <!-- PARA PROCURAR UM USUARIO -->
         <a href="/procurar-user" class="opcao-aside no-mobile">
             <i class='bx bxs-user-plus'></i>
         </a>
 
+        <!-- PARA IR PARA PAGINA DE PERIL -->
         <a href="/inicio" class="minha-foto no-mobile">
             <img src="{{foto_perfil}}" id="foto-aside" alt="my-photo">
         </a>
 
+        <!-- PARA IR AS NOTIFICAÇÕES -->
         <a href="/notificacoes" class="opcao-aside">
             <i class='bx bxs-bell'></i>
         </a>     
 
+        <!-- PARA IR AS CONFIGURAÇÕES -->
         <a href="/configuracao" class="opcao-aside">
             <i class='bx bxs-cog'></i>
         </a>
 
+        <!-- PARA DAR LOG OUT -->
         <a href="#" id="logout-link" class="opcao-aside">
             <i class='bx bx-log-out'></i>
         </a>
 
-        </div>
+    </div>
 
-
-     
-        
-        <!-- LISTA DE CONTATOS -->
-        <div class="sidebar" id="contacts-sidebar">
-            <h2>Contatos</h2>
+    <!-- LISTA DE CONTATOS -->
+    <div class="sidebar" id="contacts-sidebar">
+        <h2>Contatos</h2>
             {% if contatos|length > 1 %}
-    <input type="text" id="search-contact" placeholder="Buscar contato..." >
-{% endif %}
-        <ul class="contacts-list">
-    {% if contatos|length > 0 %}
-        {% for contato in contatos %}
-        <li class="contact-item {% if destinatario_id == contato['id'] %}active{% endif %}">
-            <a href="{{ url_for('chat.chat_conversa', destinatario_id=contato['id']) }}">
-                <div class="top-contact-row">
-                    <img src="{{ contato['fotos_perfil'] if contato['fotos_perfil'] else url_for('static', filename='img/icone/user.png') }}" alt="{{ contato['username'] }}">
-                    <span class="username-badge">
-                        <span class="user-text" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ contato['username'] }}</span>
-                        <!-- CONTADOR DE MENSAGENS NÃO VISTA -->
-                        {% if contato.nao_vistas and contato.nao_vistas > 0 %}
-                            <span class="badge-nao-vistas">{{ contato.nao_vistas }}</span>
-                        {% endif %}
-                    </span>
-                </div>
-                <!-- PARA MOSTRAR A ULTIMA MENSAGEM DA CONVERSA ENTRE USUARIOS -->
-                <div class="last-message-info">
-                    {% if contato.ultima_midia %}
-                        {% if contato.ultima_midia.endswith(('png', 'jpg', 'jpeg', 'gif')) %}
-                            <i class="fa fa-image" title="Foto"></i>
-                            <span class="last-msg-text">Foto</span>
-                        {% elif contato.ultima_midia.endswith(('mp4', 'mov', 'avi')) %}
-                            <i class="fa fa-video" title="Vídeo"></i>
-                            <span class="last-msg-text">Vídeo</span>
-                        {% endif %}
-                    {% elif contato.ultima_mensagem %}
-                        <span class="last-msg-text">{{ contato.ultima_mensagem }}</span>
-                    {% endif %}
-                    {% if contato.ultima_hora %}
-                        <span class="last-msg-time">{{ contato.ultima_hora }}</span>
-                    {% endif %}
-                </div>
-            </a>
-        </li>
-        {% endfor %}
-    {% else %}
-        <li class="contact-item no-contact no-hover">
-            <div >
-                <i class='bx bx-user-x' ></i>
-                <span class="no-hover" style="font-size: 16px;">Você não tem nenhum contato</span>
-            </div>
-        </li>
-    {% endif %}
-</ul>
-<div id="no-contacts-message" style="display:none;">
-    <i class='bx bx-user-x' ></i>
-    <span>Nenhum contato encontrado</span>
-</div>
-    </ul>
-</div>
+            <input type="text" id="search-contact" placeholder="Buscar contato..." >
+            {% endif %}
+            <ul class="contacts-list">
+            {% if contatos|length > 0 %}
+                {% for contato in contatos %}
+                    <li class="contact-item {% if destinatario_id == contato['id'] %}active{% endif %}">
+                    <a href="{{ url_for('chat.chat_conversa', destinatario_id=contato['id']) }}">
+                    <div class="top-contact-row">
+                        <img src="{{ contato['fotos_perfil'] if contato['fotos_perfil'] else url_for('static', filename='img/icone/user.png') }}" alt="{{ contato['username'] }}">
+                        <span class="username-badge">
+                            <span class="user-text" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ contato['username'] }}</span>
+                            <!-- CONTADOR DE MENSAGENS NÃO VISTA -->
+                            {% if contato.nao_vistas and contato.nao_vistas > 0 %}
+                                <span class="badge-nao-vistas">{{ contato.nao_vistas }}</span>
+                            {% endif %}
+                        </span>
+                    </div>
 
-<!-- AREA DO CHAT-->
-<div class="chat-area" id="chat-area">
-    <!-- HEADER -->
-    {% if destinatario_username %}
-      <h2 style="position: relative; display: flex; align-items: center; justify-content: space-between;">
-    <span style="display: flex; align-items: center;">
+                    <!-- PARA MOSTRAR A ULTIMA MENSAGEM DA CONVERSA ENTRE USUARIOS -->
+                    <div class="last-message-info">
+                        {% if contato.ultima_midia %}
+                            {% if contato.ultima_midia.endswith(('png', 'jpg', 'jpeg', 'gif')) %}
+                                <i class="fa fa-image" title="Foto"></i>
+                                <span class="last-msg-text">Foto</span>
+                            {% elif contato.ultima_midia.endswith(('mp4', 'mov', 'avi')) %}
+                                <i class="fa fa-video" title="Vídeo"></i>
+                                <span class="last-msg-text">Vídeo</span>
+                            {% endif %}
+                        {% elif contato.ultima_mensagem %}
+                            <span class="last-msg-text">{{ contato.ultima_mensagem }}</span>
+                        {% endif %}
+                        {% if contato.ultima_hora %}
+                            <span class="last-msg-time">{{ contato.ultima_hora }}</span>
+                        {% endif %}
+                    </div>
+                    </a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="contact-item no-contact no-hover">
+                    <div >
+                        <i class='bx bx-user-x' ></i>
+                        <span class="no-hover" style="font-size: 16px;">Você não tem nenhum contato</span>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+        <div id="no-contacts-message" style="display:none;">
+            <i class='bx bx-user-x' ></i>
+            <span>Nenhum contato encontrado</span>
+        </div>
+    </div>
+
+    <!-- AREA DO CHAT-->
+    <div class="chat-area" id="chat-area">
+        <!-- HEADER -->
+        {% if destinatario_username %}
+        <h2 style="position: relative; display: flex; align-items: center; justify-content: space-between;">
+        <span style="display: flex; align-items: center;">
         <button class="back-button mobile" id="back-button"><i class='bx bx-arrow-back'></i></button>
         <a href="{{ url_for('info_user.info_user', id_usuario=destinatario_id) }}">
             <img src="{{ destinatario_foto_perfil if destinatario_foto_perfil else url_for('static', filename='img/icone/user.png') }}" class="img-chat" alt="{{ destinatario_username }}">
-            {{ destinatario_username }}
+            <p class="destinatario_header">{{ destinatario_username }}</p>
         </a>
         <!-- STATUS ON/OFF -->
         <span id="status-online-offline">
@@ -154,18 +167,32 @@
         </span>
     </span>
 
+    <!-- BOTAO DO SEARCH -->
+    <button id="open-chat-search" class="header-search-btn">
+        <i class='bx bx-search'></i>
+    </button>
+
     <!-- DROPDOWN NO CANTO DIREITO -->
     <div class="header-dropdown">
         <button class="header-options-btn" onclick="toggleHeaderDropdown(event)">
             <i class='bx bx-dots-vertical-rounded'></i>
         </button>
         <div class="header-dropdown-menu" id="headerDropdownMenu">
+            <!-- VISUALIZAR PERFIL DO USUARIO -->
             <a href="{{ url_for('info_user.info_user', id_usuario=destinatario_id) }}" class="item-dropdown-h2"><i class='bx bx-user'></i>  Ver perfil</a>
-            <a class="item-dropdown-h2"><i class='bx bx-error'></i> Denuciar</a>
+            <!-- INFORMAÇOES DOS USER DO CHAT -->
+            <a class="item-dropdown-h2" id="abrir-amizade" data-mensagens="{{ total_mensagens_trocadas }}"><i class='bx bx-user-voice'></i>Amigo</a>
+            <!-- CENTRAL DE AJUDA CHAT -->
+            <a class="item-dropdown-h2" id="abrir-ajuda" ><i class='bx bx-info-circle'></i>Informação</a>
         </div>
     </div>
+    </h2>
 
-</h2>
+    <!-- SEARCH -->
+    <div class="chat-search-container" id="chat-search-container" style="display: none;">
+        <input type="text" id="chat-search-input" placeholder="Buscar mensagem...">
+        <button id="close-chat-search" class="icon-button"><i class='bx bx-x'></i></button>
+    </div>
     {% endif %}
 
     <!-- CONTAINER DE MENSAGEM -->
@@ -173,148 +200,177 @@
         {% if not destinatario_id %}
             <div class="selecione-contato">
                 <p><i class='bx bxs-chat'></i></p>
-                    <p>Selecione um contato para iniciar uma conversa!</p>
+                <p>Selecione um contato para iniciar uma conversa!</p>
             </div>
         {% elif mensagens|length == 0 %}
             <div class="selecione-contato">
                 <p><i class='bx bxs-chat'></i></p>
-                    <p>Inicie uma conversa!</p>
+                <p>Inicie uma conversa!</p>
             </div>
         {% else %}
+            {% set ultima_data = '' %}
+            {% for mensagem in mensagens %}
+                {% if mensagem.data_dia != ultima_data %}
+                    <div class="mensagem-data">{{ mensagem.data_dia }}</div>
+                    {% set ultima_data = mensagem.data_dia %}
+                {% endif %}
 
-        {% for mensagem in mensagens %}
-            <div class="message {% if mensagem['id_remetente'] == usuario_id %}sent{% else %}received{% endif %}" data-message-id="{{ mensagem['id'] }}">   
-                <div class="username">{{ mensagem['username'] }}</div>
-                <div class="message {% if mensagem['id_remetente'] == usuario_id %}sent{% else %}received{% endif %}" data-message-id="{{ mensagem['id'] }}">
+                <div class="message {% if mensagem.id_remetente == usuario_id %}sent{% else %}received{% endif %}" data-message-id="{{ mensagem.id }}">
+                    <!-- Cabeçalho da mensagem -->
                     <div class="message-header">
-                        <div class="username">{{ mensagem['username'] }}</div>
-
-                        <!-- OPÇOES DA MENSAGEM -->
+                        <div class="username">{{ mensagem.username }}</div>
                         <div class="message-options">
                             <button class="options-btn" onclick="toggleDropdown(this)">&#x22EE;</button>
-                                <div class="dropdown-menu">
-                                    <button class="reply-btn" data-message-id="{{ mensagem['id'] }}"> <i class='bx bx-reply'></i> Responder</button>
-                                {% if mensagem['id_remetente'] == usuario_id %}
-                                    <button class="delete-message" data-message-id="{{ mensagem['id'] }}"> <i class='bx bx-trash'></i> Apagar</button>
+                            <div class="dropdown-menu">
+                                <button class="reply-btn" data-message-id="{{ mensagem.id }}"><i class='bx bx-reply'></i> Responder</button>
+                                {% if mensagem.id_remetente == usuario_id %}
+                                    <button class="delete-message" data-message-id="{{ mensagem.id }}"><i class='bx bx-trash'></i> Apagar</button>
+                                {% else %}
+                                    <button class="btn-denunciar-mensagem" data-mensagem-id="{{ mensagem.id }}"><i class='bx bx-error'></i> Denunciar</button>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
-                </div>  
 
-                <!-- BLOCO DE MENSAGEM DE POST -->
-                {% if mensagem.post_id %}
-                    {% if mensagem.post_disponivel %}
-                        <div class="shared-post" onclick="event.stopPropagation(); window.open('/post/{{ mensagem.post_id }}', '_blank')">
-                             <div class="shared-post-content">
-                                <div class="post-author">Post de {% if mensagem.post_autor_username %}{{ mensagem.post_autor_username }}{% else %}usuário{% endif %}</div>
-                    {% if mensagem.post_conteudo %}
-                                    <div class="post-text">{{ mensagem.post_conteudo }}</div>
+                    <!-- Post compartilhado -->
+                    {% if mensagem.post_id %}
+                        {% if mensagem.post_disponivel %}
+                            <div class="shared-post">
+                                <a href="/post/{{ mensagem.post_id }}" target="_blank" style="text-decoration: none;">
+                                    <div class="shared-post-content">
+                                        <div class="post-author">Post de {{ mensagem.post_autor_username or 'usuário' }}</div>
+                                        {% if mensagem.post_conteudo %}
+                                            <div class="post-text">{{ mensagem.post_conteudo }}</div>
+                                        {% endif %}
+
+                                        {% set imagens = [] %}
+                                        {% set videos = [] %}
+                                        {% if mensagem.post_imagem %} {% set _ = imagens.append(mensagem.post_imagem) %} {% endif %}
+                                        {% if mensagem.post_video %} {% set _ = videos.append(mensagem.post_video) %} {% endif %}
+
+                                        {% if imagens|length + videos|length > 1 %}
+                                            <div class="carousel">
+                                                <div class="carousel-slides">
+                                                    {% for img in imagens %}
+                                                        <div class="carousel-slide{% if loop.first %} active{% endif %}">
+                                                            <img src="{{ img }}" class="post-image">
+                                                        </div>
+                                                    {% endfor %}
+                                                    {% for vid in videos %}
+                                                        <div class="carousel-slide{% if imagens|length == 0 and loop.first %} active{% endif %}">
+                                                            <video controls class="post-video">
+                                                                <source src="{{ vid }}" type="video/mp4">
+                                                            </video>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                               
+                                            </div>
+                                        {% else %}
+                                            {% if mensagem.post_imagem %}
+                                                <img src="{{ mensagem.post_imagem }}" class="post-image">
+                                            {% endif %}
+                                            {% if mensagem.post_video %}
+                                                <video controls class="post-video">
+                                                    <source src="{{ mensagem.post_video }}" type="video/mp4">
+                                                </video>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        <div style="text-align:center;margin-top:8px;">
+                                            <a href="/post/{{ mensagem.post_id }}" target="_blank" class="ver-post-btn">
+                                                <i class="fa fa-external-link-alt"></i> Ver post
+                                            </a>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="shared-post unavailable">
+                                <div class="shared-post-content">
+                                    <div class="post-unavailable">
+                                        <i class='bx bxs-lock'></i>
+                                        <span>Post indisponível</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     {% endif %}
-                {% if mensagem.post_imagem %}
-                    <img src="../static/{{ mensagem.post_imagem }}" class="post-image">
-                {% endif %}
-                {% if mensagem.post_video %}
-                    <video controls class="post-video">
-                        <source src="../static/{{ mensagem.post_video }}" type="video/mp4">
-                    </video>
-                {% endif %}
-            </div>
-        </div>
-    {% else %}
-    <div class="shared-post unavailable">
-        <div class="shared-post-content">
-            <div class="post-unavailable">
-                <i class='bx bxs-lock'></i>
-                <span>Post indisponível</span>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    {% endif %}
-              
-    <!-- BLOCO DE MENSAGEM RESPONDIDA -->
-    {% if mensagem['id_mensagem_respondida'] %}
-        <div class="quoted-message" data-quoted-id="{{ mensagem['id_mensagem_respondida'] }}" onclick="scrollToQuotedMessage(this)">
-            <div class="quoted-content">
-                {% if mensagem['username_respondido'] %}
-                    <div class="quoted-username">{{ mensagem['username_respondido'] }}</div>
-                {% endif %}
-                            
-                {% if mensagem['mensagem_respondida'] %}
-                    <div class="quoted-text">{{ mensagem['mensagem_respondida'] }}</div>
-                {% endif %}
-                            
-                {% if mensagem['midia_respondida'] %}
-                    {% if mensagem['midia_respondida'].endswith(('png', 'jpg', 'jpeg', 'gif')) %}
-                        <img src="../static/{{ mensagem['midia_respondida'] }}" class="quoted-photo">
-                {% elif mensagem['midia_respondida'].endswith(('mp4', 'mov', 'avi')) %}
-                    <video controls class="quoted-video">
-                            <source src="../static/{{ mensagem['midia_respondida'] }}" type="video/mp4">
-                                Seu navegador não suporta a reprodução de vídeos.
-                    </video>
-                {% endif %}
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
-                    
-    <!-- BLOCO DE IMAGEM DA MENSAGEM -->
-    {% if mensagem['caminho_arquivo'] and mensagem['caminho_arquivo'].endswith(('png', 'jpg', 'jpeg', 'gif')) %}
-        <div class="media">
-            <img src="../static/{{ mensagem.caminho_arquivo }}" class="mensagem-midia">
-        </div>
-    {% endif %}
-                
-    <!-- BLOCO DE VIDEO DA MENSAGEM -->
-    {% if mensagem['caminho_arquivo'] and mensagem['caminho_arquivo'].endswith(('mp4', 'mov', 'avi')) %}
-        <div class="media">
-            <video src="../static/{{ mensagem.caminho_arquivo }}" controls class="mensagem-midia"></video>
-        </div>
-    {% endif %}
-                
-    <!-- BLOCO DE CONTEUDO DA MENSAGEM -->
-    {% if mensagem['mensagem'] %}
-        <div class="content">{{ mensagem['mensagem'] }}</div>
-    {% endif %}
-                
-    <!-- BLOCO DE HORA E VISTO DA MENSAGEM -->
-    <div class="timestamp-status">
-        <span class="timestamp-text">{{ mensagem.data_envio.strftime('%H:%M') }}</span>
-            {% if mensagem.id_remetente == usuario_id %}
-                {% if mensagem.data_visualizacao %}
-                    <span class="status-visto" title="Visualizada">
-                        <i class='bx bx-check-double'></i>
-                    </span>
-                {% else %}
-                    <span class="status-nao-visto" title="Entregue">
-                        <i class='bx bx-check'></i>
-                    </span>
-                {% endif %}
-            {% endif %}
-        </div>       
-    </div>
-    {% endfor %}
-    {% endif %}
 
+                    <!-- Resposta à mensagem -->
+                    {% if mensagem.id_mensagem_respondida %}
+                        <div class="quoted-message" data-quoted-id="{{ mensagem.id_mensagem_respondida }}" onclick="scrollToQuotedMessage(this)">
+                            <div class="quoted-content">
+                                {% if mensagem.username_respondido %}
+                                    <div class="quoted-username">{{ mensagem.username_respondido }}</div>
+                                {% endif %}
+                                {% if mensagem.midia_respondida %}
+                                    {% set ext = mensagem.midia_respondida.split('.')[-1].lower() %}
+                                    {% if ext in ['png','jpg','jpeg','gif','bmp','webp','svg','heic'] %}
+                                        <img src="{{ mensagem.midia_respondida }}" class="quoted-photo">
+                                    {% elif ext in ['mp4','webm','mov'] %}
+                                        <video controls class="quoted-video">
+                                            <source src="{{ mensagem.midia_respondida }}" type="video/mp4">
+                                        </video>
+                                    {% endif %}
+                                {% endif %}
+                                {% if mensagem.mensagem_respondida %}
+                                    <div class="quoted-text">{{ mensagem.mensagem_respondida }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
 
-</div>
+                    <!-- Mídia enviada -->
+                    {% if mensagem.caminho_arquivo %}
+                        {% set ext = mensagem.caminho_arquivo.split('.')[-1].lower() %}
+                        {% if ext in ['png','jpg','jpeg','gif','bmp','webp','svg','heic'] %}
+                            <div class="media">
+                                <img src="{{ mensagem.caminho_arquivo }}" class="mensagem-midia" alt="Imagem enviada por {{ mensagem.username }}">
+                            </div>
+                        {% elif ext in ['mp4','mov','webm'] %}
+                            <div class="media">
+                                <video src="{{ mensagem.caminho_arquivo }}" controls class="mensagem-midia"></video>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Texto da mensagem -->
+                    {% if mensagem.mensagem %}
+                        <div class="content">{{ mensagem.mensagem }}</div>
+                    {% endif %}
+
+                    <!-- Horário e status -->
+                    <div class="timestamp-status">
+                        <span class="timestamp-text">{{ mensagem.data_envio.strftime('%H:%M') }}</span>
+                        {% if mensagem.id_remetente == usuario_id %}
+                            {% if mensagem.data_visualizacao %}
+                                <span class="status-visto" title="Visualizada"><i class='bx bx-check-double'></i></span>
+                            {% else %}
+                                <span class="status-nao-visto" title="Entregue"><i class='bx bx-check'></i></span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 
     <!-- BOTAO PARA MENSAGENS RECEBIDAS -->
-   <button id="new-messages-btn" class="hidden" aria-label="Novas mensagens" data-tooltip="Novas mensagens">
+    <button id="new-messages-btn" class="hidden" aria-label="Novas mensagens" data-tooltip="Novas mensagens">
         <i class='bx bxs-chevron-down'></i>
         <span>Novas mensagens</span>
     </button>
-
     <div>
 
-<!-- BOTAO PARA IR AO FINAL DO CHAT -->
-<button id="back-to-bottom-btn" class="hidden" aria-label="Voltar ao final" data-tooltip="Voltar ao final">
-    <i class='bx bx-chevron-down'></i>
-</button>
+    <!-- BOTAO PARA IR AO FINAL DO CHAT -->
+    <button id="back-to-bottom-btn" class="hidden" aria-label="Voltar ao final" data-tooltip="Voltar ao final">
+        <i class='bx bx-chevron-down'></i>
+    </button>
   
-</div>
-{% if destinatario_id %}
+    </div>
+
+    {% if destinatario_id %}
     <!-- FORMULARIO PARA ENVIO DE MENSAGEM -->
     <form id="form-enviar-mensagem" method="POST" action="{{ url_for('chat.enviar_mensagem') }}" enctype="multipart/form-data">
         <input type="hidden" name="destinatario_id" value="{{ destinatario_id }}">
@@ -336,49 +392,87 @@
             <span id="char-count">0/300</span>
                         
             <button type="submit" class="send-button" id="send-button" style="display: none;">
-                <i class="fa fa-paper-plane"></i>
+                <i class='bx bxs-send'></i>
             </button>
         </div>
     </div>
 
-        <!-- PARA O PREVIEW DE FOTO OU VIDEO -->
-        <div id="preview-container" ></div>
+    <!-- PARA O PREVIEW DE FOTO OU VIDEO -->
+    <div id="preview-container" ></div>
     </form>
-{% endif %}
+    {% endif %}
     </div>
-</div>
+    </div>
 
-<!-- MODAL PARA IMAGEM DE MENSAGEM -->
-<div id="image-modal" class="image-modal">
-    <span class="close-modal">&times;</span>
-    <img class="modal-content" id="modal-image">
-    <div id="modal-caption" class="modal-caption"></div>
-</div>
+    <!-- MODAL PARA IMAGEM DE MENSAGEM -->
+    <div id="image-modal" class="image-modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modal-image">
+        <div id="modal-caption" class="modal-caption"></div>
+    </div>
 
-{% if audio_notificacoes_mensagem %}
-<!-- AUDIO DE NOTIFICAÇÃO -->
-<audio id="badge-audio" src="../static/mp3/notificacao_1.mp3" preload="auto"></audio>
-{% endif %}
+    {% if audio_notificacoes_mensagem %}
+    <!-- AUDIO DE NOTIFICAÇÃO -->
+    <audio id="badge-audio" src="../static/mp3/notificacao_1.mp3" preload="auto"></audio>
+    {% endif %}
 
-<!-- SCRIPT - JS -->
-<script src="../static/js/chat/geral.js" data-user-id="{{ usuario_id }}"></script>
-<script src="../static/js/chat/atualizar_mensagem.js" ></script>
-<script src="../static/js/chat/formulario.js"></script>
-<script src="../static/js/chat/chat-layout-mobile.js"></script>
-<script src="../static/js/chat/menu-dropdown.js"></script>
-<script src="../static/js/chat/preview_chat.js"></script>
-<script src="../static/js/chat/excluir_mensagem.js"></script>
-<script> window.destinatarioId = "{{ destinatario_id }}";</script>
-<script src="../static/js/status_on_off.js"></script>
-<script src="../static/js/chat/search.js"></script>
-<script src="../static/js/chat/notificacao.js"></script>
-<script src="../static/js/chat/ultima_mensagem_lista_contato.js"></script>
-<script src="../static/js/chat/limite_caractere_form.js"></script>
-<script src="../static/js/notificacao/notificacao.js"></script> 
-<script src="../static/js/sweealert2/log_out.js"></script>
-<script src="../static/js/chat/mensagem_vista.js"></script>
+    <!-- SCRIPT - JS -->
+    <!-- GERAL DO CHAT  -->
+    <script src="../static/js/chat/geral.js" data-user-id="{{ usuario_id }}"></script>
 
+    <!-- ATUALIZAR MSG -->
+    <script src="../static/js/chat/atualizar_mensagem.js" ></script>
 
+    <!-- FORMULARIO DO CHAT -->
+    <script src="../static/js/chat/formulario.js"></script>
 
+    <!-- LAYOUT PARA O MOBILE -->
+    <script src="../static/js/chat/chat-layout-mobile.js"></script>
+
+    <!-- DROPDOWN DO CHAT -->
+    <script src="../static/js/chat/menu-dropdown.js"></script>
+
+    <!-- PREVIEW DE MIDIA -->
+    <script src="../static/js/chat/preview_chat.js"></script>
+
+    <!-- PARA EXCLUIR MSG -->
+    <script src="../static/js/chat/excluir_mensagem.js"></script>
+
+    <!-- VARIAVEL DO USUARIO DA CONVERSA -->
+    <script> window.destinatarioId = "{{ destinatario_id }}";</script>
+
+    <!-- PARA DEIXAR ONLINE OU OFF -->
+    <script src="../static/js/status_on_off.js"></script>
+
+    <!-- SEARCH DA LISTA DE USUARIO -->
+    <script src="../static/js/chat/search.js"></script>
+
+    <!-- NOTIFICAÇÃO DO CHAT -->
+    <script src="../static/js/chat/notificacao.js"></script>
+
+    <!-- PARA MOSTRAR A ULTIMA MSG NA LISTA -->
+    <script src="../static/js/chat/ultima_mensagem_lista_contato.js"></script>
+
+    <!-- CARACTERES LIMITE FORM ENVIAR MSG -->
+    <script src="../static/js/chat/limite_caractere_form.js"></script>
+
+    <!-- PARA DAR NOTIFICAÇÃO NO NAVEGADOR -->
+    <script src="../static/js/notificacao/notificacao.js"></script> 
+
+    <!-- PARA DAR LOGOUT -->
+    <script src="../static/js/sweealert2/log_out.js"></script>
+
+    <!-- MARCA MSG COMO VISTO -->
+    <script src="../static/js/chat/mensagem_vista.js"></script>
+
+    <!-- PARA BUSCAR AS MSG DO CHAT -->
+    <script src="../static/js/chat/search_mensagem_chat.js"></script>
+    
+    <!-- ALERT DE INFORMAÇÃO E AMIGO -->
+    <script src="../static/js/chat/alert.js"></script>
+
+    <!-- DENUNCIAR MENSAGEM -->
+    <script src="../static/js/denuncia/denunciar_mensagem.js"></script>
+    
 </body>
 </html>

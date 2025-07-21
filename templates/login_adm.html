@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login administrador - Sirius</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png" />
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- ESTILO DA PAGINA -->
+    <link rel="stylesheet" href="../static/css/style1.css" />
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>Administrador</h1>
+
+        <form method="post" action="/login_adm">
+            <div class="input-group">
+                <i class='bx bx-user'></i>
+                <input type="text" id="user" name="user" placeholder="User" required  />
+            </div>
+
+            <div class="input-group senha-group">
+                <i class='bx bx-lock'></i>
+                <input type="password" id="password" name="senha" placeholder="Senha" required />
+                <i class="bx bx-show olho-senha" id="toggleSenha" style="cursor: pointer;"></i>
+            </div>
+
+            <button class="login-btn" type="submit">LOGIN</button>
+        </form>
+
+        <div class="links">
+            <!-- PARA IR PARA O CADASTRO DE CONTA -->
+            <p>Não e um administrador? <a href="/" class="cadastro">Voltar ao login</a></p>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="../static/js/visualizar_campo_senha.js"></script>
+
+</body>
+</html>

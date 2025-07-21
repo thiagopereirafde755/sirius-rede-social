@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comentários em Posts - Central de Ajuda</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/css/central_ajuda.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Conteúdo principal -->
+        <div class="main-content">
+
+            <div class="header">
+                <div class="header-content">
+                    <a href="/central_ajuda" class="back-button">
+                        <i class='bx bx-arrow-back'></i>
+                        Voltar
+                    </a>
+                    <h1>Comentários em Posts</h1>
+                </div>
+            </div>
+
+            <div class="guide-container">
+                <h2 class="guide-title">Como gerenciar comentários em publicações</h2>
+                
+                <div class="comment-section">
+                    <h3 class="section-title"><i class='bx bx-show'></i> Visualizar Comentários</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Acessando os comentários</h3>
+                            <p class="step-description">
+                                Para ver os comentários de um post:
+                            </p>
+                            <ol class="step-list">
+                                <li>Localize o post desejado em seu feed</li>
+                                <li>Clique no ícone de balão de fala ou em "Comentários"</li>
+                                <li>A seção de comentários será exibida na tela</li>
+                            </ol>
+                            <img src="../static/img/print/comentario.png" alt="Visualizar comentários" class="step-image">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comment-section">
+                    <h3 class="section-title"><i class='bx bx-edit'></i> Adicionar Comentários</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Escrever um comentário</h3>
+                            <p class="step-description">
+                                Para comentar em um post:
+                            </p>
+                            <ol class="step-list">
+                                <li>Acesse a seção de comentários (como mostrado acima)</li>
+                                <li>Digite seu comentário no campo "Digite seu comentário"</li>
+                                <li>Use os ícones para adicionar emojis, texto</li>
+                                <li>Clique no icone para enviar seu comentário</li>
+                            </ol>
+                            <img src="../static/img/print/comentario2.png" alt="Adicionar comentário" class="step-image">
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Responder a comentários</h3>
+                            <p class="step-description">
+                                Para responder a um comentário específico:
+                            </p>
+                            <ol class="step-list">
+                                <li>Vá ate o comentário que deseja responder</li>
+                                <li>Clique no "Responder"</li>
+                                <li>Digite sua resposta e clique em enviar</li>
+                                <li>A resposta será aninhada abaixo do comentário original</li>
+                            </ol>
+                            <img src="../static/img/print/comentario3.png" alt="Responder a comentário" class="step-image">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comment-section">
+                    <h3 class="section-title"><i class='bx bx-trash'></i> Gerenciar Comentários</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Excluir seus comentários</h3>
+                            <p class="step-description">
+                                Para gerenciar seus próprios comentários:
+                            </p>
+                            <ol class="step-list">
+                                <li>Localize seu comentário na publicação</li>
+                                <li>Clique no ícone de três pontos (⋮) no canto superior direito</li>
+                                <li>Selecione "Excluir" para remover</li>
+                                <li>Confirme a ação quando solicitado</li>
+                            </ol>
+                            <img src="../static/img/print/comentario4.png" alt="Editar comentário" class="step-image">
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="comment-section">
+                    <h3 class="section-title"><i class='bx bx-flag'></i> Denunciar Comentários</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Reportar comentários inadequados</h3>
+                            <p class="step-description">
+                                Para denunciar um comentário que viola as regras:
+                            </p>
+                            <ol class="step-list">
+                                <li>Vá ate o comentário ofensivo</li>
+                                <li>Clique no ícone de três pontos (⋮)</li>
+                                <li>Selecione "Denunciar"</li>
+                                <li>Escolha o motivo da denúncia e adicione detalhes se necessário</li>
+                                <li>Clique em "Enviar denúncia"</li>
+                            </ol>
+                            <img src="../static/img/print/comentario5.png" alt="Denunciar comentário" class="step-image">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="helpful-links">
+                    <h3>Perguntas Frequentes</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="faq-item" data-mensagem="Você não consegue comentar em posts que o autor bloqueou comentários ou em posts de contas privadas que não te seguem.">
+                                <i class='bx bx-question-mark'></i>
+                                Por que não consigo comentar em alguns posts?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="faq-item" data-mensagem="Você será notificado quando alguém responder seu comentário.">
+                                <i class='bx bx-question-mark'></i>
+                                Como saber se alguém respondeu meu comentário?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="faq-item" data-mensagem="Denúncias são analisadas em até 48 horas úteis, podendo variar conforme o volume de solicitações.">
+                                <i class='bx bx-question-mark'></i>
+                                Quanto tempo leva para uma denúncia ser analisada?
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="contact-support">
+                    <h3>Ainda com dúvidas?</h3>
+                    <p>Se precisar de ajuda adicional sobre comentários ou encontrou algum problema, entre em contato:</p>
+                    <div class="contact-options">
+                        <a target="_blank" href="https://mail.google.com/mail/?view=cm&fs=1&to=siriusnetworkmedia@gmail.com" class="contact-button">
+                            <i class='bx bx-envelope'></i> Enviar e-mail
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Sobre Nós</h3>
+                <p>Sirius é uma plataforma social criada para conectar pessoas e compartilhar momentos especiais. Nossa missão é proporcionar uma experiência segura e agradável para todos os usuários.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a target="_blank" href="/termos-de-uso">Termos de Uso</a></li>
+                    <li><a target="_blank" href="/politica-de-privacidade">Política de Privacidade</a></li>
+                    <li><a target="_blank"  href="/central_ajuda/suporte">Suporte</a></li>
+                    <li><a target="_blank" href="/sobre_nos">Sobre nós</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Política de Privacidade</h3>
+                <p>Respeitamos sua privacidade. Todas as informações coletadas são usadas para melhorar sua experiência e não são compartilhadas com terceiros sem seu consentimento.</p>
+                <a target="_blank" href="/politica-de-privacidade" class="privacy-link">Leia nossa política completa</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sirius Social Network. Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a target="_blank" href="/cookies">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script src="../static/js/central_ajuda/centra_ajuda_info.js"></script>
+
+</body>
+</html>

@@ -101,6 +101,26 @@
   box-shadow: none;
   color: var(--cor-fundo);
 }
+.modal-de-comentario .modal-content {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.comentario {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+body.claro .comentario {
+    border-bottom: 1px solid var(--roxo2);
+}
+body.escuro .comentario {
+    border-bottom: 1px solid var(--cor-primaria);
+}
+body.claro .modal-header {
+    border-bottom: 1px solid var(--roxo2) !important; /* Altere a cor aqui */
+}
+body.escuro .modal-header {
+    border-bottom: 1px solid var(--cor-primaria) !important; /* Altere a cor aqui */
+}
 .btn-recarregar-comentarios:focus {
   outline: none;
   box-shadow: none;
@@ -225,9 +245,9 @@ body.escuro .resposta-comentario { border-left: 2px solid var(--cor-primaria); }
    ============================================= */
 textarea[name="comentario"] {
   width: 100%;
-  height: 40px;       
+  height: 55px;       
   min-height: 40px;
-  max-height: 60px;
+  max-height: 90px !important;
   padding: 8px 12px;
    border-radius: 12px;
   background-color: transparent;
@@ -734,7 +754,181 @@ body.escuro #modalEditarPerfil .btn-danger:hover {
         min-width: auto;
     }
 }
+/* =============================================
+   MODAL PARA AMIGOS EM COMUM
+   ============================================= */   
+/* =============================================
+   MODAL PARA AMIGOS COMUNS
+   ============================================= */   
+#amigosComunsModal .modal-body { 
+    max-height: 60vh; 
+    overflow-y: auto; 
+}
 
+#header-amigos-comuns {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+}
+
+body.claro #header-amigos-comuns {
+    background-color: var(--cor-primaria);
+    border-bottom: 1px solid var(--roxo2);
+}
+
+body.escuro #header-amigos-comuns {
+    background-color: var(--roxo2);
+    border-bottom: 1px solid var(--cor-primaria);
+}
+
+#amigosComunsModalLabel {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 1.25rem;
+    color: white;
+}
+
+#header-amigos-comuns .close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: white;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.8;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+#header-amigos-comuns .close:hover { 
+    opacity: 1; 
+}
+
+body.claro #body-amigos-comuns { 
+    background-color: var(--cor-primaria); 
+}
+
+body.escuro #body-amigos-comuns { 
+    background-color: var(--roxo2); 
+}
+
+#amigos-comuns-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+#amigos-comuns-list li { 
+    padding: 0; 
+    margin: 0; 
+}
+
+.amigo-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+.amigo-item:hover {
+    background-color: var(--cor-secundaria);
+    transform: translateX(5px);
+    border-radius: 5px;
+    width: 98%;
+}
+
+.amigo-item:active { 
+    background-color: rgba(255, 255, 255, 0.2); 
+}
+
+.foto-amigo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    transition: transform 0.3s ease;
+}
+
+body.claro .foto-amigo {
+    border: 1px solid var(--roxo2);
+}
+
+body.escuro .foto-amigo {
+    border: 1px solid var(--cor-primaria);
+}
+
+.amigo-item:hover .foto-amigo { 
+    transform: scale(1.05); 
+}
+
+.amigo-info { 
+    flex: 1; 
+}
+
+.amigo-username {
+    font-weight: 600;
+    margin: 0;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.divisor-amigos-comuns { 
+    margin: 0;
+    border: 0; 
+}
+
+body.claro .divisor-amigos-comuns { 
+    border-top: 1px solid var(--roxo2); 
+}
+
+body.escuro .divisor-amigos-comuns { 
+    border-top: 1px solid var(--cor-primaria); 
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 576px) {
+    .modal-dialog { 
+        margin: 0.5rem; 
+        max-width: calc(100% - 1rem); 
+    }
+    
+    .modal-content { 
+        border-radius: 0; 
+    }
+    
+    .foto-amigo { 
+        width: 35px; 
+        height: 35px; 
+    }
+    
+    #amigosComunsModalLabel { 
+        font-size: 1.1rem; 
+    }
+    
+    .amigo-item { 
+        padding: 10px 12px; 
+    }
+}
+
+@media (max-width: 400px) {
+    .foto-amigo { 
+        width: 30px; 
+        height: 30px; 
+        margin-right: 10px; 
+    }
+    
+    .amigo-username { 
+        font-size: 0.9rem; 
+    }
+}
 /* =============================================
    MODAL PARA SEGUIDORES
    ============================================= */   
@@ -1340,4 +1534,827 @@ body.escuro .btn-outline-secondary {
     outline: none !important;
     box-shadow: none !important;
     opacity: 0.8; /* Mantém consistência visual */
+}
+/* =============================================
+   MODAL DE DENUNCIAR POST
+   ============================================= */
+   /* MODAL DENUNCIA */
+#modalDenunciar .modal-dialog {
+    max-width: 400px;
+    margin: 2.5rem auto;
+}
+
+#modalDenunciar .modal-content {
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(60, 60, 60, 0.25);
+}
+
+body.claro #modalDenunciar .modal-content {
+    background: var(--cor-primaria);
+    border: 1px solid var(--roxo2);
+}
+
+body.escuro #modalDenunciar .modal-content {
+    background: var(--roxo2);
+    border: 1px solid var(--cor-primaria);
+}
+
+#modalDenunciar .modal-header {
+    color: var(--cor-borda);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 1rem 1.5rem;
+}
+
+body.claro #modalDenunciar .modal-header {
+    background: var(--cor-primaria);
+    border-bottom: 1px solid var(--roxo2);
+}
+
+body.escuro #modalDenunciar .modal-header {
+    background: var(--roxo2);
+    border-bottom: 1px solid var(--cor-primaria);
+}
+
+#modalDenunciar .modal-title {
+    font-weight: bold;
+    color: var(--cor-fundo);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+#modalDenunciar .close {
+    color: var(--cor-fundo);
+}
+
+#modalDenunciar .close:hover {
+    color: #d12c2c;
+    opacity: 1;
+}
+
+#modalDenunciar .modal-body {
+    padding: 1.25rem 1.5rem;
+}
+
+body.claro #modalDenunciar .modal-body {
+    background: var(--cor-primaria);
+}
+
+body.escuro #modalDenunciar .modal-body {
+    background: var(--roxo2);
+}
+
+/* Form elements */
+#modalDenunciar .form-control {
+    background-color: var(--cor-input);
+    padding: 5px 15px;
+    border-radius: 6px;
+}
+
+body.claro #modalDenunciar .form-control {
+    background-color: var(--background-claro) !important;
+    color: var(--cor-preto);
+    border: 2px solid var(--roxo2);
+}
+
+body.escuro #modalDenunciar .form-control {
+    background-color: var(--background-escuro) !important;
+    color: var(--cor-texto);
+    border: 2px solid var(--cor-primaria);
+}
+
+#modalDenunciar textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Footer buttons */
+#modalDenunciar .modal-footer {
+    padding: 12px;
+}
+
+body.claro #modalDenunciar .modal-footer {
+    border-top: 1px solid var(--roxo2) !important;
+}
+
+body.escuro #modalDenunciar .modal-footer {
+    border-top: 1px solid var(--cor-primaria) !important;
+}
+
+#modalDenunciar .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+}
+
+#modalDenunciar .btn-secondary {
+    padding: 8px 20px;
+    border-radius: 6px;
+    background-color: var(--cor-secundaria);
+    border: none;
+}
+
+body.claro #modalDenunciar .btn-secondary {
+    color: var(--cor-preto);
+}
+
+body.escuro #modalDenunciar .btn-secondary {
+    color: var(--cor-texto);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    #modalDenunciar .modal-dialog {
+        margin: 1rem auto;
+        max-width: 95%;
+    }
+}
+.texto-denuncia-post{
+    color: white !important;
+}
+#modalDenunciar textarea.form-control {
+    min-height: 100px;  /* Altura mínima */
+    max-height: 100px;  /* Altura máxima (igual à mínima para fixar) */
+    height: 100px;      /* Altura fixa */
+    resize: none;       /* Remove o redimensionamento */
+    overflow-y: auto;  /* Adiciona scroll vertical se necessário */
+    width: 100%;       /* Largura total do container */
+}
+#contadorDetalhes {
+  color: white!important; /* muda para vermelho */
+}
+#cancelar-denuncia-post{
+    color: white !important;
+}
+body.claro .texto-denuncia-comentario,
+body.claro #contadorDetalhesComentario{
+    color: black !important;
+}
+body.escuro .texto-denuncia-comentario,
+body.escuro #contadorDetalhesComentario{
+    color: white !important;
+}
+/* Estilos customizados para o SweetAlert */
+.swal2-popup-custom {
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.swal2-title-custom {
+  font-size: 1.2rem;
+  color: #333;
+  padding-bottom: 10px;
+}
+
+.swal2-actions-custom {
+  margin-top: 15px;
+  padding-top: 15px;
+}
+
+.texto-denuncia-comentario {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 5px;
+  display: block;
+}
+/* MODAL DENUNCIA USUARIO */
+#modalDenunciarUsuario .modal-dialog {
+    max-width: 400px;
+    margin: 2.5rem auto;
+}
+
+#modalDenunciarUsuario .modal-content {
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(60, 60, 60, 0.25);
+}
+
+body.claro #modalDenunciarUsuario .modal-content {
+    background: var(--cor-primaria);
+    border: 1px solid var(--roxo2);
+}
+
+body.escuro #modalDenunciarUsuario .modal-content {
+    background: var(--roxo2);
+    border: 1px solid var(--cor-primaria);
+}
+
+#modalDenunciarUsuario .modal-header {
+    color: var(--cor-borda);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 1rem 1.5rem;
+}
+
+body.claro #modalDenunciarUsuario .modal-header {
+    background: var(--cor-primaria);
+    border-bottom: 1px solid var(--roxo2);
+}
+
+body.escuro #modalDenunciarUsuario .modal-header {
+    background: var(--roxo2);
+    border-bottom: 1px solid var(--cor-primaria);
+}
+
+#modalDenunciarUsuario .modal-title {
+    font-weight: bold;
+    color: var(--cor-fundo);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+#modalDenunciarUsuario .close {
+    color: var(--cor-fundo);
+}
+
+#modalDenunciarUsuario .close:hover {
+    color: #d12c2c;
+    opacity: 1;
+}
+
+#modalDenunciarUsuario .modal-body {
+    padding: 1.25rem 1.5rem;
+}
+
+body.claro #modalDenunciarUsuario .modal-body {
+    background: var(--cor-primaria);
+}
+
+body.escuro #modalDenunciarUsuario .modal-body {
+    background: var(--roxo2);
+}
+
+/* Form elements */
+#modalDenunciarUsuario .form-control {
+    background-color: var(--cor-input);
+    padding: 5px 15px;
+    border-radius: 6px;
+}
+
+body.claro #modalDenunciarUsuario .form-control {
+    background-color: var(--background-claro) !important;
+    color: var(--cor-preto);
+    border: 2px solid var(--roxo2);
+}
+
+body.escuro #modalDenunciarUsuario .form-control {
+    background-color: var(--background-escuro) !important;
+    color: var(--cor-texto);
+    border: 2px solid var(--cor-primaria);
+}
+
+#modalDenunciarUsuario textarea.form-control {
+    min-height: 100px;
+    max-height: 100px;  /* Altura fixa */
+    height: 100px;
+    resize: none;       /* Remove redimensionamento */
+    overflow-y: auto;   /* Scroll vertical se necessário */
+    width: 100%;
+}
+
+/* Footer buttons */
+#modalDenunciarUsuario .modal-footer {
+    padding: 12px;
+}
+
+body.claro #modalDenunciarUsuario .modal-footer {
+    border-top: 1px solid var(--roxo2) !important;
+}
+
+body.escuro #modalDenunciarUsuario .modal-footer {
+    border-top: 1px solid var(--cor-primaria) !important;
+}
+
+#modalDenunciarUsuario .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+}
+
+#modalDenunciarUsuario .btn-secondary {
+    padding: 8px 20px;
+    border-radius: 6px;
+    background-color: var(--cor-secundaria);
+    border: none;
+}
+
+body.claro #modalDenunciarUsuario .btn-secondary {
+    color: var(--cor-preto);
+}
+
+body.escuro #modalDenunciarUsuario .btn-secondary {
+    color: var(--cor-texto);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    #modalDenunciarUsuario .modal-dialog {
+        margin: 1rem auto;
+        max-width: 95%;
+    }
+}
+
+.texto-denuncia-post {
+    color: white !important;
+}
+
+#modalDenunciarUsuario textarea.form-control {
+    min-height: 100px;
+    max-height: 100px;
+    height: 100px;
+    resize: none;
+    overflow-y: auto;
+    width: 100%;
+}
+
+#contadorDetalhesUsuario {
+    color: white !important;
+}
+
+/* Botão cancelar específico do modal */
+#modalDenunciarUsuario .btn-secondary {
+    color: white !important;
+}
+
+/* Ajustes para temas claro/escuro, se você usar */
+body.claro .texto-denuncia-comentario,
+body.claro #contadorDetalhesComentario {
+    color: black !important;
+}
+
+body.escuro .texto-denuncia-comentario,
+body.escuro #contadorDetalhesComentario {
+    color: white !important;
+}
+
+/* Estilos customizados para o SweetAlert */
+.swal2-popup-custom {
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.swal2-title-custom {
+    font-size: 1.2rem;
+    color: #333;
+    padding-bottom: 10px;
+}
+
+.swal2-actions-custom {
+    margin-top: 15px;
+    padding-top: 15px;
+}
+
+.texto-denuncia-comentario {
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+#excluirContaModal .modal-content {
+    color: var(--cor-texto);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background-color: var(--modal-bg);
+}
+
+body.claro #excluirContaModal .modal-content {
+    border: 1px solid var(--roxo2);
+    background-color: var(--cor-primaria);
+}
+
+body.escuro #excluirContaModal .modal-content {
+    border: 1px solid var(--cor-primaria);
+    background-color: var(--roxo2);
+}
+
+/* Cabeçalho e rodapé do modal */
+#excluirContaModal .modal-header,
+#excluirContaModal .modal-footer {
+    padding: 12px;
+    border-color: var(--modal-border);
+}
+
+body.claro #excluirContaModal .modal-header {
+    border-bottom: 1px solid var(--roxo2);
+}
+body.escuro #excluirContaModal .modal-header {
+    border-bottom: 1px solid var(--cor-primaria);
+}
+body.claro #excluirContaModal .modal-footer {
+    border-top: 1px solid var(--roxo2) !important;
+}
+body.escuro #excluirContaModal .modal-footer {
+    border-top: 1px solid var(--cor-primaria) !important;
+}
+
+/* Título */
+#excluirContaModal .modal-title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+#excluirContaModal .modal-title i {
+    margin-right: 8px;
+}
+
+/* Botão de fechar */
+#excluirContaModal .btn-close {
+    color: var(--cor-texto) !important;
+    filter: invert(100%) brightness(100%);
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+#excluirContaModal .btn-close:hover {
+    opacity: 0.8;
+}
+#excluirContaModal .btn-close:focus,
+#excluirContaModal .btn-close:active,
+#excluirContaModal .btn-close:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    opacity: 0.8;
+}
+
+/* Campos de formulário */
+#excluirContaModal .form-control {
+    background-color: var(--cor-input);
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+body.claro .form-control {
+    background-color: var(--background-claro) !important;
+    outline: none;
+    color: var(--cor-preto);
+    border: 2px solid var(--roxo2);
+}
+
+body.escuro .form-control {
+    background-color: var(--background-escuro) !important;
+    outline: none;
+    color: var(--cor-texto);
+    border: 2px solid var(--cor-primaria);
+}
+
+/* Placeholders */
+#excluirContaModal .form-control::placeholder,
+#excluirContaModal .form-control::-moz-placeholder,
+#excluirContaModal .form-control:-ms-input-placeholder,
+#excluirContaModal .form-control::-ms-input-placeholder {
+    color: white;
+    opacity: 1;
+}
+
+/* Texto de ajuda */
+#excluirContaModal .form-text {
+    font-size: 0.8rem;
+    color: var(--cor-texto-secundario);
+}
+
+/* Botões */
+#excluirContaModal .btn-primary,
+#excluirContaModal .btn-outline-secondary,
+#excluirContaModal .btn-danger {
+    padding: 8px 20px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+body.claro #excluirContaModal .btn-danger {
+    background-color: var(--roxo2) !important;
+    border: none;
+}
+body.escuro #excluirContaModal .btn-danger {
+    background-color: var(--cor-primaria) !important;
+    border: none;
+}
+
+body.claro .btn-outline-secondary,
+body.escuro .btn-outline-secondary {
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-texto);
+}
+body.claro .btn-outline-secondary:hover,
+body.escuro .btn-outline-secondary:hover {
+    background-color: var(--cor-secundaria);
+    border: 1px solid var(--cor-secundaria);
+}
+body.claro .btn-outline-secondary {
+    background-color: var(--cor-secundaria) !important;
+    border: none !important;
+}
+body.escuro .btn-outline-secondary {
+    background-color: var(--cor-secundaria) !important;
+    border: none !important;
+}
+#fotoCapaModal .modal-dialog {
+    max-width: 400px;
+}
+#fotoCapaModal .modal-content {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+#fotoCapaModal .modal-header {
+    padding: 15px 20px;
+}
+body.claro #fotoCapaModal .modal-header {
+    background-color: var(--cor-primaria);
+    border-bottom: 1px solid var(--roxo2);
+}
+body.escuro #fotoCapaModal .modal-header {
+    background-color: var(--roxo2);
+    border-bottom: 1px solid var(--cor-primaria);
+}
+#fotoCapaModal .modal-title {
+    font-weight: 600;
+    color: var(--cor-fundo);
+    font-size: 1.2rem;
+}
+#fotoCapaModal .close {
+    font-size: 1.5rem;
+    color: var(--cor-texto);
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+#fotoCapaModal .close:hover {
+    opacity: 1;
+}
+#fotoCapaModal .modal-body {
+    padding: 30px;
+}
+body.claro #fotoCapaModal .modal-body {
+    background-color: var(--cor-primaria);
+}
+body.escuro #fotoCapaModal .modal-body {
+    background-color: var(--roxo2);
+}
+#fotoCapaModal .modal-body img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+body.claro #fotoCapaModal .modal-body img {
+    border: 3px solid var(--cor-quartenaria);
+}
+body.escuro #fotoCapaModal .modal-body img {
+    border: 3px solid var(--cor-primaria);
+}
+#fotoCapaModal .modal-body img:hover {
+    transform: scale(1.05);
+}
+@media (max-width: 576px) {
+    #fotoCapaModal .modal-body img {
+        width: 150px;
+        height: 150px;
+    }
+    #fotoCapaModal .modal-title {
+        font-size: 1rem;
+    }
+}
+
+#fotoCapaModal .modal-dialog {
+    max-width: 500px; /* um pouco maior para comportar a imagem maior */
+}
+#fotoCapaModal .modal-content {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+#fotoCapaModal .modal-header {
+    padding: 15px 20px;
+}
+body.claro #fotoCapaModal .modal-header {
+    background-color: var(--cor-primaria);
+    border-bottom: 1px solid var(--roxo2);
+}
+body.escuro #fotoCapaModal .modal-header {
+    background-color: var(--roxo2);
+    border-bottom: 1px solid var(--cor-primaria);
+}
+#fotoCapaModal .modal-title {
+    font-weight: 600;
+    color: var(--cor-fundo);
+    font-size: 1.2rem;
+}
+#fotoCapaModal .close {
+    font-size: 1.5rem;
+    color: var(--cor-texto);
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+#fotoCapaModal .close:hover {
+    opacity: 1;
+}
+#fotoCapaModal .modal-body {
+    padding: 30px;
+}
+body.claro #fotoCapaModal .modal-body {
+    background-color: var(--cor-primaria);
+}
+body.escuro #fotoCapaModal .modal-body {
+    background-color: var(--roxo2);
+}
+#fotoCapaModal .modal-body img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+}
+body.claro #fotoCapaModal .modal-body img {
+    border: 3px solid var(--cor-quartenaria);
+}
+body.escuro #fotoCapaModal .modal-body img {
+    border: 3px solid var(--cor-primaria);
+}
+#fotoCapaModal .modal-body img:hover {
+    transform: scale(1.05);
+}
+@media (max-width: 576px) {
+    #fotoCapaModal .modal-dialog {
+        max-width: 95vw !important; /* 95% da viewport width */
+        margin: 1.5rem auto; /* centralizado com margem */
+    }
+    #fotoCapaModal .modal-content {
+        border-radius: 12px;
+    }
+    #fotoCapaModal .modal-body img {
+        width: 100%;  /* 100% da largura do modal */
+        height: auto; /* altura proporcional */
+        max-height: 80vh; /* limita altura pra não passar da tela */
+        border-radius: 8px;
+    }
+    #fotoCapaModal .modal-title {
+        font-size: 1rem;
+    }
+}
+
+#republicadosUsuariosModal .modal-dialog {
+    max-width: 400px;
+    margin: 2.5rem auto;
+}
+
+#republicadosUsuariosModal .modal-content {
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(60, 60, 60, 0.25);
+}
+
+body.claro #republicadosUsuariosModal .modal-content {
+    background: var(--cor-primaria);
+}
+
+body.escuro #republicadosUsuariosModal .modal-content {
+    background: var(--roxo2);
+}
+
+#republicadosUsuariosModal .modal-header {
+    color: var(--cor-borda);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 1rem 1.5rem;
+}
+
+body.claro #republicadosUsuariosModal .modal-header {
+    background: var(--cor-primaria);
+    border-bottom: 1px solid var(--roxo2);
+}
+
+body.escuro #republicadosUsuariosModal .modal-header {
+    background: var(--roxo2);
+    border-bottom: 1px solid var(--cor-primaria);
+}
+
+#republicadosUsuariosModal .modal-title {
+    font-weight: bold;
+    color: var(--cor-fundo);
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+#republicadosUsuariosModal .close {
+    color: var(--cor-fundo);
+}
+
+#republicadosUsuariosModal .close:hover {
+    color: #d12c2c;
+    opacity: 1;
+}
+
+#republicadosUsuariosModal .modal-body {
+    padding: 1.25rem 1.5rem;
+    min-height: 150px;
+}
+
+body.claro #republicadosUsuariosModal .modal-body {
+    background: var(--cor-primaria);
+}
+
+body.escuro #republicadosUsuariosModal .modal-body {
+    background: var(--roxo2);
+}
+
+#republicadosUsuariosModal #search-republicados-user {
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+    padding-left: 1.2rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+#republicadosUsuariosModal #search-republicados-user:focus {
+    border-color: #4285f4;
+    outline: none;
+}
+
+/* Lista de usuários */
+#republicadosUsuariosModal #republicados-usuarios-lista {
+    max-height: 270px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#republicadosUsuariosModal .list-group {
+    border-radius: 8px;
+    box-shadow: none;
+    margin-bottom: 0;
+}
+
+#republicadosUsuariosModal .list-group-item {
+    border: none;
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 0.8rem;
+    background: transparent;
+    transition: background 0.15s;
+}
+
+body.claro #republicadosUsuariosModal .list-group-item {
+    border-bottom: 1px solid var(--roxo2);
+}
+
+body.escuro #republicadosUsuariosModal .list-group-item {
+    border-bottom: 1px solid var(--cor-primaria);
+}
+
+#republicadosUsuariosModal .list-group-item:last-child {
+    border-bottom: none;
+}
+
+#republicadosUsuariosModal .list-group-item:hover {
+    background: var(--cor-secundaria);
+    color: var(--cor-borda);
+}
+
+#republicadosUsuariosModal .list-group-item img {
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+    width: 36px;
+    height: 36px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+body.claro #republicadosUsuariosModal .list-group-item img {
+    border: 2px solid var(--roxo2);
+}
+
+body.escuro #republicadosUsuariosModal .list-group-item img {
+    border: 2px solid var(--cor-primaria);
+}
+
+#republicadosUsuariosModal .list-group-item a {
+    text-decoration: none;
+    color: var(--cor-borda);
+    font-weight: 500;
+    transition: color 0.18s;
+    font-size: 1rem;
+}
+
+#republicadosUsuariosModal .list-group-item a:hover {
+    text-decoration: underline;
+}
+
+/* Mensagem de nenhum usuário encontrado */
+#republicadosUsuariosModal .text-center {
+    margin-top: 32px;
+    color: var(--cor-borda);
+    font-size: 1.05rem;
+}
+
+#republicadosUsuariosModal .text-center i {
+    display: block;
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    color: #dcdcdc;
 }

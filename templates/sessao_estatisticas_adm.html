@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pagina administrador - Sirius</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png" />
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- ESTILO DA PAGINA -->
+    <link rel="stylesheet" href="../static/css/administrador.css" />
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxs-dog'></i>
+			<span class="text">Sirius</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="/pagina_inicial_admin">
+					<i class='bx bxs-home'></i> 
+					<span class="text">Início</span>
+				</a>
+			</li>
+			<li>
+				<a href="/sessao_administrador">
+					<i class='bx bxs-user-detail'></i>
+					<span class="text">Administradores</span>
+				</a>
+			</li>
+			<li>
+				<a href="/sessao_usuarios">
+					<i class='bx bxs-user'></i>
+                    <span class="text">Usuários</span>
+				</a>
+			</li>
+			<li>
+				<a href="/sessao_post">
+					<i class='bx bxs-file'></i>
+                    <span class="text">Posts</span>
+				</a>
+			</li>
+			<li>
+				<a href="/sessao_comentarios_adm">
+					<i class='bx bxs-comment-detail'></i>
+                    <span class="text">Comentários</span>
+				</a>
+			</li>
+            <li>
+				<a href="/sessao_mensagens_adm">
+					<i class='bx bxs-comment-detail'></i>
+                    <span class="text">Mensagens</span>
+				</a>
+			</li>
+            <li>
+				<a href="/sessao_pesquisas_adm">
+					<i class='bx bx-search'></i>
+                    <span class="text">Pesquisas</span>
+				</a>
+			</li>
+            <li>
+				<a href="/sessao_denuncias_adm">
+					<i class='bx bxs-flag'></i>
+                    <span class="text">Denúncias</span>
+				</a>
+			</li>
+            <li class="active">
+                <a href="/sessao_estatisticas_adm">
+                    <i class='bx bxs-bar-chart-alt-2'></i>
+                    <span class="text">Estatísticas</span>
+                </a>
+            </li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="#" class="logout">
+					<i class='bx bx-log-out'></i>
+					<span class="text">Sair</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">Categorias</a>
+			
+	
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+        <main>
+            <div class="admin-welcome-container">
+                <div class="admin-header">
+                    <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" class="admin-logo">
+                    <h1 class="admin-title">Sirius</h1>
+                </div>
+                
+                <div class="admin-welcome-message">
+                    <h2>Área de estatística</h2>
+                    <p>Visualize métricas importantes sobre o uso da rede social, como número de usuários, posts, denúncias e interações.</p>
+                    <p>Acompanhe o crescimento da plataforma e tome decisões com base em dados reais.</p>
+                </div>
+                
+                <div class="admin-stats-preview">
+                    <div class="stat-card">
+                        <i class='bx bxs-user-detail'></i>
+                        <h3>Administradores</h3>
+                        <p>{{ total_administradores }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class='bx bxs-user'></i>
+                        <h3>Usuários</h3>
+                        <p>{{ total_user }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class='bx bxs-file'></i>
+                        <h3>Posts</h3>
+                        <p>{{ total_posts }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class='bx bxs-comment-detail'></i>
+                        <h3>Comentários</h3>
+                        <p>{{ total_comentarios }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class='bx bxs-heart'></i>
+                        <h3>Curtidas</h3>
+                        <p>{{ total_curtidas }}</p>
+                    </div>
+                      <div class="stat-card">
+                        <i class='bx bx-show'></i>
+                        <h3>Visualizações</h3>
+                        <p>{{ total_views }}</p>
+                    </div>
+                       <div class="stat-card">
+                        <i class='bx bxs-message-dots'></i>
+                        <h3>Mensagens</h3>
+                        <p>{{ total_msg }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class='bx bxs-flag'></i>
+                        <h3>Denúncias</h3>
+                        <p>{{ total_denuncias }}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+    <!-- SCRIPT -->
+    <script src="../static/js/administrador/menu.js"></script>
+    <script src="../static/js/administrador/log_out.js"></script>
+
+</body>
+</html>

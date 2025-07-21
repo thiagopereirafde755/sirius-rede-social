@@ -1,16 +1,15 @@
-import os
-from flask import Blueprint, render_template, redirect, url_for, session, request, flash, jsonify
-from werkzeug.utils import secure_filename
-from app.utils import formatar_data
+from flask import Blueprint, redirect, url_for, session, request, flash, jsonify
 from app.conexao import criar_conexao
-from datetime import datetime
 
 seguir_bp = Blueprint('seguir_user', __name__)
 
+# =============================================================
+#  PARA SEGUIR USER
+# =============================================================
 @seguir_bp.route('/seguir/<int:id_usuario>', methods=['POST'])
 def seguir(id_usuario):
     if 'usuario_id' not in session:
-        return redirect(url_for('index'))  # Redireciona se não estiver logado
+        return redirect(url_for('index'))  
 
     usuario_id = session['usuario_id']
 
@@ -19,44 +18,47 @@ def seguir(id_usuario):
         
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Verifica se o usuário já segue o outro usuário
+
+                # VERIFICA SE JA SEGUI
                 cursor.execute("""
                     SELECT * FROM seguindo WHERE id_seguidor = %s AND id_seguindo = %s
                 """, (usuario_id, id_usuario))
                 seguir_existente = cursor.fetchone()
 
                 if seguir_existente:
-                    # Se já segue, deixar de seguir
+
+                    # SE JA SEGUE DEIXA DE SEGUIR
                     cursor.execute("""
                         DELETE FROM seguindo WHERE id_seguidor = %s AND id_seguindo = %s
                     """, (usuario_id, id_usuario))
                     conexao.commit()
                     flash("Você deixou de seguir este usuário.", "info")
                 else:
-                    # Caso contrário, seguir
+                    # CASO NAO ELE SEGUI
                     cursor.execute("""
                         INSERT INTO seguindo (id_seguidor, id_seguindo) VALUES (%s, %s)
                     """, (usuario_id, id_usuario))
                     conexao.commit()
                     flash("Você começou a seguir este usuário.", "success")
 
-                    # Inserir notificação de seguidor
+                    # E NOTIFICA
                     cursor.execute("""
                         INSERT INTO notificacoes (usuario_id, tipo, origem_usuario_id, post_id, lida)
                         VALUES (%s, 'seguidor', %s, NULL, 0)
-                    """, (id_usuario, usuario_id))  # id_usuario é quem recebe a notificação
+                    """, (id_usuario, usuario_id))  
                     conexao.commit()
 
             conexao.close()
 
-            # Redireciona de volta para a página do perfil
             return redirect(url_for('info_user.info_user', id_usuario=id_usuario))
         
         return "Erro na conexão com o banco de dados."
 
     except Exception as e:
         return f"Erro ao conectar ao banco de dados: {str(e)}"
-
+# =============================================================
+#  PEDIR PARA SEGUIR
+# =============================================================
 @seguir_bp.route('/pedir-para-seguir/<int:id_usuario>', methods=['POST'])
 def pedir_para_seguir(id_usuario):
     if 'usuario_id' not in session:
@@ -68,14 +70,16 @@ def pedir_para_seguir(id_usuario):
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor() as cursor:
-                # Verifica se já existe um pedido pendente
+
+                # VERIFICA SE JA EXISTE PEDIDO
                 cursor.execute("""
                     SELECT * FROM pedidos_seguir WHERE id_solicitante = %s AND id_destino = %s
                 """, (usuario_id, id_usuario))
                 pedido = cursor.fetchone()
 
                 if not pedido:
-                    # Inserir pedido
+
+                    # INSERIR O PEDIDO
                     cursor.execute("""
                         INSERT INTO pedidos_seguir (id_solicitante, id_destino)
                         VALUES (%s, %s)
@@ -87,7 +91,9 @@ def pedir_para_seguir(id_usuario):
         return redirect(url_for('info_user.info_user', id_usuario=id_usuario))
     except Exception as e:
         return f"Erro ao processar pedido de seguir: {str(e)}"
-
+# =============================================================
+#  CANCELAR PEDIDO
+# =============================================================
 @seguir_bp.route('/cancelar-pedido/<int:id_usuario>', methods=['POST'])
 def cancelar_pedido(id_usuario):
     if 'usuario_id' not in session:
@@ -105,7 +111,7 @@ def cancelar_pedido(id_usuario):
                 """, (usuario_id, id_usuario))
                 conexao.commit()
 
-                # Remove notificação do pedido também
+                # REMOVE O PEDIDO
                 cursor.execute("""
                     DELETE FROM notificacoes
                     WHERE usuario_id = %s AND origem_usuario_id = %s AND tipo = 'pedido_seguir' AND post_id IS NULL
@@ -117,32 +123,34 @@ def cancelar_pedido(id_usuario):
         return redirect(url_for('info_user.info_user', id_usuario=id_usuario))
     except Exception as e:
         return f"Erro ao cancelar pedido: {str(e)}"
-    
+# =============================================================
+#  ACEITAR PEDIDO
+# =============================================================
 @seguir_bp.route('/aceitar-pedido/<int:id_pedido>/<int:id_usuario>', methods=['POST'])
 def aceitar_pedido(id_pedido, id_usuario):
     if 'usuario_id' not in session:
         return redirect(url_for('index'))
 
-    usuario_id = session['usuario_id']  # usuario_id é quem está ACEITANDO
+    usuario_id = session['usuario_id'] 
 
     try:
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor() as cursor:
-            # Aceitar o pedido: adiciona à tabela seguindo
+
+                # SALVA COMO SEGUIDO
                 cursor.execute("""
                     INSERT INTO seguindo (id_seguidor, id_seguindo) VALUES (%s, %s)
                 """, (id_usuario, usuario_id))
 
-                # Remove o pedido da tabela
+                # REMOVE O PEDIDO
                 cursor.execute("DELETE FROM pedidos_seguir WHERE id = %s", (id_pedido,))
 
-                # Notifica o solicitante que você aceitou o pedido dele (tipo novo: 'aceite_pedido')
+                # NOTIFICA QUE O PEDIDO FOI ACEITO
                 cursor.execute("""
                     INSERT INTO notificacoes (usuario_id, tipo, origem_usuario_id, post_id, lida)
                     VALUES (%s, 'aceite_pedido', %s, NULL, 0)
                 """, (id_usuario, usuario_id))
-                # id_usuario = solicitante, usuario_id = quem aceitou
 
             conexao.commit()
 
@@ -152,7 +160,9 @@ def aceitar_pedido(id_pedido, id_usuario):
 
     except Exception as e:
         return f"Erro ao aceitar pedido: {str(e)}"
-
+# =============================================================
+#  RECUSAR PEDIDO
+# =============================================================
 @seguir_bp.route('/recusar-pedido/<int:id_pedido>', methods=['POST'])
 def recusar_pedido(id_pedido):
     if 'usuario_id' not in session:
@@ -170,7 +180,9 @@ def recusar_pedido(id_pedido):
 
     except Exception as e:
         return f"Erro ao recusar pedido: {str(e)}"
-    
+# =============================================================
+#  SEGUIR PELO POST
+# =============================================================
 @seguir_bp.route('/toggle_seguir', methods=['POST'])
 def toggle_seguir():
     if 'usuario_id' not in session:
@@ -183,9 +195,10 @@ def toggle_seguir():
     try:
         conexao = criar_conexao()
         if conexao:
-            with conexao.cursor(dictionary=True) as cursor:  # Note o dictionary=True aqui
+            with conexao.cursor(dictionary=True) as cursor:  
                 if seguir:
-                    # Verificar se já não está seguindo
+
+                    # VERIFICA SE JA ESTA SEGUINDO
                     cursor.execute("""
                         SELECT * FROM seguindo 
                         WHERE id_seguidor = %s AND id_seguindo = %s
@@ -201,7 +214,7 @@ def toggle_seguir():
                         WHERE id_seguidor = %s AND id_seguindo = %s
                     """, (usuario_id, user_id))
                 
-                # Obter contagem atualizada de seguidores
+                # OBTER O NUMERO DE SEGUIDORES
                 cursor.execute("""
                     SELECT COUNT(*) as seguidores_count 
                     FROM seguindo 
@@ -220,7 +233,9 @@ def toggle_seguir():
     
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
-    
+# =============================================================
+#  REMOVER SEGUIDOR PELO MODAL
+# =============================================================
 @seguir_bp.route('/remover_seguidor', methods=['POST'])
 def remover_seguidor():
     if 'usuario_id' not in session:
@@ -238,7 +253,7 @@ def remover_seguidor():
                     DELETE FROM seguindo WHERE id_seguidor = %s AND id_seguindo = %s
                 """, (seguidor_id, usuario_id))
                 conexao.commit()
-                # Conta seguidores atualizados
+                # CONTA ATUALIZADA
                 cursor.execute("SELECT COUNT(*) FROM seguindo WHERE id_seguindo = %s", (usuario_id,))
                 seguidores_count = cursor.fetchone()[0]
             conexao.close()
@@ -247,7 +262,9 @@ def remover_seguidor():
             return jsonify({'success': False, 'error': 'Erro ao conectar ao banco de dados.'}), 500
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 
-
+# =============================================================
+#  DEIXAR DE SEGUIR PELO MODAL
+# =============================================================
 @seguir_bp.route('/deixar_de_seguir', methods=['POST'])
 def deixar_de_seguir():
     if 'usuario_id' not in session:
@@ -265,7 +282,7 @@ def deixar_de_seguir():
                     DELETE FROM seguindo WHERE id_seguidor = %s AND id_seguindo = %s
                 """, (usuario_id, seguindo_id))
                 conexao.commit()
-                # Conta seguindo atualizados
+                # CONTA ATUALIZADA
                 cursor.execute("SELECT COUNT(*) FROM seguindo WHERE id_seguidor = %s", (usuario_id,))
                 seguindo_count = cursor.fetchone()[0]
             conexao.close()

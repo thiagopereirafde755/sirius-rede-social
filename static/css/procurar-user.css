@@ -145,3 +145,11 @@ body.escuro .resultado-usuario img {
     color: var(--cor-texto) !important;
     text-decoration: none;
 }
+ .remover-x {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: red;
+    cursor: pointer;
+    margin-left: 8px;
+}

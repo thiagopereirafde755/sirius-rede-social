@@ -10,6 +10,9 @@
     --roxo3: #3a1942;
     --scrollBar: #656768;
 }
+body.modal-open {
+    overflow: hidden !important;
+}
 .profile-container {
     width: 100%;
     max-width: 700px;
@@ -108,18 +111,18 @@ body.escuro #fot-per {
     margin-left: 20px;
     flex-grow: 1;
 }
-.profile-info h3 {
+.profile-info h3, .profile-info h5 {
     margin: 5px 0;
     color: var(--white);
 }
-.profile-info h3#nome_completo {
+.profile-info h5#nome_completo {
     font-weight: 600;
 }
 .profile-info h3 span#nome_user {
     color: var(--white);
     font-weight: 500;
 }
-.profile-info h4#bio_per {
+.profile-info p#bio_per {
     color: var(--white);
     font-weight: 400;
     margin: 10px 0;
@@ -244,7 +247,7 @@ body.escuro .post-stats:hover {
         width: 80px;
         height: 80px;
     }
-    .profile-info h3#nome_completo {
+    .profile-info h5#nome_completo {
         font-size: 22px;
     }
     .profile-info h3 span#nome_user {
@@ -298,27 +301,90 @@ body.escuro .post-stats:hover {
     margin: 3px 0;
     
 }
+/* Container principal */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+    width: 100%;
+}
+
+/* Estilo base do botão */
 .btn-seguir {
-    padding: 8px 16px;
+    padding: 10px 20px;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 25px;
     font-weight: 600;
+    font-size: 14px;
     outline: none;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 180px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+/* Estilos para tema claro */
 body.claro .btn-seguir {
     background-color: var(--roxo3);
+    border: 1px solid var(--roxo2);
 }
+
+/* Estilos para tema escuro */
 body.escuro .btn-seguir {
     background-color: var(--roxo);
+    border: 1px solid var(--roxo3);
 }
-body.claro .btn-seguir:hover {
-    background-color: var(--cor-secundaria);
+
+/* Efeito hover para ambos temas */
+.btn-seguir:hover {
+    background-color: var(--cor-secundaria) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
-body.escuro .btn-seguir:hover {
-    background-color: var(--cor-secundaria);
+
+/* Ícones */
+.btn-seguir i {
+    font-size: 16px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .btn-seguir {
+        padding: 8px 16px;
+        font-size: 13px;
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-seguir {
+        width: 100%;
+        max-width: 220px;
+        padding: 10px;
+    }
+    
+    .btn-container {
+        margin: 10px 0;
+    }
+}
+
+/* Estados especiais */
+.btn-seguir.pedido-pendente {
+    background-color: #ff9800 !important;
+}
+
+.btn-seguir.nao-seguindo {
+    background-color: #4CAF50 !important;
+}
+
+.btn-seguir.seguindo {
+    background-color: #f44336 !important;
 }
 .bloqueado-message {
     position: fixed;
@@ -352,8 +418,8 @@ body.escuro .btn-seguir:hover {
     font-size: 1.1rem;
     color: #495057;
 }
-.profile-info h3,
-.profile-info h4#bio_per,
+.profile-info h3, .profile-info h5,
+.profile-info p#bio_per,
 #bio_per,
 #nome_completo,
 #nome_user,
@@ -473,6 +539,14 @@ body.escuro .btn-seguir:hover {
     box-shadow: 0 1px 5px rgba(0,0,0,0.08);
     color: var(--white);
     margin-top: 12vh;
+    width: 300px !important;
+}
+/* Para telas menores que 480px (exemplo) */
+@media (max-width: 600px) {
+    .hashtag-suggestions {
+        width: 80vw !important; /* 90% da largura da viewport */
+        margin-top: 10vh; /* Ajuste se quiser */
+    }
 }
 body.claro .hashtag-suggestions {
     background-color: var(--roxo);
@@ -524,4 +598,246 @@ body.claro .btn-desbloquear:hover {
 }
 body.escuro .btn-desbloquear:hover {
     background-color: var(--cor-secundaria);
+}
+
+/* Light theme */
+body.claro .dropdown-menu {
+  background-color: white;
+}
+
+body.claro .dropdown-item {
+  color: #1f2937;
+}
+
+body.claro .dropdown-item:hover {
+  background-color: #f3f4f6;
+}
+
+/* Dark theme */
+body.escuro .dropdown-menu {
+  background-color: #222024 !important;
+}
+
+body.escuro .dropdown-item {
+  color: #f3f4f6 !important;
+}
+
+body.escuro .dropdown-item:hover {
+  background-color: #374151;
+}
+
+/* CSS corrigido - reordene e simplifique */
+.ir-chat {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    margin-left: 8px;
+    color: white !important;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+/* Defina as cores base primeiro */
+body.claro .ir-chat {
+    background-color: var(--roxo3);
+}
+
+body.escuro .ir-chat {
+    background-color: var(--roxo);
+}
+
+.ir-chat:hover {
+    background-color: var(--cor-secundaria) !important;
+    color: white;
+}
+
+.ir-chat i {
+    margin-right: 5px;
+    font-size: 16px;
+}
+
+.amigos_em_comum_conteiner{
+    text-align: center !important;
+    margin-top: 3%;
+}
+.btn-amigos-comuns{
+    border-radius: 5px;
+}
+body.claro .btn-amigos-comuns{
+    background-color: transparent !important;
+}
+body.escuro .btn-amigos-comuns{
+    background-color: transparent !important;
+}
+body.claro .btn-amigos-comuns:hover,
+body.escuro .btn-amigos-comuns:hover {
+    text-decoration: underline;
+}
+
+.no-scroll, .no-scroll html {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+
+.cookie-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(10, 9, 9, 0.5); /* Transparência leve para escurecer + deixar visível */
+  backdrop-filter: blur(8px); /* Embaça o fundo */
+  -webkit-backdrop-filter: blur(8px); /* Para Safari */
+  z-index: 1999;
+  display: none;
+  pointer-events: auto;
+}
+
+
+.cookie-banner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--white);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 25px rgba(0,0,0,0.3);
+  display: none;
+  z-index: 2000;
+  max-width: 90%;
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.5s ease-out;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+body.claro .cookie-banner {
+  background-color: var(--roxo);
+  border: 1px solid var(--roxo2);
+}
+body.escuro .cookie-banner {
+  background-color: var(--roxo2);
+  border: 1px solid var(--roxo);
+}
+.cookie-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cookie-banner p {
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.btn-aceitar {
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 25px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+}
+body.claro .btn-aceitar {
+  background-color: var(--roxo2);
+}
+body.escuro .btn-aceitar {
+  background-color: var(--roxo);
+}
+.btn-aceitar:hover {
+  background-color: var(--cor-secundaria);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.btn-aceitar:active {
+  transform: scale(0.98);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (max-width: 480px) {
+  .cookie-banner {
+    padding: 20px;
+    width: 85%;
+  }
+  
+  .btn-aceitar {
+    padding: 8px 20px;
+    min-width: 120px;
+  }
+}
+body.claro .cookie_centra_ajuda {
+  color: #90CAF9 !important;       
+  text-decoration: underline;
+}
+body.escuro .cookie_centra_ajuda {
+  color: #90CAF9 !important;       
+  text-decoration: underline;
+}
+
+            /* Cursor pointer para indicar clicável */
+.cover-photo {
+  cursor: pointer;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px; /* Opcional, arredondar cantos */
+  transition: transform 0.3s ease;
+}
+
+/* Pequena animação ao passar o mouse */
+.cover-photo:hover {
+  transform: scale(1.05);
+}
+
+/* Estilo da imagem dentro do modal para caber bem */
+#fotoCapaModal .modal-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px; /* Opcional */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Opcional: centralizar texto do título */
+#fotoCapaModal .modal-header {
+  justify-content: center;
+}
+
+/* Ajustar botão fechar para ficar no canto direito (padrão Bootstrap já faz isso, mas se quiser customizar) */
+#fotoCapaModal .close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+#fotoCapaModal .close:hover {
+  opacity: 1;
+  color: #000;
 }

@@ -289,7 +289,6 @@ body.escuro .info img {
 a:link, 
 a:visited {
     color: white !important;
-    text-decoration: none !important;
 }
 
 /* Estilo para links quando passar o mouse */
@@ -302,4 +301,17 @@ a:hover {
 a:active {
     color: white !important;
     text-decoration: none !important;
+}
+
+.botao-not{
+    text-decoration: none !important;
+}
+.notificacao-link, .username-link{
+    text-decoration: underline !important;
+}
+.sem_notificacao{
+    background-color: transparent !important;
+}
+.sem_notificacao p{
+    color: var(--white) !important;
 }

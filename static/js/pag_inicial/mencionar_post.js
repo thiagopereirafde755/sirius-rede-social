@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const textarea = document.getElementById('post-textarea');
     const suggestionsContainer = document.getElementById('mention-suggestions');
-    const contador = document.getElementById('contador-caracteres'); // Se você tiver contador de caracteres
+    const contador = document.getElementById('contador-caracteres');
     let currentMentionStart = -1;
     let users = [];
 
@@ -17,14 +17,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    textarea.addEventListener('input', function(e) {
+    textarea.addEventListener('input', function (e) {
+        // 1. Remove @@ duplicados
+        const caretPos = textarea.selectionStart;
+        const textoCorrigido = textarea.value.replace(/(@)@+/g, '$1'); // @@ -> @
+        if (textoCorrigido !== textarea.value) {
+            const diff = textarea.value.length - textoCorrigido.length;
+            textarea.value = textoCorrigido;
+            textarea.selectionStart = caretPos - diff;
+            textarea.selectionEnd = caretPos - diff;
+        }
+
         const cursorPos = textarea.selectionStart;
         const textBeforeCursor = textarea.value.substring(0, cursorPos);
         const texto = textarea.value;
         const mentions = getMentions(texto);
         const uniqueMentions = [...new Set(mentions)];
 
-        // 1. Limite de menções únicas
+        // 2. Limite de menções únicas
         if (uniqueMentions.length > 5) {
             textarea.value = textBeforeCursor.replace(/@[\w.-]*$/, '') + texto.substring(cursorPos);
             Swal.fire({
@@ -38,13 +48,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // 2. Limite total de 280 caracteres
+        // 3. Limite total de 280 caracteres com menção parcial
         const lastAt = textBeforeCursor.lastIndexOf('@');
         const afterAt = textBeforeCursor.substring(lastAt + 1);
         const isMention = lastAt !== -1 && /^[\w.-]*$/.test(afterAt);
 
         if (isMention && texto.length > 280) {
-            textarea.value = texto.replace(/@[\w.-]*$/, ''); // remove menção parcial
+            textarea.value = texto.replace(/@[\w.-]*$/, '');
             Swal.fire({
                 icon: 'warning',
                 title: 'Limite de caracteres',
@@ -58,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         atualizarContador();
 
-        // Busca de sugestões
+        // 4. Buscar sugestões
         const lastAtPos = textBeforeCursor.lastIndexOf('@');
         if (lastAtPos > -1 && (lastAtPos === 0 || /\s/.test(textBeforeCursor[lastAtPos - 1]))) {
             const afterAt = textBeforeCursor.substring(lastAtPos + 1);
@@ -101,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span class="username">${user.username}</span>
             `;
 
-            div.addEventListener('click', function() {
+            div.addEventListener('click', function () {
                 insertMention(user);
             });
 
@@ -172,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         atualizarContador();
     }
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target !== textarea && !suggestionsContainer.contains(e.target)) {
             suggestionsContainer.style.display = 'none';
         }

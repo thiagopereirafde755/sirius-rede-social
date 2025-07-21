@@ -128,7 +128,12 @@ function scrollToQuotedMessage(element) {
             targetMessage.classList.remove('highlight-message', 'highlight-pulse');
         }, 5000);
     } else {
-        alert('A mensagem original foi apagada');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Mensagem não encontrada',
+            text: 'A mensagem original foi apagada',
+            confirmButtonText: 'Ok'
+        });
     }
 }
 

@@ -25,3 +25,20 @@ if (window.erroSenha) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const btnSolicitarCodigo = document.getElementById('btnSolicitarCodigo');
+
+    if (btnSolicitarCodigo) {
+        btnSolicitarCodigo.addEventListener('click', function () {
+            Swal.fire({
+                title: 'Enviando...',
+                text: 'Estamos enviando o código.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        });
+    }
+});

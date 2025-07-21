@@ -1,12 +1,72 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash, jsonify
 import random
-import smtplib
 from app.conexao import criar_conexao
 from datetime import datetime, timedelta
 from app.enviar_email import recuperacao_senha_user_logado
+import random
+from app.utils import buscar_hashtags_mais_usadas
+from werkzeug.security import generate_password_hash
 
 recuperar_senha_logado_bp = Blueprint('recuperar_senha_logado', __name__)
 
+# =============================================================
+#  REENVIA O CODIGO
+# =============================================================
+@recuperar_senha_logado_bp.route('/reenviar_codigo', methods=['POST'])
+def reenviar_codigo():
+    if 'usuario_id' not in session:
+        return 'Não autorizado', 401
+
+    usuario_id = session['usuario_id']
+    conexao = criar_conexao()
+    cursor = conexao.cursor(dictionary=True)
+
+    try:
+        # BUSCA AS INFORMAÇAO DO USER
+        cursor.execute("SELECT email, username FROM users WHERE id = %s", (usuario_id,))
+        user = cursor.fetchone()
+
+        if not user:
+            return 'Usuário não encontrado', 404
+
+        email_usuario = user['email']
+        nome_usuario = user['username']
+        agora = datetime.now()
+
+        # INVALIDA OS CODIGOS ANTERIORES
+        cursor.execute("""
+            UPDATE recuperacao_senha 
+            SET expirado_em = %s 
+            WHERE user_id = %s 
+              AND utilizado_em IS NULL 
+              AND expirado_em IS NULL
+        """, (agora, usuario_id))
+
+        # GERA UM NOVO CODIGO
+        codigo = str(random.randint(100000, 999999))
+
+        # SALVA NO BD
+        cursor.execute("""
+            INSERT INTO recuperacao_senha (user_id, codigo, criado_em, ip_criacao)
+            VALUES (%s, %s, %s, %s)
+        """, (usuario_id, codigo, agora, request.remote_addr))
+        conexao.commit()
+
+        # ENVIA O EMAIL E O CODIGO
+        recuperacao_senha_user_logado(email_usuario, codigo, nome_usuario)
+
+        return 'Código reenviado com sucesso', 200
+
+    except Exception as e:
+        print("Erro ao reenviar código:", e)
+        return 'Erro interno ao reenviar código', 500
+
+    finally:
+        cursor.close()
+        conexao.close()
+# =============================================================
+#  PARTE 1 PARA RECUPERAR SENHA
+# =============================================================
 @recuperar_senha_logado_bp.route('/recuperar_senha_logado_part1', methods=['GET', 'POST'])
 def recuperar_senha_logado_part1():
     if 'usuario_id' not in session:
@@ -17,20 +77,11 @@ def recuperar_senha_logado_part1():
     cursor = conexao.cursor(dictionary=True)
 
     try:
-        # Buscar hashtags do momento
-        cursor.execute("""
-            SELECT h.nome, COUNT(*) as total
-            FROM hashtags h
-            JOIN post_hashtags ph ON h.id = ph.hashtag_id
-            JOIN posts p ON ph.post_id = p.id
-            WHERE p.data_postagem >= NOW() - INTERVAL 10 HOUR
-            GROUP BY h.id, h.nome
-            ORDER BY total DESC
-            LIMIT 3
-        """)
-        hashtags_top = cursor.fetchall()
 
-        # Dados do usuário
+        # HASHTAG DO MOMENTO
+        hashtags_top = buscar_hashtags_mais_usadas(cursor)
+
+        # INFORMAÇAO DO USER
         cursor.execute("""
             SELECT nome, username, fotos_perfil, bio, foto_capa, perfil_publico,
                    comentarios_publicos, visibilidade_seguidores, tema, curtidas_publicas,
@@ -40,7 +91,7 @@ def recuperar_senha_logado_part1():
         """, (usuario_id,))
         usuario = cursor.fetchone()
 
-        # Defaults
+        # REDERIZAR PARA O HTML
         nome_completo = usuario.get('nome') if usuario else None
         nome_usuario = usuario.get('username') if usuario else None
         foto_perfil = usuario['fotos_perfil'] if usuario and usuario['fotos_perfil'] else url_for('static', filename='img/icone/user.png')
@@ -72,7 +123,7 @@ def recuperar_senha_logado_part1():
             
             session.pop('codigo_validado', None)
             
-            # 1. INVALIDA TODOS OS CÓDIGOS ANTERIORES (NÃO UTILIZADOS)
+            # INVALIDA TODOS OS CODIGOS ANTERIORES
             agora = datetime.now()
             cursor.execute("""
                 UPDATE recuperacao_senha 
@@ -82,7 +133,7 @@ def recuperar_senha_logado_part1():
                 AND expirado_em IS NULL
             """, (agora, usuario_id))
 
-            # Gera código e salva na tabela
+            # GERA UM NOVO CODIGO E SALVA NO BANCO
             codigo = str(random.randint(100000, 999999))
             cursor.execute("""
                 INSERT INTO recuperacao_senha (user_id, codigo, criado_em, ip_criacao)
@@ -105,7 +156,9 @@ def recuperar_senha_logado_part1():
     finally:
         cursor.close()
         conexao.close()
-
+# =============================================================
+#  PARTE 2 PARA RECUPERAR A SENHA
+# ============================================================= 
 @recuperar_senha_logado_bp.route('/recuperar_senha_logado_part2', methods=['GET', 'POST'])
 def recuperar_senha_logado_part2():
     if 'usuario_id' not in session:
@@ -116,20 +169,10 @@ def recuperar_senha_logado_part2():
     cursor = conexao.cursor(dictionary=True)
 
     try:
-        # Hashtags
-        cursor.execute("""
-            SELECT h.nome, COUNT(*) as total
-            FROM hashtags h
-            JOIN post_hashtags ph ON h.id = ph.hashtag_id
-            JOIN posts p ON ph.post_id = p.id
-            WHERE p.data_postagem >= NOW() - INTERVAL 10 HOUR
-            GROUP BY h.id, h.nome
-            ORDER BY total DESC
-            LIMIT 3
-        """)
-        hashtags_top = cursor.fetchall()
+        # HASHTAG DO MOMENTO
+        hashtags_top = buscar_hashtags_mais_usadas(cursor)
 
-        # Dados user
+        # INFORMAÇAO DO USER
         cursor.execute("""
             SELECT nome, username, fotos_perfil, bio, foto_capa, perfil_publico,
                    comentarios_publicos, visibilidade_seguidores, tema, curtidas_publicas,
@@ -138,7 +181,7 @@ def recuperar_senha_logado_part2():
         """, (usuario_id,))
         usuario = cursor.fetchone()
 
-        # Preparar dados para o template
+        # PARA O HTML
         template_params = {
             'nome': usuario.get('nome'),
             'username': usuario.get('username'),
@@ -162,7 +205,7 @@ def recuperar_senha_logado_part2():
             codigo_digitado = request.form.get('codigo')
             agora = datetime.now()
 
-            # Busca código válido (não expirado, não utilizado)
+            # BUSCAR CODIGO VALIDO
             cursor.execute("""
                 SELECT id, criado_em FROM recuperacao_senha
                 WHERE user_id=%s AND codigo=%s AND utilizado_em IS NULL AND expirado_em IS NULL
@@ -172,20 +215,20 @@ def recuperar_senha_logado_part2():
             row = cursor.fetchone()
 
             if row:
-                # Marca o código como utilizado
+                # MARCA COMO UTILIZADO
                 cursor.execute("UPDATE recuperacao_senha SET utilizado_em=%s WHERE id=%s", (agora, row['id']))
                 conexao.commit()
                 session['codigo_validado'] = True
                 return redirect(url_for('.recuperar_senha_logado_part3'))
             else:
-                # Expira códigos antigos
+                # EXPIRA O CODIGO NAO USADO
                 cursor.execute("""
                     UPDATE recuperacao_senha SET expirado_em=%s
                     WHERE user_id=%s AND utilizado_em IS NULL AND expirado_em IS NULL AND criado_em < %s
                 """, (agora, usuario_id, agora - timedelta(minutes=15)))
                 conexao.commit()
                 
-                # Adiciona parâmetros de erro ao template
+                # ADCIONA MSG DE ERRO
                 template_params.update({
                     'erro_codigo': True,
                     'mensagem_erro': 'Código inválido ou expirado. Por favor, tente novamente.'
@@ -196,7 +239,9 @@ def recuperar_senha_logado_part2():
     finally:
         cursor.close()
         conexao.close()
-
+# =============================================================
+#  PARTE 3 PARA RECUPERAR A SENHA
+# ============================================================= 
 @recuperar_senha_logado_bp.route('/recuperar_senha_logado_part3', methods=['GET', 'POST'])
 def recuperar_senha_logado_part3():
     if 'usuario_id' not in session:
@@ -212,7 +257,7 @@ def recuperar_senha_logado_part3():
     cursor = conexao.cursor(dictionary=True)
 
     try:
-        # Verificar se há código válido recentemente utilizado
+        # VERIFICA SE O CODIGO E VALIDO
         cursor.execute("""
             SELECT 1 FROM recuperacao_senha
             WHERE user_id=%s AND utilizado_em IS NOT NULL AND expirado_em IS NULL
@@ -224,20 +269,10 @@ def recuperar_senha_logado_part3():
         if not codigo_valido and not session.get('codigo_validado'):
             return redirect(url_for('.recuperar_senha_logado_part2'))
 
-        # Busca hashtags populares
-        cursor.execute("""
-            SELECT h.nome, COUNT(*) as total
-            FROM hashtags h
-            JOIN post_hashtags ph ON h.id = ph.hashtag_id
-            JOIN posts p ON ph.post_id = p.id
-            WHERE p.data_postagem >= NOW() - INTERVAL 10 HOUR
-            GROUP BY h.id, h.nome
-            ORDER BY total DESC
-            LIMIT 3
-        """)
-        hashtags_top = cursor.fetchall()
+        # HASHTAG DO MOMENTO
+        hashtags_top = buscar_hashtags_mais_usadas(cursor)
 
-        # Busca dados do usuário
+        # BUSCA A INFORMAÇÃO DO USER
         cursor.execute("""
             SELECT nome, username, fotos_perfil, bio, foto_capa, perfil_publico,
                    comentarios_publicos, visibilidade_seguidores, tema, curtidas_publicas,
@@ -246,7 +281,7 @@ def recuperar_senha_logado_part3():
         """, (usuario_id,))
         usuario = cursor.fetchone()
 
-        # Preparar dados para o template
+        # PARA O HTML
         template_params = {
             'nome': usuario.get('nome'),
             'username': usuario.get('username'),
@@ -269,12 +304,11 @@ def recuperar_senha_logado_part3():
         if request.method == 'GET':
             return render_template('recuperar_senha_logado_part3.html', **template_params)
 
-        # Processar POST (alteração de senha)
         data = request.get_json() if request.is_json else request.form
         nova_senha = data.get('nova_senha')
         confirmar_senha = data.get('confirmar_senha')
 
-        # Validações
+        # VALIDAÇAO DO CAMPO DE SENHA
         if not nova_senha or not confirmar_senha:
             return jsonify({'success': False, 'error': 'Informe e confirme a nova senha.'}), 400
 
@@ -284,8 +318,10 @@ def recuperar_senha_logado_part3():
         if nova_senha != confirmar_senha:
             return jsonify({'success': False, 'error': 'As senhas não coincidem.'}), 400
 
-        # Atualiza a senha e invalida códigos antigos
-        cursor.execute("UPDATE users SET senha = %s WHERE id = %s", (nova_senha, usuario_id))
+        # ATUALIZA A SENHA E INVALIDA O CODIGO USADO
+        senha_hash = generate_password_hash(nova_senha)
+        cursor.execute("UPDATE users SET senha = %s WHERE id = %s", (senha_hash, usuario_id))
+        
         cursor.execute("""
             UPDATE recuperacao_senha 
             SET expirado_em = %s 

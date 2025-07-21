@@ -146,3 +146,99 @@ body.claro .swal2-textarea {
   color: #495057 !important;
   border: 2px solid #dee2e6 !important;
 }
+
+/* Label styling - left aligned */
+.texto-denuncia-comentario {
+  display: block;
+  text-align: left;
+  margin-bottom: 0.5rem;
+  color: var(--swal-texto-principal);
+  font-weight: 500;
+  width: 100%;
+}
+
+/* Form group styling */
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+  width: 100%; /* Ensure form group takes full width */
+}
+
+/* Select and textarea styling - now same width */
+.form-control {
+  display: block;
+  width: 100%; /* Changed from 90% to 100% */
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: var(--swal-fundo-escuro);
+  color: var(--swal-texto-principal);
+  border: 2px solid var(--swal-borda);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+body.claro .form-control {
+border: 1px solid var(--swal-roxo2);
+}
+body.escuro .form-control {
+border: 1px solid var(--swal-roxo);
+}
+/* Keep all other existing styles the same */
+/* Focus states */
+.form-control:focus {
+  border-color: var(--swal-roxo);
+  box-shadow: 0 0 0 3px rgba(167, 106, 182, 0.3);
+  outline: none;
+}
+
+/* Textarea specific styling */
+textarea.form-control {
+  min-height: 100px;
+}
+
+/* Character counter styling */
+.form-text.text-muted {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--swal-texto-secundario) !important;
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+/* Dropdown arrow styling */
+select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.5em;
+}
+
+/* Divider line above buttons */
+.linha-acima-botoes {
+  border-top: 1px solid var(--swal-borda);
+  margin: 20px 0;
+  padding-top: 15px;
+}
+
+/* Light theme adjustments */
+body.claro .texto-denuncia-comentario {
+  color: #495057;
+}
+
+body.claro .form-control {
+  background-color: #f8f9fa;
+  color: #495057;
+  border-color: #dee2e6;
+}
+
+body.claro .form-text.text-muted {
+  color: #6c757d !important;
+}
+
+
+
+body.claro .linha-acima-botoes {
+  border-top-color: #e0e0e0;
+}

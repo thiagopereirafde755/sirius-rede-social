@@ -1,72 +1,99 @@
-// Seleciona os elementos do DOM
-const fotoInput = document.getElementById('foto');
-const videoInput = document.getElementById('video');
-const previewContainer = document.getElementById('preview-container');
-const form = document.getElementById('form-enviar-mensagem');
+document.addEventListener("DOMContentLoaded", function () {
+    // Seleciona os elementos do DOM
+    const fotoInput = document.getElementById('foto');
+    const videoInput = document.getElementById('video');
+    const previewContainer = document.getElementById('preview-container');
+    const form = document.getElementById('form-enviar-mensagem');
 
-// Adiciona event listeners para os inputs de arquivo
-fotoInput.addEventListener('change', function(event) {
-    mostrarPreview(event.target.files[0]);
-});
+    // Função para mostrar alerta de erro com SweetAlert
+    function mostrarErro(titulo, texto) {
+        Swal.fire({
+            icon: 'error',
+            title: titulo,
+            text: texto,
+        });
+    }
 
-videoInput.addEventListener('change', function(event) {
-    mostrarPreview(event.target.files[0]);
-});
+    // Função para mostrar o preview da mídia selecionada
+    function mostrarPreview(file, tipoInput) {
+        previewContainer.innerHTML = '';
 
-// Função para mostrar o preview da mídia selecionada
-function mostrarPreview(file) {
-    // Limpa qualquer preview anterior
-    previewContainer.innerHTML = '';
-    
-    // Se um arquivo foi selecionado
-    if (file) {
-        // Mostra o container de preview
-        previewContainer.style.display = 'flex';
-        
-        const tipo = file.type;
-        const url = URL.createObjectURL(file);
+        if (file) {
+            // Valida tamanho do arquivo
+            if (file.type.startsWith('image/') && file.size > 10 * 1024 * 1024) {
+                mostrarErro('Arquivo muito grande', 'A imagem deve ter no máximo 10MB.');
+                if (tipoInput === 'foto') fotoInput.value = '';
+                if (tipoInput === 'video') videoInput.value = '';
+                previewContainer.style.display = 'none';
+                return;
+            }
+            if (file.type.startsWith('video/') && file.size > 20 * 1024 * 1024) {
+                mostrarErro('Arquivo muito grande', 'O vídeo deve ter no máximo 20MB.');
+                if (tipoInput === 'foto') fotoInput.value = '';
+                if (tipoInput === 'video') videoInput.value = '';
+                previewContainer.style.display = 'none';
+                return;
+            }
 
-        // Cria o wrapper do preview
-        const previewWrapper = document.createElement('div');
-        previewWrapper.classList.add('preview-wrapper');
+            // Mostra o container de preview
+            previewContainer.style.display = 'flex';
 
-        // Cria o botão para fechar o preview
-        const closeButton = document.createElement('button');
-        closeButton.innerHTML = '✖';
-        closeButton.classList.add('close-button');
-        closeButton.onclick = function() {
+            const url = URL.createObjectURL(file);
+
+            // Cria o wrapper do preview
+            const previewWrapper = document.createElement('div');
+            previewWrapper.classList.add('preview-wrapper');
+
+            // Cria o botão para fechar o preview
+            const closeButton = document.createElement('button');
+            closeButton.innerHTML = '✖';
+            closeButton.classList.add('close-button');
+            closeButton.type = 'button';
+            closeButton.title = 'Remover arquivo selecionado';
+            closeButton.onclick = function () {
+                previewContainer.innerHTML = '';
+                previewContainer.style.display = 'none';
+                fotoInput.value = '';
+                videoInput.value = '';
+            };
+
+            if (file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = url;
+                img.classList.add('preview-img');
+                previewWrapper.appendChild(img);
+            } else if (file.type.startsWith('video/')) {
+                const video = document.createElement('video');
+                video.src = url;
+                video.controls = true;
+                video.classList.add('preview-video');
+                previewWrapper.appendChild(video);
+            }
+
+            previewWrapper.appendChild(closeButton);
+            previewContainer.appendChild(previewWrapper);
+        } else {
+            previewContainer.style.display = 'none';
+        }
+    }
+
+    if (fotoInput) {
+        fotoInput.addEventListener('change', function (event) {
+            mostrarPreview(event.target.files[0], 'foto');
+        });
+    }
+    if (videoInput) {
+        videoInput.addEventListener('change', function (event) {
+            mostrarPreview(event.target.files[0], 'video');
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', function () {
             previewContainer.innerHTML = '';
             previewContainer.style.display = 'none';
             fotoInput.value = '';
             videoInput.value = '';
-        };
-
-        // Cria o elemento de mídia apropriado (imagem ou vídeo)
-        if (tipo.startsWith('image/')) {
-            const img = document.createElement('img');
-            img.src = url;
-            img.classList.add('preview-img');
-            previewWrapper.appendChild(img);
-        } else if (tipo.startsWith('video/')) {
-            const video = document.createElement('video');
-            video.src = url;
-            video.controls = true;
-            video.classList.add('preview-video');
-            previewWrapper.appendChild(video);
-        }
-
-        // Adiciona o botão de fechar e o wrapper ao container
-        previewWrapper.appendChild(closeButton);
-        previewContainer.appendChild(previewWrapper);
-    } else {
-        // Esconde o container se nenhum arquivo foi selecionado
-        previewContainer.style.display = 'none';
+        });
     }
-}
-
-// Limpa o preview quando o formulário é enviado
-form.addEventListener('submit', function() {
-    previewContainer.innerHTML = '';
-    previewContainer.style.display = 'none';
 });
-

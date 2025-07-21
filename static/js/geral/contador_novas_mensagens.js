@@ -1,19 +1,22 @@
-    function atualizarBadgeChat() {
+function atualizarBadgeChat() {
     $.ajax({
         url: "/api/nao_vistas",
         method: "GET",
         dataType: "json",
         cache: false,
-        success: function(data) {
+        success: function (data) {
             if (data.success && data.counts) {
                 let totalNaoVistas = 0;
+
+                // **garante que cada valor seja numérico**
                 for (let id in data.counts) {
-                    totalNaoVistas += data.counts[id];
+                    totalNaoVistas += Number(data.counts[id]);   
                 }
+
                 if (totalNaoVistas > 0) {
                     $("#badge-chat-notify")
-                      .text(totalNaoVistas > 99 ? "99+" : totalNaoVistas)
-                      .show();
+                        .text(totalNaoVistas > 99 ? "99+" : totalNaoVistas)
+                        .show();
                 } else {
                     $("#badge-chat-notify").hide();
                 }
@@ -21,7 +24,7 @@
                 $("#badge-chat-notify").hide();
             }
         },
-        error: function() {
+        error: function () {
             $("#badge-chat-notify").hide();
         }
     });

@@ -1,8 +1,10 @@
-from flask import Flask, render_template, session, request, redirect
-import os
+from flask import Flask, render_template, session, redirect
 from app.conexao import criar_conexao
-from datetime import datetime, timedelta
+from datetime import  timedelta
 import secrets
+
+from app.utils import formatar_numero_curto
+
 
 from app import (
     cadastrar,
@@ -15,11 +17,6 @@ from app import (
     chat,
     comentar,
     curtir,
-    alterar_bio,
-    alterar_nome,
-    alterar_user,
-    alterar_foto_perfil,
-    altera_capa_perfil,
     fazer_post,
     excluir_post,
     apagar_comentario,
@@ -36,10 +33,20 @@ from app import (
     vizualizar_post,
     confirmar_conta,
     recuperar_senha_nao_logado,
+    administrador,
+    denuncias,
+    republicar_post,
+    salvar_post,
+    post_republicado,
+    post_salvos,
+    central_ajuda,
+    editar_perfil,
 
 )
 
 app = Flask(__name__)
+
+app.jinja_env.filters['numcurto'] = formatar_numero_curto
 
 app.secret_key = secrets.token_hex(32)
 
@@ -62,11 +69,6 @@ blueprints = [
     chat.chat_bp,
     comentar.comentar_bp,
     curtir.curtir_bp,
-    alterar_bio.bio_bp,
-    alterar_nome.alteranome_bp,
-    alterar_user.alterauser_bp,
-    alterar_foto_perfil.alterar_foto_perfil_bp,
-    altera_capa_perfil.alterar_capa_bp,
     fazer_post.postagem_bp,
     excluir_post.excluir_post_bp,
     apagar_comentario.apagar_comentario_bp,
@@ -83,6 +85,14 @@ blueprints = [
     vizualizar_post.visualizacao_bp,
     confirmar_conta.confirmar_bp,
     recuperar_senha_nao_logado.recuperar_senha_bp,
+    administrador.administrador_bp,
+    denuncias.denuncia_bp,
+    republicar_post.republicar_bp,
+    salvar_post.salvar_bp,
+    post_republicado.republicado_post_bp,
+    post_salvos.salvo_post_bp,
+    central_ajuda.central_de_ajuda_bp,
+    editar_perfil.editar_perfil_bp
 ]
 
 for bp in blueprints:
@@ -94,8 +104,14 @@ def index():
         return redirect('/inicio')
     return render_template('index.html')
 
+@app.route('/adm')
+def pag_adm():
+    return render_template('login_adm.html')
+
 @app.route('/cadastro')
 def cadastro():
+    if 'usuario_id' in session:
+        return redirect('/inicio')
     return render_template('cadastro.html')
 
 @app.route('/inicio')

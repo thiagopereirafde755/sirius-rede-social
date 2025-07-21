@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request, flash, json, jsonify
-from werkzeug.utils import secure_filename
 from app.conexao import criar_conexao
-from datetime import datetime
+from app.utils import buscar_hashtags_mais_usadas
+from werkzeug.security import check_password_hash, generate_password_hash
 
 configuracao_bp = Blueprint('configuracao', __name__)
 
-
+# =============================================================
+#  PAGINA DE CONFIGURACAO
+# =============================================================
 @configuracao_bp.route('/configuracao')
 def configuracao():
     if 'usuario_id' not in session:
@@ -17,7 +19,6 @@ def configuracao():
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Busca todos os campos relevantes para configurações, incluindo modo_status
                 cursor.execute("""
                     SELECT nome, username, fotos_perfil, bio, foto_capa, perfil_publico, comentarios_publicos, visibilidade_seguidores, tema,
                            curtidas_publicas, audio_notificacoes, audio_notificacoes_mensagem, codigo_user, online, ultima_atividade, 
@@ -27,26 +28,59 @@ def configuracao():
                 """, (usuario_id,))
                 usuario = cursor.fetchone()
 
-                # Garante valores default para campos que podem ser None
+                # ESTATISTICA DO USUARIO
+                cursor.execute("""
+                    SELECT
+                        (SELECT COUNT(*) FROM posts WHERE users_id = %s) AS total_posts,
+                        (SELECT COUNT(*) FROM curtidas WHERE post_id IN (SELECT id FROM posts WHERE users_id = %s)) AS total_curtidas,
+                        (SELECT COUNT(*) FROM posts_republicados WHERE post_id IN (SELECT id FROM posts WHERE users_id = %s)) AS total_republicacoes,
+                        (SELECT COUNT(*) FROM posts_salvos WHERE post_id IN (SELECT id FROM posts WHERE users_id = %s)) AS total_salvos,
+                        (SELECT COUNT(*) FROM curtidas WHERE usuario_id = %s) AS total_posts_que_curti,
+                        (SELECT COUNT(*) FROM posts_republicados WHERE usuario_id = %s) AS total_posts_que_republiquei,
+                        (SELECT COUNT(*) FROM posts_salvos WHERE usuario_id = %s) AS total_posts_que_salvei,
+                        (SELECT COUNT(*) FROM comentarios WHERE post_id IN (SELECT id FROM posts WHERE users_id = %s)) AS total_comentarios,
+                        (SELECT COUNT(*) FROM visualizacoes WHERE post_id IN (SELECT id FROM posts WHERE users_id = %s)) AS total_visualizacoes,
+                        (SELECT COUNT(*) FROM comentarios WHERE usuario_id = %s) AS total_comentarios_feitos
+                """, (usuario_id, usuario_id, usuario_id, usuario_id,
+                    usuario_id, usuario_id, usuario_id, usuario_id,
+                    usuario_id, usuario_id))
+
+                estatisticas = cursor.fetchone()
+
                 if usuario:
                     nome_completo = usuario['nome']
                     nome_usuario = usuario['username']
                     foto_perfil = usuario['fotos_perfil'] if usuario['fotos_perfil'] else url_for('static', filename='img/icone/user.png')
                     bio_user = usuario['bio']
                     foto_capa = usuario['foto_capa'] if usuario['foto_capa'] else url_for('static', filename='img/icone/redes-sociais-capa-1.jpg')
-                    perfil_publico = usuario['perfil_publico'] if usuario['perfil_publico'] is not None else True
-                    comentarios_publicos = usuario['comentarios_publicos'] if usuario['comentarios_publicos'] is not None else True
+                    
+                    # PERFIL PUBLICO
+                    perfil_publico = bool(usuario['perfil_publico']) if usuario['perfil_publico'] is not None else True
+
+                    # COMENTARIO (PUBLICO, PRIVADO, AMIOS)
+                    comentarios_publicos = usuario['comentarios_publicos'] if usuario['comentarios_publicos'] is not None else 'todos'
+
                     visibilidade_seguidores = usuario['visibilidade_seguidores'] if usuario['visibilidade_seguidores'] else 'publico'
                     tema = usuario.get('tema', 'claro')
+
                     curtidas_publicas = usuario.get('curtidas_publicas')
                     if curtidas_publicas is None:
                         curtidas_publicas = True
+                    else:
+                        curtidas_publicas = bool(curtidas_publicas)
+
                     audio_notificacoes = usuario.get('audio_notificacoes')
                     if audio_notificacoes is None:
                         audio_notificacoes = True
+                    else:
+                        audio_notificacoes = bool(audio_notificacoes)
+
                     audio_notificacoes_mensagem = usuario.get('audio_notificacoes_mensagem')
                     if audio_notificacoes_mensagem is None:
                         audio_notificacoes_mensagem = True
+                    else:
+                        audio_notificacoes_mensagem = bool(audio_notificacoes_mensagem)
+
                     codigo_user = usuario.get('codigo_user')
                     online = usuario.get('online', 0)
                     ultima_atividade = usuario.get('ultima_atividade')
@@ -58,7 +92,7 @@ def configuracao():
                     bio_user = None
                     foto_capa = url_for('static', filename='img/icone/redes-sociais-capa-1.jpg')
                     perfil_publico = True
-                    comentarios_publicos = True
+                    comentarios_publicos = 'todos'
                     visibilidade_seguidores = 'publico'
                     tema = 'claro'
                     curtidas_publicas = True
@@ -69,47 +103,45 @@ def configuracao():
                     ultima_atividade = None
                     modo_status = 'normal'
 
-                # Buscar as 3 hashtags mais usadas nas últimas 10 horas
-                cursor.execute("""
-                    SELECT h.nome, COUNT(*) as total
-                    FROM hashtags h
-                    JOIN post_hashtags ph ON h.id = ph.hashtag_id
-                    JOIN posts p ON ph.post_id = p.id
-                    WHERE p.data_postagem >= NOW() - INTERVAL 10 HOUR
-                    GROUP BY h.id, h.nome
-                    ORDER BY total DESC
-                    LIMIT 3
-                """)
-                hashtags_top = cursor.fetchall()
+                # HASHTAG DO MOMENTO
+                hashtags_top = buscar_hashtags_mais_usadas(cursor)
 
             conexao.close()
 
-            return render_template('configuracao.html', 
-                                 nome=nome_completo, 
-                                 username=nome_usuario, 
-                                 foto_perfil=foto_perfil, 
-                                 bio=bio_user, 
-                                 foto_capa=foto_capa, 
-                                 perfil_publico=perfil_publico, 
-                                 comentarios_publicos=comentarios_publicos,
-                                 visibilidade_seguidores=visibilidade_seguidores,
-                                 tema=tema,
-                                 claro=(tema == 'claro'),
-                                 curtidas_publicas=curtidas_publicas,
-                                 audio_notificacoes=audio_notificacoes,
-                                 audio_notificacoes_mensagem=audio_notificacoes_mensagem,
-                                 codigo_user=codigo_user,
-                                 online=online,
-                                 ultima_atividade=ultima_atividade,
-                                 modo_status=modo_status,
-                                 hashtags_top=hashtags_top,
-                               )
+            return render_template('configuracao.html',
+                                   nome=nome_completo,
+                                   username=nome_usuario,
+                                   foto_perfil=foto_perfil,
+                                   bio=bio_user,
+                                   foto_capa=foto_capa,
+                                   perfil_publico=perfil_publico,
+                                   comentarios_publicos=comentarios_publicos,
+                                   visibilidade_seguidores=visibilidade_seguidores,
+                                   tema=tema,
+                                   claro=(tema == 'claro'),
+                                   curtidas_publicas=curtidas_publicas,
+                                   audio_notificacoes=audio_notificacoes,
+                                   audio_notificacoes_mensagem=audio_notificacoes_mensagem,
+                                   codigo_user=codigo_user,
+                                   online=online,
+                                   ultima_atividade=ultima_atividade,
+                                   modo_status=modo_status,
+    total_posts=estatisticas['total_posts'],
+    total_curtidas=estatisticas['total_curtidas'],
+    total_republicacoes=estatisticas['total_republicacoes'],
+    total_salvos=estatisticas['total_salvos'],
+    total_posts_que_curti=estatisticas['total_posts_que_curti'],
+    total_posts_que_republiquei=estatisticas['total_posts_que_republiquei'],
+    total_posts_que_salvei=estatisticas['total_posts_que_salvei'],
+    total_comentarios=estatisticas['total_comentarios'],
+    total_visualizacoes=estatisticas['total_visualizacoes'],
+    total_comentarios_feitos=estatisticas['total_comentarios_feitos'],
+                                   hashtags_top=hashtags_top)
         else:
             return "Erro na conexão com o banco de dados."
 
     except Exception as e:
         return f"Erro ao conectar ao banco de dados. Detalhes: {str(e)}"
-    
 # =============================================================
 #  MUDAR TEMA PARA CLARO OU ESCURO
 # =============================================================
@@ -121,7 +153,7 @@ def alterar_tema():
     try:
         data = request.get_json()
         usuario_id = session['usuario_id']
-        tema = data.get('tema', 'escuro')  # espera 'claro' ou 'escuro'
+        tema = data.get('tema', 'escuro')  
 
         conexao = criar_conexao()
         if conexao:
@@ -129,7 +161,6 @@ def alterar_tema():
                 cursor.execute("UPDATE users SET tema = %s WHERE id = %s", (tema, usuario_id))
                 conexao.commit()
             conexao.close()
-            # Adiciona a URL para redirecionamento no JSON
             return jsonify({
                 'message': 'Tema atualizado com sucesso!',
                 'tema': tema,
@@ -140,7 +171,6 @@ def alterar_tema():
 
     except Exception as e:
         return jsonify({'error': f'Erro ao atualizar tema. Detalhes: {str(e)}'}), 500
-
 # =============================================
 #  AQUI FAZ DEIXAR O PERFIL PUBLICO OU PRIVADO
 # =============================================   
@@ -156,9 +186,23 @@ def alterar_visibilidade():
 
         conexao = criar_conexao()
         if conexao:
-            with conexao.cursor() as cursor:
+            with conexao.cursor(dictionary=True) as cursor:
+
+                # PRIMEIRO BUSCAR O VALOR ATUAL
+                cursor.execute("SELECT perfil_publico FROM users WHERE id = %s", (usuario_id,))
+                resultado = cursor.fetchone()
+                perfil_publico_atual = resultado['perfil_publico'] if resultado else None
+
+                # ATUALIZA O CAMPO
                 cursor.execute("UPDATE users SET perfil_publico = %s WHERE id = %s", 
-                             (perfil_publico, usuario_id))
+                               (perfil_publico, usuario_id))
+                
+                # SE ESTAVA PRIVADO E FOI ARA PUBLICO APAGA OS PEDIDOS
+                if perfil_publico_atual == 0 and perfil_publico:
+                    cursor.execute("""
+                        DELETE FROM pedidos_seguir WHERE id_destino = %s
+                    """, (usuario_id,))
+
                 conexao.commit()
             conexao.close()
             
@@ -171,7 +215,6 @@ def alterar_visibilidade():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 # ==================================================
 #  AQUI FAZ DEIXAR OS COMENTARIOS PUBLICO OU PRIVADO
 # ==================================================
@@ -183,7 +226,10 @@ def alterar_visibilidade_comentarios():
     try:
         data = request.get_json()
         usuario_id = session['usuario_id']
-        comentarios_publicos = int(data.get('comentarios_publicos', 0))
+        comentarios_publicos = data.get('comentarios_publicos', 'todos') 
+
+        if comentarios_publicos not in ('todos', 'privado', 'seguidores_mutuos'):
+            return jsonify({'error': 'Valor inválido para comentarios_publicos'}), 400
 
         conexao = criar_conexao()
         if conexao:
@@ -201,7 +247,6 @@ def alterar_visibilidade_comentarios():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 # =============================================================
 #  PERMITI QUE O USUARIO POSSA VER O MODAL DE SEGUIDORES OU NAO
 # =============================================================
@@ -231,10 +276,9 @@ def alterar_visibilidade_seguidores():
 
     except Exception as e:
         return jsonify({'error': f'Erro ao atualizar a visibilidade dos seguidores. Detalhes: {str(e)}'}), 500
-
-# ==================
-# PESQUISAR USUARIOS
-# ==================
+# =============================================================
+#  PESQUISAR USUARIOS
+# =============================================================
 @configuracao_bp.route('/pesquisar_usuarios', methods=['POST'])
 def pesquisar_usuarios():
     if 'usuario_id' not in session:
@@ -247,7 +291,8 @@ def pesquisar_usuarios():
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Pesquisa usuários que correspondam ao termo (nome ou username)
+
+                # PESQUISAR USER
                 cursor.execute("""
                     SELECT id, nome, username, fotos_perfil 
                     FROM users 
@@ -257,7 +302,7 @@ def pesquisar_usuarios():
                 """, (f'%{termo}%', f'%{termo}%', usuario_id))
                 usuarios = cursor.fetchall()
 
-                # Verifica quais usuários já estão bloqueados
+                # VERIFICA QUAIS ESTAO BLOQUEADOS
                 cursor.execute("""
                     SELECT bloqueado_id 
                     FROM bloqueados 
@@ -276,10 +321,9 @@ def pesquisar_usuarios():
 
     except Exception as e:
         return json.dumps({'error': str(e)})
-
-# ==================
-#  BLOQUEAR USUARIOS
-# ==================
+# =============================================================
+#  BLOQUEAR USER
+# =============================================================
 @configuracao_bp.route('/bloquear_usuario', methods=['POST'])
 def bloquear_usuario():
     if 'usuario_id' not in session:
@@ -292,45 +336,71 @@ def bloquear_usuario():
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor() as cursor:
-                # Remove any following relationships in both directions
+                # REMOVER SE AMBOS SE SEGUEM
                 cursor.execute("""
                     DELETE FROM seguindo 
                     WHERE (id_seguidor = %s AND id_seguindo = %s)
                     OR (id_seguidor = %s AND id_seguindo = %s)
                 """, (usuario_id, bloqueado_id, bloqueado_id, usuario_id))
 
-                                # Remove curtidas que VOCÊ deu nos posts dele
+                # REMOVE CURTIDAS QUE EU DEI NOS POSTS DELE
                 cursor.execute("""
                     DELETE c FROM curtidas c
                     JOIN posts p ON c.post_id = p.id
                     WHERE c.usuario_id = %s AND p.users_id = %s
                 """, (usuario_id, bloqueado_id))
 
-                # Remove curtidas que ELE deu nos seus posts
+                # REMOVE CURTIDAS QUE ELE DEU NOS MEUS POSTS
                 cursor.execute("""
                     DELETE c FROM curtidas c
                     JOIN posts p ON c.post_id = p.id
                     WHERE c.usuario_id = %s AND p.users_id = %s
                 """, (bloqueado_id, usuario_id))
-                                
-                # Add to blocked list
+
+                # REMOVE REPUBLICAÇÕES FEITAS POR MIM DOS POSTS DELE
+                cursor.execute("""
+                    DELETE pr FROM posts_republicados pr
+                    JOIN posts p ON pr.post_id = p.id
+                    WHERE pr.usuario_id = %s AND p.users_id = %s
+                """, (usuario_id, bloqueado_id))
+
+                # REMOVE REPUBLICAÇÕES QUE ELE FEZ DOS MEUS POSTS
+                cursor.execute("""
+                    DELETE pr FROM posts_republicados pr
+                    JOIN posts p ON pr.post_id = p.id
+                    WHERE pr.usuario_id = %s AND p.users_id = %s
+                """, (bloqueado_id, usuario_id))
+
+                # REMOVE SALVOS FEITOS POR MIM DOS POSTS DELE
+                cursor.execute("""
+                    DELETE ps FROM posts_salvos ps
+                    JOIN posts p ON ps.post_id = p.id
+                    WHERE ps.usuario_id = %s AND p.users_id = %s
+                """, (usuario_id, bloqueado_id))
+
+                # REMOVE SALVOS QUE ELE FEZ DOS MEUS POSTS
+                cursor.execute("""
+                    DELETE ps FROM posts_salvos ps
+                    JOIN posts p ON ps.post_id = p.id
+                    WHERE ps.usuario_id = %s AND p.users_id = %s
+                """, (bloqueado_id, usuario_id))
+
+                # ADICIONA À LISTA DE BLOQUEADOS
                 cursor.execute("""
                     INSERT INTO bloqueados (usuario_id, bloqueado_id) 
                     VALUES (%s, %s)
                 """, (usuario_id, bloqueado_id))
-                
+
                 conexao.commit()
             conexao.close()
             return json.dumps({'success': True})
         else:
             return json.dumps({'error': 'Erro na conexão com o banco de dados'})
-
     except Exception as e:
         return json.dumps({'error': str(e)})
-
-# ==================
-#  BLOQUEAR USUARIOS
-# ==================   
+# =============================================================
+#  BLOQUEAR USER VIA POST
+# =============================================================
 @configuracao_bp.route('/bloquear_usuario_via_post', methods=['POST'])
 def bloquear_usuario_via_post():
     if 'usuario_id' not in session:
@@ -344,32 +414,62 @@ def bloquear_usuario_via_post():
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor() as cursor:
-                # Remove relações de seguir em ambas as direções
+
+                # REMOVE SE ALGUEM SE SEGUI
                 cursor.execute("""
                     DELETE FROM seguindo 
                     WHERE (id_seguidor = %s AND id_seguindo = %s)
                     OR (id_seguidor = %s AND id_seguindo = %s)
                 """, (usuario_id, bloqueado_id, bloqueado_id, usuario_id))
 
+                # REMOVE AS CURTIDAS QUE EU DEI NO POST DELE
                 cursor.execute("""
                     DELETE c FROM curtidas c
                     JOIN posts p ON c.post_id = p.id
                     WHERE c.usuario_id = %s AND p.users_id = %s
                 """, (usuario_id, bloqueado_id))
 
-                # Remove curtidas que ELE deu nos seus posts
+                # REMOVE AS CURTIDAS QUE ELE DEU NO MEU POST
                 cursor.execute("""
                     DELETE c FROM curtidas c
                     JOIN posts p ON c.post_id = p.id
                     WHERE c.usuario_id = %s AND p.users_id = %s
                 """, (bloqueado_id, usuario_id))
-                
-                # Adiciona à lista de bloqueados
+
+                # REMOVE AS REPUBLICAÇOES DELE DOS MEU POST
+                cursor.execute("""
+                    DELETE pr FROM posts_republicados pr
+                    JOIN posts p ON pr.post_id = p.id
+                    WHERE pr.usuario_id = %s AND p.users_id = %s
+                """, (bloqueado_id, usuario_id))
+
+                # REMOVE AS REPUBLICAÇOES QUE EU FIZ DO POST DELE
+                cursor.execute("""
+                    DELETE pr FROM posts_republicados pr
+                    JOIN posts p ON pr.post_id = p.id
+                    WHERE pr.usuario_id = %s AND p.users_id = %s
+                """, (usuario_id, bloqueado_id))
+
+                # REMOVE OS SALVOS QUE EU FIZ NO POST DELE
+                cursor.execute("""
+                    DELETE ps FROM posts_salvos ps
+                    JOIN posts p ON ps.post_id = p.id
+                    WHERE ps.usuario_id = %s AND p.users_id = %s
+                """, (usuario_id, bloqueado_id))
+
+                # REMOVE OS SALVOS QU ELE FEZ NO MEU POST
+                cursor.execute("""
+                    DELETE ps FROM posts_salvos ps
+                    JOIN posts p ON ps.post_id = p.id
+                    WHERE ps.usuario_id = %s AND p.users_id = %s
+                """, (bloqueado_id, usuario_id))
+
+                # ADICIONA A LISTA DE BLOQUEADOS
                 cursor.execute("""
                     INSERT INTO bloqueados (usuario_id, bloqueado_id) 
                     VALUES (%s, %s)
                 """, (usuario_id, bloqueado_id))
-                
+
                 conexao.commit()
             conexao.close()
             flash('Usuário bloqueado com sucesso!', 'success')
@@ -381,10 +481,9 @@ def bloquear_usuario_via_post():
 
     next_url = request.form.get('next') or request.referrer or url_for('home.home')
     return redirect(next_url)
-
-# =====================
-#  DESBLOQUEAR USUARIOS
-# =====================
+# =============================================================
+#  DESBLOQUEAR USUARIO
+# =============================================================
 @configuracao_bp.route('/desbloquear_usuario', methods=['POST'])
 def desbloquear_usuario():
     if 'usuario_id' not in session:
@@ -409,10 +508,9 @@ def desbloquear_usuario():
 
     except Exception as e:
         return json.dumps({'error': str(e)})
-
-# =====================
-#  DESBLOQUEAR USUARIOS
-# =====================
+# =============================================================
+#  DESBLOQUEAR USUARIO PELO PERFIL
+# =============================================================
 @configuracao_bp.route('/desbloquear_usuario_via_perfil', methods=['POST'])
 def desbloquear_usuario_via_perfil():
     if 'usuario_id' not in session:
@@ -437,12 +535,10 @@ def desbloquear_usuario_via_perfil():
     except Exception as e:
         flash(f'Erro ao desbloquear usuário: {str(e)}', 'error')
 
-    # Redireciona de volta para o perfil do usuário desbloqueado
     return redirect(url_for('info_user.info_user', id_usuario=bloqueado_id))
-
-# =============================
+# =============================================================
 #  LISTA DE USUARIOS BLOQUEADOS
-# =============================
+# =============================================================
 @configuracao_bp.route('/listar_bloqueados')
 def listar_bloqueados():
     if 'usuario_id' not in session:
@@ -472,10 +568,9 @@ def listar_bloqueados():
 
     except Exception as e:
         return json.dumps({'error': str(e)})
-    
-# ===============================================
-#  ALTERA SE AS CURTIDAS SÃO PÚBLICAS OU PRIVADAS
-# ===============================================
+# =============================================================
+#  DEIXA O MODAL DE CURTIDAS PUBLICOS OU PRIVADOS
+# =============================================================
 @configuracao_bp.route('/alterar_curtidas_publicas', methods=['POST'])
 def alterar_curtidas_publicas():
     if 'usuario_id' not in session:
@@ -502,7 +597,6 @@ def alterar_curtidas_publicas():
 
     except Exception as e:
         return jsonify({'error': f'Erro ao atualizar curtidas. Detalhes: {str(e)}'}), 500
-    
 # =========================================================================
 #  PERMITI OU NAO O SOM DE NOTIFICAÇÃO DE NOVA MENSAGEM QUANDO ESTA NO CHAT
 # ==========================================================================
@@ -513,8 +607,8 @@ def alterar_audio_notificacoes_mensagem():
     try:
         data = request.get_json()
         usuario_id = session['usuario_id']
-        valor = data.get('audio_notificacoes_mensagem', 'ativado')  # espera 'ativado' ou 'desativado'
-        audio_notificacoes_mensagem = valor == 'ativado'  # True se 'ativado', False caso contrário
+        valor = data.get('audio_notificacoes_mensagem', 'ativado') 
+        audio_notificacoes_mensagem = valor == 'ativado'  
 
         conexao = criar_conexao()
         if conexao:
@@ -533,10 +627,9 @@ def alterar_audio_notificacoes_mensagem():
             return jsonify({'error': 'Erro na conexão com o banco de dados.'}), 500
     except Exception as e:
         return jsonify({'error': f'Erro ao atualizar notificações de áudio para mensagens. Detalhes: {str(e)}'}), 500
-    
-# =====================================================
-#  PERMITI QUE USUARIO DEIXE O STATUS ON/OFF OU AUSENTE
-# =====================================================
+# =============================================================
+#  PERMITIR QUE O USER DEIXA O STATUS ON/OFF OU AUSENTE
+# =============================================================
 @configuracao_bp.route('/alterar_modo_status', methods=['POST'])
 def alterar_modo_status():
     if 'usuario_id' not in session:
@@ -571,42 +664,102 @@ def alterar_senha():
         nova_senha = data.get('nova_senha')
         confirmar_senha = data.get('confirmar_senha')
 
-        # Validações básicas
         if not all([senha_atual, nova_senha, confirmar_senha]):
             return jsonify({'success': False, 'message': 'Todos os campos são obrigatórios'}), 400
 
         if nova_senha != confirmar_senha:
             return jsonify({'success': False, 'message': 'As novas senhas não coincidem'}), 400
 
+        if len(nova_senha) < 6:
+            return jsonify({'success': False, 'message': 'A nova senha deve ter no mínimo 6 caracteres'}), 400
+
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Verifica a senha atual (sem hash)
                 cursor.execute("SELECT senha FROM users WHERE id = %s", (usuario_id,))
                 usuario = cursor.fetchone()
 
                 if not usuario:
                     return jsonify({'success': False, 'message': 'Usuário não encontrado'}), 404
 
-                # Comparação direta da senha (sem hash)
-                if senha_atual != usuario['senha']:
+                if not check_password_hash(usuario['senha'], senha_atual):
                     return jsonify({'success': False, 'message': 'Senha atual incorreta'}), 401
 
-                # Atualiza a senha (sem hash)
+                nova_hash = generate_password_hash(nova_senha)
                 cursor.execute("UPDATE users SET senha = %s WHERE id = %s", 
-                             (nova_senha, usuario_id))
+                               (nova_hash, usuario_id))
                 conexao.commit()
-            
+
             conexao.close()
-            return jsonify({
-                'success': True,
-                'message': 'Senha alterada com sucesso!'
-            })
+            return jsonify({'success': True, 'message': 'Senha alterada com sucesso!'})
+
         else:
             return jsonify({'success': False, 'message': 'Erro na conexão com o banco de dados'}), 500
 
     except Exception as e:
-        return jsonify({
-            'success': False,
-            'message': f'Erro ao alterar senha: {str(e)}'
-        }), 500
+        return jsonify({'success': False, 'message': f'Erro ao alterar senha: {str(e)}'}), 500
+# =============================================================
+#  APAGAR CONTA
+# =============================================================
+@configuracao_bp.route('/excluir_conta', methods=['POST'])
+def excluir_conta():
+    if 'usuario_id' not in session:
+        return jsonify(success=False, message="Usuário não autenticado."), 401
+
+    usuario_id = session['usuario_id']
+    dados = request.get_json()
+    if dados:
+        senha = dados.get('senha')
+        confirmar_senha = dados.get('confirmarSenhaExcluir')
+    else:
+        senha = request.form.get('senha')
+        confirmar_senha = request.form.get('confirmarSenhaExcluir')
+
+    if not senha or not confirmar_senha:
+        return jsonify(success=False, message="Preencha todos os campos de senha."), 400
+
+    if senha != confirmar_senha:
+        return jsonify(success=False, message="As senhas não coincidem."), 400
+
+    try:
+        conexao = criar_conexao()
+        with conexao.cursor(dictionary=True) as cursor:
+            cursor.execute("SELECT senha FROM users WHERE id = %s", (usuario_id,))
+            user = cursor.fetchone()
+            
+            if not user or not check_password_hash(user['senha'], senha):
+                return jsonify(success=False, message="Senha incorreta."), 400
+
+            tabelas_colunas = {
+                'comentario_mencoes': ['user_mencionado_id'],
+                'comentarios': ['usuario_id'],
+                'curtidas': ['usuario_id'],
+                'mensagens': ['id_remetente', 'id_destinatario'],
+                'notificacoes': ['usuario_id', 'origem_usuario_id'],
+                'pedidos_seguir': ['id_solicitante', 'id_destino'],
+                'historico_pesquisa_procurar_usuarios': ['usuario_id', 'usuario_pesquisado_id'],
+                'post_mencoes': ['user_mencionado_id'],
+                'posts_republicados': ['usuario_id'],
+                'posts_salvos': ['usuario_id'],
+                'posts': ['users_id'],
+                'seguindo': ['id_seguidor', 'id_seguindo']
+            }
+
+            # Deleta registros relacionados ao usuário
+            for tabela, colunas in tabelas_colunas.items():
+                for coluna in colunas:
+                    try:
+                        cursor.execute(f"DELETE FROM {tabela} WHERE {coluna} = %s", (usuario_id,))
+                    except Exception as e:
+                        print(f"Erro ao deletar {tabela}.{coluna}: {e}")
+
+            # Deleta o próprio usuário
+            cursor.execute("DELETE FROM users WHERE id = %s", (usuario_id,))
+            conexao.commit()
+
+            session.clear()
+            return jsonify(success=True, message="Sua conta foi excluída com sucesso.")
+
+    except Exception as e:
+        print("Erro ao excluir conta:", e)
+        return jsonify(success=False, message="Erro interno ao excluir a conta."), 500

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Senha - Central de Ajuda</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/css/central_ajuda.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Conteúdo principal -->
+        <div class="main-content">
+
+            <div class="header">
+                <div class="header-content">
+                    <a href="/central_ajuda" class="back-button">
+                        <i class='bx bx-arrow-back'></i>
+                        Voltar
+                    </a>
+                    <h1>Alterar Senha</h1>
+                </div>
+            </div>
+
+            <div class="guide-container">
+                <h2 class="guide-title">Como atualizar sua senha de acesso</h2>
+                
+                <div class="password-section">
+                    <h3 class="section-title"><i class='bx bx-key'></i> Alteração de Senha</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Mudar senha conhecendo a atual</h3>
+                            <p class="step-description">
+                                Se você sabe sua senha atual:
+                            </p>
+                            <ol class="step-list">
+                                <li>Acesse "Configurações" > "Conta" > "Alterar senha"</li>
+                                <li>Digite sua senha atual no campo indicado</li>
+                                <li>Crie uma nova senha seguindo os requisitos</li>
+                                <li>Confirme a nova senha digitando novamente</li>
+                                <li>Clique em "Salvar alterações"</li>
+                            </ol>
+                            <img src="../static/img/print/alterarsenha1.png" alt="Alterar senha" class="step-image">
+                        </div>
+                    </div>
+                    
+                    <div class="password-requirements">
+                        <h3><i class='bx bx-check-shield'></i> Requisitos para senha</h3>
+                        <ul>
+                            <li>Mínimo de 6 caracteres</li>
+                            <li>Não pode ser similar à senha anterior</li>
+                            <li>Recomendado não conter informações pessoais óbvias</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="helpful-links">
+                    <h3>Perguntas Frequentes</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="faq-item" data-mensagem="Você pode alterar sua senha quantas vezes quiser. Recomendamos trocar periodicamente para manter sua conta segura.">
+                                <i class='bx bx-question-mark'></i>
+                                Quantas vezes posso alterar minha senha?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="faq-item" data-mensagem="Se você acredita que sua conta foi invadida, altere sua senha imediatamente e entre em contato com o suporte para garantir a segurança da conta.">
+                                <i class='bx bx-question-mark'></i>
+                                O que fazer se minha conta foi invadida?
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="contact-support">
+                    <h3>Problemas para alterar sua senha?</h3>
+                    <p>Se você está com dificuldades ou suspeita de acesso não autorizado:</p>
+                    <div class="contact-options">
+                        <a target="_blank" href="https://mail.google.com/mail/?view=cm&fs=1&to=siriusnetworkmedia@gmail.com" class="contact-button">
+                            <i class='bx bx-envelope'></i> Enviar e-mail
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Sobre Nós</h3>
+                <p>Sirius é uma plataforma social criada para conectar pessoas e compartilhar momentos especiais. Nossa missão é proporcionar uma experiência segura e agradável para todos os usuários.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a target="_blank" href="/termos-de-uso">Termos de Uso</a></li>
+                    <li><a target="_blank" href="/politica-de-privacidade">Política de Privacidade</a></li>
+                    <li><a target="_blank"  href="/central_ajuda/suporte">Suporte</a></li>
+                    <li><a target="_blank" href="/sobre_nos">Sobre nós</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Política de Privacidade</h3>
+                <p>Respeitamos sua privacidade. Todas as informações coletadas são usadas para melhorar sua experiência e não são compartilhadas com terceiros sem seu consentimento.</p>
+                <a target="_blank" href="/politica-de-privacidade" class="privacy-link">Leia nossa política completa</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sirius Social Network. Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a target="_blank" href="/cookies">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script src="../static/js/central_ajuda/centra_ajuda_info.js"></script>
+
+</body>
+</html>

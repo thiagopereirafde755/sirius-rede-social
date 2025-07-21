@@ -1,12 +1,11 @@
-import os
-from flask import Blueprint, render_template, redirect, url_for, session, request, flash, jsonify
-from werkzeug.utils import secure_filename
+from flask import Blueprint, url_for, session, request, jsonify
 from app.conexao import criar_conexao
-from datetime import datetime
-from markupsafe import Markup
 
 mencao_comentario_post_bp = Blueprint('mencao_comentario_post', __name__)
 
+# =============================================================
+#  BUSCA OS USUARIOS
+# =============================================================
 @mencao_comentario_post_bp.route('/buscar_usuarios')
 def buscar_usuarios():
     if 'usuario_id' not in session:
@@ -19,14 +18,16 @@ def buscar_usuarios():
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Descobre se o usuário logado é privado
+                
+                # PARA SABER SE O USER LOGADO E PRIVADO
                 cursor.execute("SELECT perfil_publico FROM users WHERE id = %s", (usuario_id,))
                 me_privado = cursor.fetchone()
                 me_privado = me_privado and me_privado['perfil_publico'] == 0
 
                 params = []
                 if me_privado:
-                    # Só aparece quem EU sigo
+
+                    # SO APARECE QUE ME SEGUI
                     query = """
                         SELECT u.id, u.username, u.fotos_perfil
                         FROM users u
@@ -42,7 +43,8 @@ def buscar_usuarios():
                     """
                     params = [usuario_id, usuario_id, f"%{search_term}%", usuario_id, usuario_id]
                 else:
-                    # Se o outro user é privado, só aparece se EU sigo
+
+                    # SE O OUTRO USER E PRIVADO SO QUE EU SIGO
                     query = """
                         SELECT u.id, u.username, u.fotos_perfil
                         FROM users u

@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="../static/css/modais.css">
     <link rel="stylesheet" href="../static/css/layout-perfil.css">
     <link rel="stylesheet" href="../static/css/area-da-postagem.css">
-    <link rel="stylesheet" href="../static/css/recorte-de-foto.css">
+    <link rel="stylesheet" href="../static/css/loading.css">
     <!-- CSS DO BOOTSTRAP -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <!-- BIBLIOTECAS -->
@@ -44,10 +44,13 @@
     <!-- CAROUSEL CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="{{ tema }}">
+
+    <!-- TELA DE CARREGAMENTO -->
+    <div id="loadingScreen">
+        <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
+    </div>
 
     <!-- CABEÇALHO MOBILE -->    
     <div class="pesquisa-para-mobile">
@@ -76,199 +79,223 @@
             </form>
         </div>
 
-    <!-- OPÇOES NA PARTE INFERIOR DO MOBILE -->
-    <div class="mobile-header-icons">
+        <!-- OPÇOES NA PARTE INFERIOR DO MOBILE -->
+        <div class="mobile-header-icons">
 
-        <!-- MINHA FOTO -->
-        <div class="minha-foto-mobile">
-            <a href="/inicio">
-                <img src="{{foto_perfil_logado}}" id="foto-mobile-header" alt="my-photo">
+            <!-- MINHA FOTO -->
+            <div class="minha-foto-mobile">
+                <a href="/inicio">
+                    <img src="{{foto_perfil_logado}}" id="foto-mobile-header" alt="my-photo">
+                </a>
+            </div>
+        
+            <!-- EXPLORAR -->
+            <a href="/home">
+                <div class="opcao-mobile">
+                    <i class='bx bxs-home'></i>
+                </div>
+            </a>  
+                
+            <!-- CHAT -->
+            <a href="/chat">
+                <div class="opcao-mobile">
+                    <i class='bx bxs-chat'></i>
+                </div>
+            </a>
+
+            <!-- VIDEOS -->
+            <a href="/post-video">
+                <div class="opcao-mobile">
+                    <i class='bx bxs-videos'></i>
+                </div>
+            </a>
+
+            <!-- NOTIFICAÇÃO -->
+            <a href="/notificacoes">
+                <div class="opcao-mobile">
+                    <i class='bx bxs-bell' ></i>
+                </div>
+            </a>
+        
+            <!-- MENU -->
+            <div class="opcao-mobile1">
+                <i class='bx bx-menu'></i>
+            </div>
+
+        </div>
+        
+        <!-- OPÇOES DO HEADER -->
+        <div class="mainMenu">
+
+            <!-- EXPLORAR -->
+            <a href="/home">
+                <div class="svg ">
+                    <i class='bx bxs-home'></i>
+                </div>
+            </a>
+
+            <!-- SEGUINDO -->
+            <a href="/post-seguindo">
+                <div class="svg">
+                    <i class='bx bxs-user'></i>
+                </div>
+            </a>
+
+            <!-- VIDEOS -->
+            <a href="/post-video">
+                <div class="svg">
+                    <i class='bx bxs-videos'></i>
+                </div>
+            </a>
+
+            <!-- CURTIDOS -->
+            <a href="/post-curtidos">
+                <div class="svg">
+                    <i class='bx bxs-heart'></i>
+                </div>
             </a>
         </div>
-    
-        <!-- EXPLORAR -->
-        <div class="opcao-mobile">
-            <i class='bx bxs-home'></i>
-        </div>
-            
-        <!-- CHAT -->
-        <a href="/chat">
-            <div class="opcao-mobile">
-                <i class='bx bxs-chat'></i>
-            </div>
-        </a>
 
-        <!-- VIDEOS -->
-        <div class="opcao-mobile">
-            <i class='bx bxs-videos'></i>
-        </div>
-
-        <!-- NOTIFICAÇÃO -->
-        <div class="opcao-mobile">
-            <i class='bx bxs-bell' ></i>
-        </div>
-    
-        <!-- MENU -->
-        <div class="opcao-mobile1">
-            <i class='bx bx-menu'></i>
-        </div>
-    </div>
-        
-    <!-- OPÇOES DO HEADER -->
-    <div class="mainMenu">
-
-        <!-- EXPLORAR -->
-        <a href="/home">
-            <div class="svg ">
-                <i class='bx bxs-home'></i>
-            </div>
-        </a>
-
-        <!-- SEGUINDO -->
-        <a href="/post-seguindo">
-            <div class="svg">
-                <i class='bx bxs-user'></i>
-            </div>
-        </a>
-
-        <!-- VIDEOS -->
-        <a href="/post-video">
-            <div class="svg">
-                <i class='bx bxs-videos'></i>
-            </div>
-        </a>
-
-        <!-- CURTIDOS -->
-        <a href="/post-curtidos">
-            <div class="svg">
-                <i class='bx bxs-heart'></i>
-            </div>
-        </a>
-    </div>
-
-    <!-- PERFIL -->
-    <a href="/inicio">
-        <div class="profileTools">
+        <!-- PERFIL -->
+        <a href="/inicio">
+            <div class="profileTools">
             <div class="profile ">
                 <div class="img" style="background-image: url('{{foto_perfil_logado}}');"></div>
-                    <div class="username">Perfil</div>
-        </div>
-    </a>
-
-    <div class="tools">
-
-        <!-- NOTIFICAÇOES -->
-        <div class="svg">
-            <i class='bx bxs-bell'></i>
-        </div>
-
-        <!-- CHAT -->
-        <a href="/chat">
-        <div class="svg">
-            <i class='bx bxs-chat'></i>
-        </div>
-        </a>
-    
-        <!-- CONFIGURAÇOES -->
-        <a href="/configuracao">
-        <div class="svg">
-            <i class='bx bxs-cog'></i>
-        </div>
+                <div class="username">Perfil</div>
+            </div>
         </a>
 
-    </div>
-</div>
-</header>
+        <div class="tools">
 
-<!-- MENU ESQUERDO DE OPÇOES -->
-<div class="sidebar-esquerdo">
-    <div class="aside-esquerdo-mobile">
+            <!-- NOTIFICAÇOES -->
+            <a href="/notificacoes">
+                <div class="svg">
+                    <i class='bx bxs-bell'></i>
+                </div>
+            </a>
 
-        <!-- EXPLORAR -->
-        <a href="/home">  
-        <div class="globalProfile ">
-            <i class='bx bxs-home'></i>
-            <div class="name">Explorar</div>
-        </div>
-        </a>
-
-        <!-- SEGUINDO -->
-        <a href="/post-seguindo">
-        <div class="globalProfile">
-            <i class='bx bxs-user'></i>
-        <div class="name">Seguindo</div>
-        </div>
-        </a>
+            <!-- CHAT -->
+            <a href="/chat">
+                <div class="svg">
+                    <i class='bx bxs-chat'></i>
+                </div>
+            </a>
         
-        <!-- VIDEOS -->
-        <a href="/post-video">
-        <div class="globalProfile">
-            <i class='bx bxs-videos'></i>
-        <div class="name">Videos</div>
-        </div>
-        </a>
+            <!-- CONFIGURAÇOES -->
+            <a href="/configuracao">
+                <div class="svg">
+                    <i class='bx bxs-cog'></i>
+                </div>
+            </a>
 
-        <!-- CURTIDAS -->
-        <a href="/post-curtidos">
-        <div class="globalProfile">
-            <i class='bx bxs-heart'></i>
-        <div class="name">Curtidas</div>
         </div>
-        </a>
-        
-        <!-- PROCURAR USER -->
-        <a href="/procurar-user">
-        <div class="globalProfile">
-            <i class='bx bxs-user-plus'></i>
-        <div class="name">Procurar</div>
-        </div>
-        </a>
+    </header>
 
-        <!-- CHAT -->
-        <a href="/chat">
-        <div class="globalProfile" style="position:relative;">
-            <i class='bx bxs-chat'></i>
-            <div class="name">Mensagem</div>
-            <span class="badge-nao-vistas" id="badge-chat-notify">0</span>
-        </div>
-        </a>
+    <!-- MENU ESQUERDO DE OPÇOES -->
+    <div class="sidebar-esquerdo">
+        <div class="aside-esquerdo-mobile">
 
-        <!-- MEU PERFIL -->
-        <a href="/inicio">
-        <div class="globalProfile">
-            <i class='bx bxs-user'></i>
-        <div class="name">Perfil</div>
-        </div>
-        </a>
+            <!-- EXPLORAR -->
+            <a href="/home">  
+                <div class="globalProfile ">
+                    <i class='bx bxs-home'></i>
+                    <div class="name">Explorar</div>
+                </div>
+            </a>
 
-        <!-- NOTIFICAÇÃO -->
-        <a href="/notificacoes">
-        <div class="globalProfile">
-            <i class='bx bxs-bell'></i>
-        <div class="name">Notificação</div>
-        <span class="badge-nao-vistas" id="badge-notificacao-notify">0</span>
-        </div>
-         </a>
+            <!-- SEGUINDO -->
+            <a href="/post-seguindo">
+                <div class="globalProfile">
+                    <i class='bx bxs-user'></i>
+                <div class="name">Seguindo</div>
+                </div>
+            </a>
+            
+            <!-- VIDEOS -->
+            <a href="/post-video">
+                <div class="globalProfile">
+                    <i class='bx bxs-videos'></i>
+                <div class="name">Videos</div>
+                </div>
+            </a>
 
-        <!-- CONFIGURAÇÃO -->
-        <a href="/configuracao">
-        <div class="globalProfile ">
-            <i class='bx bxs-cog'></i>
-        <div class="name">Configuração</div>
-        </div>
-        </a>
+            <!-- CURTIDAS -->
+            <a href="/post-curtidos">
+                <div class="globalProfile">
+                    <i class='bx bxs-heart'></i>
+                <div class="name">Curtidas</div>
+                </div>
+            </a>
 
-        <!-- SAIR DA CONTA -->
-        <div class="globalProfile">
-            <i class='bx bx-log-out'></i>
-        <div class="name">Sair</div>
+            <!-- REPUBLICADO -->
+            <a href="/post-republicados">
+                <div class="globalProfile">
+                    <i class='bx bx-repost'></i>
+                    <div class="name">Republicados</div>
+                </div>
+            </a>
+
+            <!-- SALVO -->
+            <a href="/post-salvo">
+                <div class="globalProfile">
+                    <i class='bx bxs-bookmark'></i>
+                    <div class="name">Salvo</div>
+                </div>
+            </a>
+            
+            <!-- PROCURAR USER -->
+            <a href="/procurar-user">
+                <div class="globalProfile">
+                    <i class='bx bxs-user-plus'></i>
+                    <div class="name">Procurar</div>
+                </div>
+            </a>
+
+            <!-- CHAT -->
+            <a href="/chat">
+                <div class="globalProfile" style="position:relative;">
+                    <i class='bx bxs-chat'></i>
+                    <div class="name">Mensagem</div>
+                    <span class="badge-nao-vistas" id="badge-chat-notify">0</span>
+                </div>
+            </a>
+
+            <!-- MEU PERFIL -->
+            <a href="/inicio">
+                <div class="globalProfile">
+                    <i class='bx bxs-user'></i>
+                    <div class="name">Perfil</div>
+                </div>
+            </a>
+
+            <!-- NOTIFICAÇÃO -->
+            <a href="/notificacoes">
+                <div class="globalProfile">
+                    <i class='bx bxs-bell'></i>
+                    <div class="name">Notificação</div>
+                    <span class="badge-nao-vistas" id="badge-notificacao-notify">0</span>
+                </div>
+            </a>
+
+            <!-- CONFIGURAÇÃO -->
+            <a href="/configuracao">
+                <div class="globalProfile ">
+                    <i class='bx bxs-cog'></i>
+                    <div class="name">Configuração</div>
+                </div>
+            </a>
+
+            <!-- SAIR DA CONTA -->
+            <a href="#" id="logout-link">
+                <div class="globalProfile">
+                    <i class='bx bx-log-out'></i>
+                    <div class="name">Sair</div>
+                </div>
+            </a>
         </div>
     </div>
-</div>
  
-
-
-<!-- ASIDEBAR DIREITO DESKTOP -->
+    <!-- ASIDEBAR DIREITO DESKTOP -->
     <div class="sideBarContainer">
         <div class="sidebar left"></div>
         <div class="sidebar right">
@@ -296,9 +323,8 @@
                         {% for hashtag in hashtags_top %}
                             <a href="/pesquisar?query={{ hashtag.nome|urlencode }}" class="hashtag-btn" >
                                 <span class="hashtag-nome">
-  <span class="hashtag-nome-truncado" title="{{ hashtag.nome }}">{{ hashtag.nome }}</span> - {{ hashtag.total }}
-</span>
-
+                                    <span class="hashtag-nome-truncado" title="{{ hashtag.nome }}">{{ hashtag.nome }}</span> - {{ hashtag.total | numcurto }}
+                                </span>
                             </a>
                         {% endfor %}
                     </div>
@@ -335,7 +361,7 @@
                 <div class="hashtags-top">
                     {% for hashtag in hashtags_top %}
                         <a href="/pesquisar?query={{ hashtag.nome|urlencode }}" class="hashtag-btn hashtag-btn-mob" >
-                            <span class="hashtag-nome">{{ hashtag.nome }} - {{ hashtag.total }}</span>
+                            <span class="hashtag-nome">{{ hashtag.nome }} - {{ hashtag.total | numcurto }}</span>
                         </a>
                     {% endfor %}
                 </div>
@@ -345,594 +371,985 @@
         </div>
     </div>
  
-<!-- MAIN -->
-<main class="sectionCenter">
-{% if usuario_bloqueou %}
-    <div class="no-results-wrapper">
-        <div class="no-results-card">
-            <i class='bx bx-block'></i>
-            <p class="no-results-message">Você foi bloqueado por {{username_bloqueador}}</p>
-            <p class="no-results-sub">Não é possível visualizar este perfil.</p>
-        </div>
-    </div>
-{% elif voce_bloqueou %}
-    <div class="no-results-wrapper">
-        <div class="no-results-card">
-            <i class='bx bx-block'></i>
-            <p class="no-results-message">Você bloqueou {{ username_bloqueado }}</p>
-            <p class="no-results-sub">Você não pode visualizar este perfil.</p>
-            <form action="{{ url_for('configuracao.desbloquear_usuario_via_perfil') }}" method="POST" style="margin-top: 16px;">
-            <input type="hidden" name="bloqueado_id" value="{{ id_usuario }}">
-            <button type="submit" class="btn-desbloquear">
-                Desbloquear
-            </button>
-        </form>
-        </div>
-    </div>
-{% else %}
-
-<!-- CAPA DE PERFIL -->
-<div class="profile-container">
-    <div class="cover-container">
-        <img src="{{ foto_capa }}" class="cover-photo" alt="Foto de capa" id="cover-photo"/>
-</div>
-
-<!--DETALHES DO PERFIL -->
-<div class="profile-details">
-    <img src="{{ foto_perfil }}" id="fot-per" alt="Foto de Perfil" data-toggle="modal" data-target="#fotoPerfilModal" style="cursor: pointer;" />
-        
-    <div class="profile-info">
-        
-        <h3 id="nome_completo">{{nome}}</h3>
-        <h3><span id="nome_user" >{{username}}</span></h3>
-        <h4 id="bio_per" >{{bio}}</h4>
-             
-    </div>
-</div>
-
-<!-- BOTAO DE SEGUIR -->
-{% if usuario_id != id_usuario %}
-<div class="btn-container">
-      
-    {% if usuario_segue %}
-        <form action="{{ url_for('seguir_user.seguir', id_usuario=id_usuario) }}" method="post">
-            <button type="submit" class="btn-seguir">Deixar de Seguir</button>
-        </form>
-    {% elif not perfil_publico and pedido_pendente %}
-        <form action="{{ url_for('seguir_user.cancelar_pedido', id_usuario=id_usuario) }}" method="post">
-            <button type="submit" class="btn-seguir">Cancelar Pedido</button>
-        </form>
-    {% elif not perfil_publico %}
-        <form action="{{ url_for('seguir_user.pedir_para_seguir', id_usuario=id_usuario) }}" method="post">
-            <button type="submit" class="btn-seguir">Pedir para Seguir</button>
-        </form>
-    {% elif usuario_te_segue and not usuario_segue %}
-        <!-- Novo caso: Seguir de Volta -->
-        <form action="{{ url_for('seguir_user.seguir', id_usuario=id_usuario) }}" method="post">
-            <button type="submit" class="btn-seguir">Seguir de Volta</button>
-        </form>
-    {% else %}
-        <form action="{{ url_for('seguir_user.seguir', id_usuario=id_usuario) }}" method="post">
-            <button type="submit" class="btn-seguir">Seguir</button>
-        </form>
-    {% endif %}
-    <!-- MENU DROPDOWN PARA OPÇOES -->
-        <div class="dropdown ml-2">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background: none; border: none; box-shadow: none;">
-                <i class='bx bx-info-circle' ></i>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="profileDropdown">
-                <a class="dropdown-item btn-compartilhar-perfil" href="#" data-id="{{ id_usuario }}"><i class='bx bx-share-alt'></i> Compartilhar perfil</a>
-
-                <form id="form-bloquear-{{ id_usuario }}" method="POST" action="{{ url_for('configuracao.bloquear_usuario_via_post') }}" style="display: none;">
-                    <input type="hidden" name="bloqueado_id" value="{{ id_usuario }}">
-                    <input type="hidden" name="next" value="{{ request.path }}">
-                </form>
-                <a href="#" class="dropdown-item btn-bloquear-usuario" data-id="{{ id_usuario }}">
-                    <i class='bx bx-block'></i> Bloquear
-                </a>
-
-                <a class="dropdown-item" href="#"><i class='bx bx-error'></i> Denuciar</a>
-            </div>
-        </div>
-</div>
-{% endif %}
-
-<!-- ESTATISTICAS DE SEGUIDORES, SEGUINDO E POSTAGENS -->
-{% set mostrar_modais = (perfil_publico or usuario_segue) and (visibilidade_seguidores == 'publico') %}
-
-<div class="stats">
-    <!-- SEGUIDORES -->
-    <div class="stat-item {% if not mostrar_modais %}disabled{% endif %}" 
-         {% if mostrar_modais %}data-toggle="modal" data-target="#seguidoresModal"{% endif %}>
-        <span class="stat-item3">Seguidores:</span> <span class="total">{{seguidores}}</span>
-    </div>
-    
-    <!-- SEGUINDO -->
-    <div class="stat-item {% if not mostrar_modais %}disabled{% endif %}" 
-         {% if mostrar_modais %}data-toggle="modal" data-target="#seguindoModal"{% endif %}>
-        <span class="stat-item3">Seguindo:</span> <span class="total">{{seguindo}}</span>
-    </div>
-    
-    <!-- POSTAGENS -->
-    <div class="post-stats">
-        <span class="stat-item3">Posts:</span> <span class="total">{{total_posts}}</span>
-    </div>
-</div>
-</div>
-
-<!-- MODAL PARA EXIBIR FOTO DE PERFIL -->
-<div class="modal fade" id="fotoPerfilModal" tabindex="-1" role="dialog" aria-labelledby="fotoPerfilModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="fotoPerfilModalLabel">Foto de Perfil de {{username}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <img src="{{ foto_perfil }}" alt="Foto de Perfil" class="img-fluid"/>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL DE SEGUIDORES -->
-<div class="modal" id="seguidoresModal" tabindex="-1" role="dialog" aria-labelledby="seguidoresModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header" id="header-do-seguidores">
-                <h5 class="modal-title" id="seguidoresModalLabel">Seguidores</h5>
-                <button type="button" id="close-do-seguidores" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="body-do-seguidores">
-                  {% if seguidores_lista|length > 1 %}
-                <input type="text" id="search-seguidor" class="form-control mb-2" placeholder="Buscar seguidor...">
-                      {% endif %}
-                {% if seguidores_lista|length == 0 %}
-                        <div class="text-center"style="color: #fff; margin-top: 30px;">
-                            <i class='bx bx-user-x' style="font-size:2.5rem;"></i>
-                            <p>Nenhum seguidor</p>
-                        </div>
-                        {% else %}
-                <ul id="seguidores-list">
-                    {% for seguidor in seguidores_lista %}
-                    <li>
-                        <a href="{{ url_for('info_user.info_user', id_usuario=seguidor.id) }}" class="seguidor-item">
-                            <img src="{% if seguidor.fotos_perfil %}{{ seguidor.fotos_perfil }}{% else %}../static/img/icone/user.png{% endif %}" 
-                                 alt="Foto do seguidor" 
-                                 class="foto-seguidores">
-                            <div class="seguidor-info">
-                                <p class="seguidor-username">{{ seguidor.username }}</p>
-                            </div>
-                        </a>
-                        <hr class="divisor-seguidores">
-                    </li>
-                    {% endfor %}
-                </ul>
-                 {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL DE SEGUINDO -->
-<div class="modal" id="seguindoModal" tabindex="-1" role="dialog" aria-labelledby="seguindoModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header" id="header-do-seguindo">
-                <h5 class="modal-title" id="seguindoModalLabel">Seguindo</h5>
-                <button type="button" class="close" id="close-do-seguindo" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            
-            <div class="modal-body" id="body-do-seguindo">
-                {% if seguindo_lista|length > 1 %}
-                <input type="text" id="search-seguindo" class="form-control mb-2" placeholder="Buscar seguindo...">
-                {% endif %}
-                {% if seguindo_lista|length == 0 %}
-                        <div class="text-center"style="color: #fff; margin-top: 30px;">
-                            <i class='bx bx-user-x' style="font-size:2.5rem;"></i>
-                            <p>Não segui ninguem</p>
-                        </div>
-                        {% else %}
-                <ul id="seguindo-list">
-                    {% for seguido in seguindo_lista %}
-                    <li>
-                        <a href="{{url_for('info_user.info_user', id_usuario=seguido.id) }}" class="seguindo-item">
-                            <img src="{% if seguido.fotos_perfil %}{{ seguido.fotos_perfil }}{% else %}../static/img/icone/user.png{% endif %}" 
-                                 alt="Foto do seguindo" 
-                                 class="foto-seguindo">
-                            <div class="seguindo-info">
-                                <p class="seguindo-username">{{ seguido.username }}</p>
-                            </div>
-                        </a> 
-                        <hr class="divisor-seguindo">
-                    </li>
-                    {% endfor %}
-                </ul>
-                 {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- POSTS -->
-<div id="posts" >
-    {% if mostrar_postagens %}    
-        {% if posts %}
-            {% for post in posts %}
-                <div class="post" data-post-id="{{ post.id }}">
-
-                    <!-- INFORMACAO DO USER -->
-                    <div class="user-info">
-                        <a href="{% if post.users_id == usuario_id %}/inicio{% else %}{{ url_for('info_user.info_user', id_usuario=post.users_id) }}{% endif %}">
-                            <img src="{{ foto_perfil }}" alt="Foto de perfil padrão" >
-                        </a>
-                        <div class="user-details">
-                        {% if post.users_id == usuario_id %}
-                            <p class="username"><a href="/inicio"> {{ username }}</a></p>
-                        {% else %}
-                            <p class="username"><a href="{{ url_for('info_user.info_user', id_usuario=post.users_id) }}">{{ username }}</a></p>
-                        {% endif %}
-                            <p class="post-date">{{post.data_postagem}}</p>
-                    </div> 
-
-                    <!-- MENU DE OPÇOES -->
-                    <div class="dropdown-container">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class='bx bx-dots-vertical'></i>
-                            </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="compartilharPost('{{ post.id }}')"> <i class='bx bx-share-alt'></i> Compartilhar</a>
-                            
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="abrirEnviarAoChatModal('{{ post.id }}')"> <i class='bx bx-send'></i> Enviar ao chat</a>
-
-                                    {% if post.users_id != usuario_id %}
-                                        <form id="form-bloquear-{{ id_usuario }}" method="POST" action="{{ url_for('configuracao.bloquear_usuario_via_post') }}" style="display:none;">
-                                            <input type="hidden" name="bloqueado_id" value="{{ id_usuario }}">
-                                            <input type="hidden" name="next" value="{{ request.path }}">
-                                        </form>
-
-                                        <a href="#" class="dropdown-item btn-bloquear-usuario" data-id="{{ id_usuario }}">
-                                            <i class='bx bx-block'></i> Bloquear
-                                        </a>
-                                    {% endif %}
-
-                                    {% if post.users_id != usuario_id %}
-                                        <a class="dropdown-item"><i class='bx bx-error'></i> Denuciar</a>
-                                    {% endif %}
-
-                                </div>
-                            </div>
-                        </div>     
-                    </div>
-
-                    <!-- CONTEUDO DO POST -->
-                    <p class="post-content">{{ post.conteudo | replace_mentions | replace_hashtags | safe }}</p>
-    
-                    <!-- CARROSEL DE FOTO E VIDEO -->
-                    {% if post.imagem or post.video %}
-                        <div class="carousel">
-                    {% if post.imagem %}
-                        <div>
-                            <img src="{{ url_for('static', filename=post.imagem) }}" alt="Imagem do post" class="foto-post" style="cursor: pointer;">
-                        </div>
-                    {% endif %}
-                    {% if post.video %}
-                        <div>
-                            <video controls><source src="{{ url_for('static', filename=post.video) }}" type="video/mp4"></video>
-                        </div>
-                    {% endif %}
-                         </div>
-                    {% endif %}
-                    <!-- INTERACOES -->
-                    <div class="interaction-container">
-                        <!-- CURTIR -->
-                        <div class="interaction-item">
-                            <form id="like-form-{{ post.id }}" action="{{ url_for('curtir.curtir', post_id=post.id) }}" method="post">
-                                {% if post.curtido_pelo_usuario %}
-                                    <img src="../static/img/icone/silhueta-de-formato-simples-de-coracao.png" alt="Descurtir" class="curtir-icon curtido" data-post-id="{{ post.id }}" id="curtir-icon-{{ post.id }}">
-                                {% else %}
-                                    <img src="../static/img/icone/coracao-descurtido.png" alt="Curtir" class="curtir-icon" data-post-id="{{ post.id }}" id="curtir-icon-{{ post.id }}">
-                                {% endif %}
-                            </form>
-                                    {% if  post.curtidas_publicas == 1 %}
-                                <p id="curtidas-count-{{ post.id }}" class="count curtidas-lista-link curso-modal-curtida" data-post-id="{{ post.id }}">
-                                    {{ post.curtidas }}
-                                </p>
-                                {% else %}
-                                <p id="curtidas-count-{{ post.id }}" class="count" data-post-id="{{ post.id }}">
-                                    {{ post.curtidas }}
-                                </p>
-                                {% endif %}
-                        </div>
-            
-                    <!-- COMENTARIOS -->
-                    <div class="interaction-item">
-                        <span class="comment-icon" data-toggle="modal" data-target="#commentModal-{{ post.id }}">
-                            <img src="../static/img/icone/bater-papo.png" alt="comentario">
-                        </span>
-                        <p id="comment-count-{{ post.id }}" class="count">{{ post.comentarios_count }}</p>
-                    </div>
-                </div>
-           
-                <!-- MODAL DE COMENTARIO -->
-                <div class="modal fade modal-de-comentario" id="commentModal-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel-{{ post.id }}" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title modal-de-comentario-titulo" id="commentModalLabel-{{ post.id }}">Comentários</h5>
-                                <button type="button" class="btn-recarregar-comentarios" title="Recarregar comentários" onclick="recarregarComentarios('{{ post.id }}')">
-                                    <i class="fa fa-refresh"></i>
-                                </button>
-                                <button type="button" class="close close-do-comentario" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="comentarios">
-                                    {% if post.comentarios %}
-                                        {% for comentario in post.comentarios %}
-                                            <div class="comentario {% if comentario.parent_comment_id %}resposta-comentario respostas-ocultas{% endif %}" data-comentario-id="{{ comentario.id }}" data-post-id="{{ post.id }}">
-                                                <p>
-                                                    {% if comentario.usuario_id == usuario_id %}
-                                                        <a href="/inicio" class="username-link">
-                                                            {% if comentario.fotos_perfil %}
-                                                                 <img src="{{ comentario.fotos_perfil }}" alt="{{ comentario.username }}'s foto" class="foto-perfil-comentario">
-                                                            {% else %}
-                                                                <img src="../static/img/icone/user.png" alt="{{ comentario.username }}'s foto" class="foto-perfil-comentario">
-                                                            {% endif %}
-                                                                <strong><b>{{ comentario.username }}</a>:</b></strong>
-                                                            {% else %}
-                                                                <a href="{{ url_for('info_user.info_user', id_usuario=comentario.usuario_id) }}" class="username-link">
-                                                            {% if comentario.fotos_perfil %}
-                                                                <img src="{{ comentario.fotos_perfil }}" alt="{{ comentario.username }}'s foto" class="foto-perfil-comentario">
-                                                            {% else %}
-                                                                <img src="../static/img/icone/user.png" alt="{{ comentario.username }}'s foto" class="foto-perfil-comentario">
-                                                            {% endif %}
-                                                                <strong><b>{{ comentario.username }}:</a></b></strong>
-                                                    {% endif %}
-            
-                                                    {% if comentario.parent_comment_id %}
-                                                        <span class="resposta-para">resposta para 
-                                                            {% if comentario.parent_usuario_id == usuario_id %}
-                                                                <a href="/inicio" class="username-link">{{ comentario.parent_username }}</a>
-                                                            {% else %}
-                                                                <a href="{{ url_for('info_user.info_user', id_usuario=comentario.parent_usuario_id) }}" class="username-link">{{ comentario.parent_username }}</a>
-                                                            {% endif %}
-                                                        </span>
-                                                    {% endif %}
-            
-                                                    <!-- MENU DE OPCOES -->
-                                                    <div class="dropdown-container-comentario ">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class='bx bx-dots-vertical'></i>
-                                                            </button>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                {% if comentario.usuario_id == usuario_id %}
-                                                                    <form action="{{ url_for('apagarcommen.apagar_comentario', comentario_id=comentario.id) }}" method="POST" style="display:inline;">
-                                                                        <a href="#"  class="dropdown-item" data-comentario-id="{{ comentario.id }}" onclick="apagarComentario(this)"> <i class='bx bx-trash'></i> Excluir comentario</a>
-                                                                    </form>
-                                                                {% endif %}
-
-                                                                        <a class="dropdown-item btn-compartilhar-comentario" data-post-id="{{ post.id }}" data-comentario-id="{{ comentario.id }}">
-                                                                            <i class='bx bx-share-alt'></i> Compartilhar
-                                                                        </a>
-
-                                                   <a href="{% if post.users_id == usuario_id %}/inicio{% else %}{{ url_for('info_user.info_user', id_usuario=post.users_id) }}{% endif %}" class="dropdown-item">
-                                                                            <i class='bx bx-user'></i> 
-                                                                            {% if comentario.usuario_id != usuario_id %}
-                                                                                Ver perfil
-                                                                            {% else %}
-                                                                                    Meu perfil
-                                                                            {% endif %}
-                                                                            </a>
-                                                                        
-                                                                        {% if comentario.usuario_id != usuario_id %}
-
-                                                                            <a class="dropdown-item">
-                                                                                <i class='bx bx-error'></i> Denunciar
-                                                                            </a>
-                                                                        {% endif %}
-                                                        
-                                                            </div>
-                                                        </div>
-                                                    </div>
-            
-                                                <p class="conteudo-comentario">
-                                                    {{ comentario.comentario }}
-                                                </p>
-    
-                                                <p class="data-do-comentario" id="data-do-comentario">
-                                                    {{ comentario.data_comentario }}
-                                                </p>
-                                            </p>
-                                         
-                                         {% if not comentario.parent_comment_id and comentario.respostas_count > 0 %}
-                                            <button class="btn-toggle-respostas" onclick="toggleRespostas(this)" data-comentario-id="{{ comentario.id }}">
-                                                <i class='bx bx-chevron-down'></i> Mostrar respostas 
-                                            </button>
-                                         {% endif %}
-            
-            
-                                        {% if post.comentarios_publicos == 1 or post.users_id == usuario_id %}
-                                            <button class="btn-resposta" onclick="mostrarFormResposta(this)">Responder</button>
-                                        {% else %}
-                                            <button class="btn-resposta" onclick="mostrarFormResposta(this)" style="display: none;">Responder</button>
-                                        {% endif %}
-            
-                                        <div class="form-resposta">
-                                            <form class="form-resposta-comentario" onsubmit="submitReply(event, '{{ post.id }}', '{{ comentario.id }}')">
-                                                <textarea name="comentario" placeholder="Digite sua resposta..." required rows="1" style="resize: vertical; overflow:auto;"></textarea>
-                                                <button type="submit">
-                                                    <i class="fa fa-paper-plane"></i>
-                                                </button>
-    
-                                                <button type="button" 
-                                                        class="btn-cancelar-resposta" 
-                                                        onclick="esconderFormResposta(this)">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                                {% else %}
-                                {% if post.comentarios_publicos == 1 or post.users_id == usuario_id %}
-                                    <div class="texto-sem-comentario">
-                                        <i class='bx bxs-comment-dots'></i>
-                                        <p>Nenhum comentário ainda. Seja o primeiro a comentar!</p>
-                                    </div>
-                                    {% else %}
-                                    <div class="texto-sem-comentario">
-                                        <i class='bx bx-lock-alt'></i> 
-                                        <P>Os comentários estão desativados para este post</P>
-                                        <P>apenas o {{username}} pode comentar</P>
-                                    </div>
-                                {% endif %}
-                                {% endif %}
-                            </div>
-            
-                            <div class="comment-input">
-                                {% if post.comentarios_publicos == 1 or post.users_id == usuario_id %}
-                                    <form id="commentForm-{{ post.id }}" 
-                                          action="{{ url_for('comentar.comentar', post_id=post.id) }}" 
-                                          method="post" 
-                                          onsubmit="submitComment(event, '{{ post.id }}')">
-                                        <textarea name="comentario" id="comentario-{{ post.id }}" required placeholder="Digite seu comentário..." rows="1" style="resize: vertical; overflow:auto;"></textarea>
-                                        <button type="submit">
-                                            <i class="fa fa-paper-plane"></i> 
-                                        </button>
-                                    </form>
-                                {% else %}
-                                    <div class="alert alert-info comentarios-desativados">
-                                        <i class='bx bx-lock-alt'></i> Os comentários estão desativados para este post
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
+    <!-- MAIN -->
+    <main class="sectionCenter">
+        {% if conta_suspensa %}
+            <div class="no-results-wrapper">
+                <div class="no-results-card">
+                    <i class='bx bx-error'></i>
+                    <p class="no-results-message">Conta suspensa</p>
+                    <p class="no-results-sub">
+                        O perfil <strong>{{ username_suspenso }}</strong> está suspenso
+                        e não pode ser visualizado.
+                    </p>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+        {% elif usuario_bloqueou %}
+            <div class="no-results-wrapper">
+                <div class="no-results-card">
+                    <i class='bx bx-block'></i>
+                    <p class="no-results-message">Você foi bloqueado por {{ username_bloqueador }}</p>
+                    <p class="no-results-sub">Não é possível visualizar este perfil.</p>
+                </div>
+            </div>
+        {% elif voce_bloqueou %}
+            <div class="no-results-wrapper">
+                <div class="no-results-card">
+                    <i class='bx bx-block'></i>
+                    <p class="no-results-message">Você bloqueou {{ username_bloqueado }}</p>
+                    <p class="no-results-sub">Você não pode visualizar este perfil.</p>
+                    <form action="{{ url_for('configuracao.desbloquear_usuario_via_perfil') }}" method="POST" style="margin-top: 16px;">
+                        <input type="hidden" name="bloqueado_id" value="{{ id_usuario }}">
+                        <button type="submit" class="btn-desbloquear">
+                            Desbloquear
+                        </button>
+                    </form>
+                </div>
+            </div>
         {% else %}
-        <div class="sem-post">
-        <i class='bx bx-image-add'></i>
-        <p class="no-results">Não há posts</p>
-        </div>
-    {% endif %}
-{% else %}
-    <div class="perfil privado">
-        <i class='bx bx-lock-alt'></i>
-        <p>Este perfil é privado</p>
-        <p>Siga este usuário para ver seus posts</p>
-    </div>
-{% endif %}
-</div>
 
-<!-- MODAL PARA ENVIAR POST AO CHAT -->
-<div class="modal fade" id="enviarAoChatModal" tabindex="-1" role="dialog" aria-labelledby="enviarAoChatModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="enviarAoChatModalLabel">Enviar post para...</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="pesquisaUsuarioChat" placeholder="Pesquisar usuários..." onkeyup="filtrarUsuariosChat()">
+            <!-- CAPA DE PERFIL -->
+            <div class="profile-container">
+                <div class="cover-container">
+                    <img src="{{ foto_capa }}" class="cover-photo" alt="Foto de capa" id="cover-photo" data-toggle="modal" data-target="#fotoCapaModal" style="cursor:pointer;" />
                 </div>
-                <div id="listaUsuariosChat">
-                <!-- OS USUARIOS SERÃO CARREGADOS AQUI -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-    
-<!-- MODAL DE IMAGEM COMPLETA PARA POST -->
-<div id="imageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <button type="button" class="close-modal-btn" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <img id="modal-image" src="" alt="Imagem do post" class="imagem-completa-do-post" />
-            </div>
-        </div>
-    </div>
-</div>     
 
-        <div class="modal fade" id="curtidasUsuariosModal" tabindex="-1" role="dialog" aria-labelledby="curtidasUsuariosModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+                <!--DETALHES DO PERFIL -->
+                <div class="profile-details">
+                    <img src="{{ foto_perfil }}" id="fot-per" alt="Foto de Perfil" data-toggle="modal" data-target="#fotoPerfilModal" style="cursor: pointer;" />
+                
+                    <div class="profile-info">
+                
+                        <h5 id="nome_completo">{{nome}}</h5>
+                        <h3><span id="nome_user" >{{username}}</span></h3>
+                        <p id="bio_per" >{{bio}}</p>
+                    
+                    </div>
+                </div>
+
+                <!-- BOTAO DE SEGUIR -->
+                {% if usuario_id != id_usuario %}
+                <div class="btn-container">
+            
+                {% if usuario_segue %}
+                    <form action="{{ url_for('seguir_user.seguir', id_usuario=id_usuario) }}" method="post" >
+                        <button type="submit" class="btn-seguir"><i class='bx bx-user-minus'></i> Deixar de Seguir</button>
+                    </form>
+                {% elif not perfil_publico and pedido_pendente %}
+                    <form action="{{ url_for('seguir_user.cancelar_pedido', id_usuario=id_usuario) }}" method="post">
+                        <button type="submit" class="btn-seguir"><i class='bx bx-x-circle'></i> Cancelar Pedido</button>
+                    </form>
+                {% elif not perfil_publico %}
+                    <form action="{{ url_for('seguir_user.pedir_para_seguir', id_usuario=id_usuario) }}" method="post">
+                        <button type="submit" class="btn-seguir"><i class='bx bx-user-pin'></i> Pedir para Seguir</button>
+                    </form>
+                {% elif usuario_te_segue and not usuario_segue %}
+                    <form action="{{ url_for('seguir_user.seguir', id_usuario=id_usuario) }}" method="post">
+                        <button type="submit" class="btn-seguir"><i class='bx bx-user-check'></i> Seguir de Volta</button>
+                    </form>
+                {% else %}
+                    <form action="{{ url_for('seguir_user.seguir', id_usuario=id_usuario) }}" method="post">
+                        <button type="submit" class="btn-seguir"><i class='bx bx-user-plus'></i> Seguir</button>
+                    </form>
+                {% endif %}
+
+                <!-- BOTÃO DE CHAT -->
+                {% if usuario_segue and usuario_te_segue %}
+                    <a href="/chat/{{ id_usuario }}" class="ir-chat">
+                        <i class='bx bxs-chat'></i> Conversa
+                    </a>
+                {% endif %}
+
+                <!-- MENU DROPDOWN PARA OPÇOES -->
+                <div class="dropdown ml-2">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background: none; border: none; box-shadow: none;">
+                        <i class='bx bx-info-circle' ></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <a class="dropdown-item btn-compartilhar-perfil" href="#" data-id="{{ id_usuario }}"><i class='bx bx-share-alt'></i> Compartilhar perfil</a>
+
+                        <form id="form-bloquear-{{ id_usuario }}" method="POST" action="{{ url_for('configuracao.bloquear_usuario_via_post') }}" style="display: none;">
+                            <input type="hidden" name="bloqueado_id" value="{{ id_usuario }}">
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                        </form>
+                        <a href="#" class="dropdown-item btn-bloquear-usuario" data-id="{{ id_usuario }}">
+                            <i class='bx bx-block'></i> Bloquear
+                        </a>
+                        {% if usuario_segue and usuario_te_segue %}
+                            <a href="" id="infoAmizad"  data-amizade="{{ data_amizade|e }}" class="dropdown-item"><i class='bx bx-user'></i> Amizade</a>
+                        {% endif %}
+
+                        <a href="#" class="dropdown-item btn-denunciar-usuario" data-id="{{ id_usuario }}">
+                            <i class='bx bx-error'></i> Denunciar
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+            <!-- ESTATISTICAS DE SEGUIDORES, SEGUINDO E POSTAGENS -->
+            {% set mostrar_modais = (perfil_publico or usuario_segue) and (visibilidade_seguidores == 'publico') %}
+
+            {% if usuario_id != id_usuario and amigos_mutuos_count > 0 %}
+                <div class="amigos_em_comum_conteiner">
+                    <button class="btn-amigos-comuns"
+                        data-toggle="modal"
+                        data-target="#amigosComunsModal">
+                        <i class='bx bx-group'></i>
+                            
+                         Amigos{% if amigos_mutuos_count > 1 %}s{% endif %} em comum ({{ amigos_mutuos_count }})
+                    </button>
+                </div>
+            {% endif %}
+
+            <div class="stats">
+                <!-- SEGUIDORES -->
+                <div class="stat-item {% if not mostrar_modais %}disabled{% endif %}" 
+                    {% if mostrar_modais %}
+                        data-toggle="modal" data-target="#seguidoresModal"
+                    {% else %}
+                        onclick="alertSemPermissao()"
+                    {% endif %}>
+                    <span class="stat-item3">Seguidores:</span> <span class="total">{{seguidores}}</span>
+                </div>
+
+                <!-- SEGUINDO -->
+                <div class="stat-item {% if not mostrar_modais %}disabled{% endif %}" 
+                    {% if mostrar_modais %}
+                        data-toggle="modal" data-target="#seguindoModal"
+                    {% else %}
+                        onclick="alertSemPermissao()"
+                    {% endif %}>
+                    <span class="stat-item3">Seguindo:</span> <span class="total">{{seguindo}}</span>
+                </div>
+
+                <!-- POSTAGENS -->
+                <div class="post-stats">
+                    <span class="stat-item3">Posts:</span> <span class="total">{{total_posts}}</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MODAL DE AMIGOS EM COMUM -->
+        <div class="modal fade" id="amigosComunsModal" tabindex="-1" role="dialog" aria-labelledby="amigosComunsModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="header-amigos-comuns">
+                        <h5 class="modal-title" id="amigosComunsModalLabel">Amigos em comum</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="body-amigos-comuns">
+                        {% if amigos_mutuos|length > 1 %}
+                            <input type="text" id="search-amigos-comuns" class="form-control mb-2" placeholder="Buscar...">
+                        {% endif %}
+
+                        {% if amigos_mutuos|length == 0 %}
+                            <div class="text-center" style="color:#fff;margin-top:30px;">
+                                <i class='bx bx-user-x' style="font-size:2.5rem;"></i>
+                                <p>Nenhum amigo em comum</p>
+                            </div>
+                        {% else %}
+                            <ul id="amigos-comuns-list">
+                                {% for amigo in amigos_mutuos %}
+                                    <li>
+                                        <a href="{{ url_for('info_user.info_user', id_usuario=amigo.id) }}"
+                                            class="amigo-item">
+                                            <img src="{% if amigo.fotos_perfil %}{{ amigo.fotos_perfil }}
+                                                    {% else %}../static/img/icone/user.png{% endif %}"
+                                                    class="foto-amigo" alt="Foto do amigo">
+                                            <div class="amigo-info">
+                                                <p class="amigo-username">{{ amigo.username }}</p>
+                                            </div>
+                                        </a>
+                                        <hr class="divisor-amigos-comuns">
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL PARA EXIBIR FOTO DE PERFIL -->
+        <div class="modal fade" id="fotoPerfilModal" tabindex="-1" role="dialog" aria-labelledby="fotoPerfilModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fotoPerfilModalLabel">Foto de Perfil de {{username}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="{{ foto_perfil }}" alt="Foto de Perfil" class="img-fluid"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL PARA EXIBIR FOTO DE CAPA -->
+        <div class="modal fade" id="fotoCapaModal" tabindex="-1" role="dialog" aria-labelledby="fotoCapaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="curtidasUsuariosModalLabel">Curtidas</h5>
+                <h5 class="modal-title" id="fotoCapaModalLabel">Foto de Capa de {{ username }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <input type="text" class="form-control mb-2" id="search-curtidas-user" placeholder="Pesquisar usuário..." style="display:none;">
-                <div id="curtidas-usuarios-lista"></div>
+            <div class="modal-body text-center">
+                <img src="{{ foto_capa }}" alt="Foto de Capa" class="img-fluid" />
             </div>
             </div>
         </div>
         </div>
-{% endif %}
-</main>
+
+        <!-- MODAL DE SEGUIDORES -->
+        <div class="modal" id="seguidoresModal" tabindex="-1" role="dialog" aria-labelledby="seguidoresModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="header-do-seguidores">
+                        <h5 class="modal-title" id="seguidoresModalLabel">Seguidores</h5>
+                        <button type="button" id="close-do-seguidores" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="body-do-seguidores">
+                        {% if seguidores_lista|length > 1 %}
+                        <input type="text" id="search-seguidor" class="form-control mb-2" placeholder="Buscar seguidor...">
+                            {% endif %}
+                        {% if seguidores_lista|length == 0 %}
+                                <div class="text-center"style="color: #fff; margin-top: 30px;">
+                                    <i class='bx bx-user-x' style="font-size:2.5rem;"></i>
+                                    <p>Nenhum seguidor</p>
+                                </div>
+                                {% else %}
+                        <ul id="seguidores-list">
+                            {% for seguidor in seguidores_lista %}
+                            <li>
+                                <a href="{{ url_for('info_user.info_user', id_usuario=seguidor.id) }}" class="seguidor-item">
+                                    <img src="{% if seguidor.fotos_perfil %}{{ seguidor.fotos_perfil }}{% else %}../static/img/icone/user.png{% endif %}" 
+                                        alt="Foto do seguidor" 
+                                        class="foto-seguidores">
+                                    <div class="seguidor-info">
+                                        <p class="seguidor-username">{{ seguidor.username }}</p>
+                                    </div>
+                                </a>
+                                <hr class="divisor-seguidores">
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DE SEGUINDO -->
+        <div class="modal" id="seguindoModal" tabindex="-1" role="dialog" aria-labelledby="seguindoModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="header-do-seguindo">
+                        <h5 class="modal-title" id="seguindoModalLabel">Seguindo</h5>
+                        <button type="button" class="close" id="close-do-seguindo" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <div class="modal-body" id="body-do-seguindo">
+                        {% if seguindo_lista|length > 1 %}
+                        <input type="text" id="search-seguindo" class="form-control mb-2" placeholder="Buscar seguindo...">
+                        {% endif %}
+                        {% if seguindo_lista|length == 0 %}
+                                <div class="text-center"style="color: #fff; margin-top: 30px;">
+                                    <i class='bx bx-user-x' style="font-size:2.5rem;"></i>
+                                    <p>Não segui ninguem</p>
+                                </div>
+                                {% else %}
+                            <ul id="seguindo-list">
+                            {% for seguido in seguindo_lista %}
+                                <li>
+                                    <a href="{{url_for('info_user.info_user', id_usuario=seguido.id) }}" class="seguindo-item">
+                                        <img src="{% if seguido.fotos_perfil %}{{ seguido.fotos_perfil }}{% else %}../static/img/icone/user.png{% endif %}" 
+                                            alt="Foto do seguindo" 
+                                            class="foto-seguindo">
+                                        <div class="seguindo-info">
+                                            <p class="seguindo-username">{{ seguido.username }}</p>
+                                        </div>
+                                    </a> 
+                                    <hr class="divisor-seguindo">
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTAO PARA VOLTAR AO TOPO -->
+        <button id="btnTopo" title="Voltar ao topo" style="display: none;">
+            <p class="texto_voltar_topo"> <i class='bx bx-chevron-up'></i> Voltar ao inicio</p>
+        </button>
+
+        <!-- PARA IR AS REPUBLICAÇÕES DO USER -->
+        {% if tem_republicacoes %}
+            <div class="post_republicados">
+                <a href="/post-republicados/{{ id_usuario }}" class="ir-ao-republicados">
+                    <i class='bx bx-repost'></i> Republicados
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- POSTS -->
+        <div id="posts" >
+            {% if mostrar_postagens %}    
+                {% if posts %}
+                    {% for post in posts %}
+                        <div class="post"  data-post-id="{{ post.id }}">
+                            <!-- INFORMACAO DO USER -->
+                            <div class="user-info">
+                                <a href="{% if post.users_id == usuario_id %}/inicio{% else %}{{ url_for('info_user.info_user', id_usuario=post.users_id) }}{% endif %}">
+                                    <img src="{{ foto_perfil }}" alt="Foto de perfil padrão" >
+                                </a>
+
+                                <div class="user-details">
+                                    {% if post.users_id == usuario_id %}
+                                        <p class="username"><a href="/inicio"> {{ username }}</a></p>
+                                    {% else %}
+                                        <p class="username"><a href="{{ url_for('info_user.info_user', id_usuario=post.users_id) }}">{{ username }}</a></p>
+                                    {% endif %}
+                                        <p class="post-date">{{post.data_postagem}}</p>
+                                </div> 
+
+                                <!-- MENU DE OPÇOES -->
+                                <div class="dropdown-container">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class='bx bx-dots-vertical'></i>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            
+                                            {% if post.users_id == usuario_id %}
+                                                <form method="post" action="/excluir_post_inicio/{{ post.id }}" class="form-excluir-post">
+                                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                                    <a href="#" class="dropdown-item btn-excluir-post"> <i class='bx bx-trash'></i> Excluir post</a>
+                                                </form>
+                                            {% endif %}
+
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="compartilharPost('{{ post.id }}')"> <i class='bx bx-share-alt'></i> Compartilhar</a>
+                                        
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="abrirEnviarAoChatModal('{{ post.id }}')"> <i class='bx bx-send'></i> Enviar ao chat</a>
+
+                                            {% if post.users_id != usuario_id %}
+                                                <form id="bloquear-form-{{ post.users_id }}" method="post" action="{{ url_for('configuracao.bloquear_usuario_via_post') }}" style="display: none;">
+                                                    <input type="hidden" name="bloqueado_id" value="{{ post.users_id }}">
+                                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                                </form>
+
+                                                <a href="#" class="dropdown-item" onclick="bloquearUsuario('{{ post.users_id }}'); return false;">
+                                                    <i class='bx bx-block'></i> Bloquear
+                                                </a>
+                                            {% endif %}
+
+                                            {% if post.users_id != usuario_id %}
+                                                <a class="dropdown-item"
+                                                    data-toggle="modal"
+                                                    data-target="#modalDenunciar"
+                                                    data-post-id="{{ post.id }}">
+                                                    <i class='bx bx-error'></i> Denunciar
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- CONTEUDO DO POST -->
+                            <p class="post-content">{{ post.conteudo_com_mencoes | replace_hashtags | safe }}</p>
+
+                            <!-- CARROSEL DE FOTO E VIDEO -->
+                            {% if post.imagem or post.video %}
+                                <div class="carousel">
+                            {% if post.imagem %}
+                                <div>
+                                    <img src="{{ post.imagem }}" alt="Imagem do post" class="foto-post" style="cursor: pointer;">
+                                </div>
+                            {% endif %}
+                            {% if post.video %}
+                                <div>
+                                    <video  controls><source src="{{ post.video }}" type="video/mp4"></video>
+                                </div>
+                            {% endif %}
+                            </div>
+                            {% endif %}
+
+                            <div id="texto-repu-container-{{ post.id }}">
+                                {% if post.republicado_pelo_usuario %}
+                                    <p class="text_repu" id="texto-repu-{{ post.id }}">
+                                        <i class='bx bx-repost'></i> Republicado por: <a class="dono_repu" href="/inicio">você</a>
+                                    </p>
+                                {% endif %}
+                            </div>
+
+                            <!-- INTERACOES -->
+                            <div class="interaction-container">
+
+                                <!-- CURTIR -->
+                                <div class="interaction-item">
+                                    <form id="like-form-{{ post.id }}" action="{{ url_for('curtir.curtir', post_id=post.id) }}" method="post">
+                                        {% if post.curtido_pelo_usuario %}
+                                            <img src="../static/img/icone/silhueta-de-formato-simples-de-coracao.png" alt="Descurtir" class="curtir-icon curtido" data-post-id="{{ post.id }}" id="curtir-icon-{{ post.id }}">
+                                        {% else %}
+                                            <img src="../static/img/icone/coracao-descurtido.png" alt="Curtir" class="curtir-icon" data-post-id="{{ post.id }}" id="curtir-icon-{{ post.id }}">
+                                        {% endif %}
+                                    </form>
+                                    <p id="curtidas-count-{{ post.id }}" class="count curtidas-lista-link curso-modal-curtida" data-post-id="{{ post.id }}">{{ post.curtidas  | numcurto }}</p>
+                                </div>
+        
+                                <!-- COMENTARIOS -->
+                                <div class="interaction-item">
+                                    <span class="comment-icon" data-toggle="modal" data-target="#commentModal-{{ post.id }}">
+                                        <img src="../static/img/icone/bater-papo.png" alt="comentario">
+                                    </span>
+                                    <p id="comment-count-{{ post.id }}" class="count comment-count" data-count="{{ post.comentarios_count }}" style="cursor: pointer;">
+                                        {{ post.comentarios_count | numcurto }}
+                                    </p>
+                                </div>
+
+                                <!-- REPUBLICAR -->
+                                <div class="interaction-item">
+                                    <form id="republicar-form-{{ post.id }}" action="{{ url_for('republicar.republicar', post_id=post.id) }}" method="post">
+                                        {% if post.republicado_pelo_usuario %}
+                                            <img src="../static/img/icone/para_desfazer_republicacao.png" alt="Republicar" class="republicar-icon republicado" data-post-id="{{ post.id }}" id="republicar-icon-{{ post.id }}">
+                                        {% else %}
+                                            <img src="../static/img/icone/para_republicar.png" alt="Tirar a republicação" class="republicar-icon" data-post-id="{{ post.id }}" id="republicar-icon-{{ post.id }}">
+                                        {% endif %}
+                                    </form>
+                                    <p id="republicados-count-{{ post.id }}" class="count republicados republicados-lista-link curso-modal-republicados" data-post-id="{{ post.id }}">
+                                        {{ post.posts_republicados | numcurto }}
+                                    </p>
+                                </div>
+
+                                <!-- SALVO -->
+                                <div class="interaction-item">
+                                    <form id="salvar-form-{{ post.id }}" action="{{ url_for('salvar.salvar_post', post_id=post.id) }}" method="post">
+                                        {% if post.salvo_pelo_usuario %}
+                                            <img src="../static/img/icone/salvo.png" alt="Salvar" class="salvar-icon salvo" data-post-id="{{ post.id }}" id="salvar-icon-{{ post.id }}">
+                                        {% else %}
+                                            <img src="../static/img/icone/nao_salvo.png" alt="Tirar salvo" class="salvar-icon" data-post-id="{{ post.id }}" id="salvar-icon-{{ post.id }}">
+                                        {% endif %}
+                                    </form>
+                                    <p id="salvo-count-{{ post.id }}" class="count salvos salvo-count" data-post-id="{{ post.id }}">
+                                        {{ post.posts_salvos | numcurto }}
+                                    </p>
+                                </div>
+
+                                <!-- VISUALIZAÇÕES -->
+                                <div class="interaction-item visu-count" onclick="explicarVisualizacoes()">
+                                    <i class="bx bx-bar-chart"></i>
+                                    <p class="count" id="visualizacoes-count-{{ post.id }}">
+                                        {{ post.visualizacoes | numcurto }}
+                                    </p>
+                                </div>
+
+                            </div>
+    
+                            <!-- MODAL DE COMENTARIO -->
+                            <div class="modal fade modal-de-comentario" id="commentModal-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel-{{ post.id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-right">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title modal-de-comentario-titulo" id="commentModalLabel-{{ post.id }}">Comentários</h5>
+                                                <button type="button" class="btn-recarregar-comentarios" title="Recarregar comentários" onclick="recarregarComentarios('{{ post.id }}')">
+                                                    <i class='bx bx-refresh icone-grande'></i>
+                                                </button>
+                                                <button type="button" class="close close-do-comentario" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="comentarios">
+                                                    {% if post.comentarios %}
+                                                        {% for comentario in post.comentarios %}
+                                                            <div class="comentario {% if comentario.parent_comment_id %}resposta-comentario respostas-ocultas{% endif %}" data-comentario-id="{{ comentario.id }}" data-post-id="{{ post.id }}">
+                                                                <p>
+                                                                    {% if comentario.usuario_id == usuario_id %}
+                                                                        <a href="/inicio" class="username-link">
+                                                                        {% if comentario.fotos_perfil %}
+                                                                            <img src="{{ comentario.fotos_perfil }}" alt="{{ comentario.username }}'s foto" class="foto-perfil-comentario">
+                                                                        {% else %}
+                                                                            <img src="../static/img/icone/user.png" alt="{{ comentario.username }}'s foto" class="foto-perfil-comentario">
+                                                                    {% endif %}
+                                                                        <strong><b>{{ comentario.username }}</a>:</b></strong>
+                                                                    {% else %}
+                                                                            <a href="{{ url_for('info_user.info_user', id_usuario=comentario.usuario_id) }}" class="username-link">
+                                                                        {% if comentario.fotos_perfil %}
+                                                                            <img src="{{ comentario.fotos_perfil }}" alt="{{ comentario.username }}'s foto" class="foto-perfil-comentario">
+                                                                        {% else %}
+                                                                            <img src="../static/img/icone/user.png" alt="{{ comentario.username }}'s foto" class="foto-perfil-comentario">
+                                                                    {% endif %}
+                                                                            <strong><b>{{ comentario.username }}:</a></b></strong>
+                                                                    {% endif %}
+                                
+                                                                    {% if comentario.parent_comment_id %}
+                                                                        <span class="resposta-para">resposta para 
+                                                                            {% if comentario.parent_usuario_id == usuario_id %}
+                                                                                <a href="/inicio" class="username-link">{{ comentario.parent_username }}</a>
+                                                                            {% else %}
+                                                                                <a href="{{ url_for('info_user.info_user', id_usuario=comentario.parent_usuario_id) }}" class="username-link">{{ comentario.parent_username }}</a>
+                                                                            {% endif %}
+                                                                        </span>
+                                                                    {% endif %}
+        
+                                                                    <!-- MENU DE OPCOES -->
+                                                                    <div class="dropdown-container-comentario ">
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <i class='bx bx-dots-vertical'></i>
+                                                                            </button>
+                                                                            <div  class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                                                                {% if comentario.usuario_id == usuario_id or post.users_id == usuario_id %}
+                                                                                    <form action="{{ url_for('apagarcommen.apagar_comentario', comentario_id=comentario.id) }}" method="POST" style="display:inline;">
+                                                                                        <a href="#" class="dropdown-item" data-comentario-id="{{ comentario.id }}" onclick="apagarComentario(event, this)">
+                                                                                            <i class='bx bx-trash'></i> Excluir comentário
+                                                                                        </a>
+                                                                                    </form>
+                                                                                {% endif %}
+
+                                                                                <a class="dropdown-item btn-compartilhar-comentario" data-post-id="{{ post.id }}" data-comentario-id="{{ comentario.id }}">
+                                                                                    <i class='bx bx-share-alt'></i> Compartilhar
+                                                                                </a>
+
+                                                                                <a href="{% if post.users_id == usuario_id %}/inicio{% else %}{{ url_for('info_user.info_user', id_usuario=post.users_id) }}{% endif %}" class="dropdown-item">
+                                                                                    <i class='bx bx-user'></i> 
+                                                                                    {% if comentario.usuario_id != usuario_id %}
+                                                                                        Ver perfil
+                                                                                    {% else %}
+                                                                                        Meu perfil
+                                                                                    {% endif %}
+                                                                                </a>
+                                                                                                
+                                                                                {% if comentario.usuario_id != usuario_id %}
+                                                                                    <!-- BOTÃO DE DENUNCIA -->
+                                                                                    <a class="dropdown-item btn-denunciar-comentario" 
+                                                                                        data-comentario-id="{{ comentario.id }}"
+                                                                                        data-post-id="{{ post.id }}">
+                                                                                        <i class='bx bx-error'></i> Denunciar
+                                                                                    </a>
+                                                                                {% endif %}
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <p class="conteudo-comentario">
+                                                                        {{ comentario.comentario_com_mencoes | safe }}
+                                                                    </p>
+
+                                                                    <p class="data-do-comentario" id="data-do-comentario">
+                                                                        {{ comentario.data_comentario }}
+                                                                    </p>
+                                                                </p>
+                                    
+                                                                {% if not comentario.parent_comment_id and comentario.respostas_count > 0 %}
+                                                                    <button class="btn-toggle-respostas" onclick="toggleRespostas(this)" data-comentario-id="{{ comentario.id }}">
+                                                                        <i class='bx bx-chevron-down'></i> Mostrar respostas 
+                                                                    </button>
+                                                                {% endif %}
+                                
+                                                                {% if post.comentarios_publicos == 1 or post.users_id == usuario_id or post.seguidores_mutuos %}
+                                                                    <button class="btn-resposta" onclick="mostrarFormResposta(this)">Responder</button>
+                                                                {% else %}
+                                                                    <button class="btn-resposta" onclick="mostrarFormResposta(this)" style="display: none;">Responder</button>
+                                                                {% endif %}
+        
+                                                                <div class="form-resposta">
+                                                                    <form class="form-resposta-comentario" onsubmit="submitReply(event, '{{ post.id }}', '{{ comentario.id }}')">
+                                                                        <textarea name="comentario" maxlength="300" placeholder="Digite sua resposta..." required rows="1" style="resize: vertical; overflow:auto;"></textarea>
+                                                                        <button type="submit">
+                                                                            <i class='bx bx-send'></i>
+                                                                        </button>
+
+                                                                        <button type="button" class="btn-cancelar-resposta"  onclick="esconderFormResposta(this)">
+                                                                            <i class='bx bx-x'></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                    {% if post.comentarios_publicos == 'todos' or post.users_id == usuario_id or post.seguidores_mutuos %}
+                                                        <div class="texto-sem-comentario">
+                                                            <i class='bx bxs-comment-dots'></i>
+                                                            <p>Nenhum comentário ainda. Seja o primeiro a comentar!</p>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="texto-sem-comentario">
+                                                            <i class='bx bx-lock-alt'></i>
+                                                            {% if post.comentarios_publicos == 'privado' %}
+                                                                Os comentários estão desativados para este post
+                                                                <p>Apenas <strong>{{ post.username }}</strong> pode comentar.</p>
+                                                            {% elif post.comentarios_publicos == 'seguidores_mutuos' %}
+                                                                Apenas amigos podem comentar neste post
+                                                            {% else %}
+                                                                <p>Os comentários estão desativados para este post.</p>
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                                </div>
+        
+                                                <div class="comment-input">
+                                                    {% if post.comentarios_publicos == 'todos' or post.users_id == usuario_id or post.seguidores_mutuos %}
+                                                        <form id="commentForm-{{ post.id }}" action="{{ url_for('comentar.comentar', post_id=post.id) }}" method="post" onsubmit="submitComment(event, '{{ post.id }}')">
+                                                            <textarea name="comentario" maxlength="300" id="comentario-{{ post.id }}" required placeholder="Digite seu comentário..." rows="1" style="resize: vertical; overflow:auto;"></textarea>
+                                                            <button type="submit">
+                                                                <i class='bx bx-send'></i>
+                                                            </button>
+                                                        </form>
+                                                    {% else %}
+                                                        <div class="alert alert-info comentarios-desativados">
+                                                            <i class='bx bx-lock-alt'></i>
+                                                            {% if post.comentarios_publicos == 'privado' %}
+                                                                Os comentários estão desativados para este post
+                                                            {% elif post.comentarios_publicos == 'seguidores_mutuos' %}
+                                                                Apenas amigos podem comentar neste post
+                                                            {% else %}
+                                                                Comentários não disponíveis
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="sem-post">
+                            <i class='bx bx-image-add'></i>
+                            <p class="no-results">Não há posts</p>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="perfil privado">
+                        <i class='bx bx-lock-alt'></i>
+                        <p>Este perfil é privado</p>
+                        <p>Siga este usuário para ver seus posts</p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <!-- MODAL DE IMAGEM COMPLETA PARA POST -->
+        <div id="imageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <button type="button" class="close-modal-btn" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img id="modal-image" src="" alt="Imagem do post" class="imagem-completa-do-post" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DENUNCIA USUARIO -->
+        <div class="modal fade" id="modalDenunciarUsuario" tabindex="-1" role="dialog" aria-labelledby="modalDenunciarUsuarioLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form id="formDenunciaUsuario" method="POST">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalDenunciarUsuarioLabel">Denunciar Usuário</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="tipo" value="usuario">
+                            <input type="hidden" name="id_alvo" id="denunciaUsuarioId">
+
+                            <!-- Motivo -->
+                            <div class="form-group">
+                                <label for="motivoUsuario" class="texto-denuncia-post">Motivo da denúncia:</label>
+                                <select class="form-control" name="motivo" id="motivoUsuario" required>
+                                    <option value="">Selecione um motivo</option>
+                                    <option value="odio">Ódio</option>
+                                    <option value="abuso e assedio">Abuso e assédio</option>
+                                    <option value="discurso violento">Discurso violento</option>
+                                    <option value="segurança infantil">Segurança infantil</option>
+                                    <option value="privacidade">Privacidade</option>
+                                    <option value="spam">Spam</option>
+                                    <option value="suicidio ou automutilacao">Suicídio ou automutilação</option>
+                                    <option value="midia sensível">Exposição a mídia sensível</option>
+                                    <option value="falsa Identidade">Falsa Identidade</option>
+                                    <option value="conteudo violento">Conteúdo violento</option>
+                                    <option value="outros">Outros</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="detalhesUsuario" class="texto-denuncia-post">Detalhes (opcional):</label>
+                                <textarea class="form-control" name="detalhes" id="detalhesUsuario" rows="3" maxlength="80" placeholder="Descreva melhor a denúncia"></textarea>
+                                <small id="contadorDetalhesUsuario" class="form-text text-muted">0/80</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Enviar denúncia</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL DENUNCIA POST -->
+        <div class="modal fade" id="modalDenunciar" tabindex="-1" role="dialog" aria-labelledby="modalDenunciarLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form method="POST" action="">
+                    <div class="modal-content">
+                         <div class="modal-header">
+                            <h5 class="modal-title" id="modalDenunciarLabel">Denunciar Post</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="post_id" id="denunciarPostId">
+                            <div class="form-group">
+                                <label for="motivo" class="texto-denuncia-post">Motivo da denúncia:</label>
+                                <select class="form-control" name="motivo" id="motivo" required>
+                                    <option value="">Selecione um motivo</option>
+                                    <option value="odio">Ódio</option>
+                                    <option value="abuso e assedio">Abuso e assédio</option>
+                                    <option value="discurso violento">Discurso violento</option>
+                                    <option value="segurança infantil">Segurança infantil</option>
+                                    <option value="privacidade">Privacidade</option>
+                                    <option value="spam">Spam</option>
+                                    <option value="suicidio ou automutilacao">Suicídio ou automutilação</option>
+                                    <option value="midia sensível">Exposição a mídia sensível</option>
+                                    <option value="falsa Identidade">Falsa Identidade</option>
+                                    <option value="conteudo violent">Conteúdo violento</option>
+                                    <option value="outros">Outros</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="detalhes" class="texto-denuncia-post">Detalhes (opcional):</label>
+                                <textarea class="form-control" name="detalhes" id="detalhes" rows="3" maxlength="80" placeholder="Descreva melhor a denúncia"></textarea>
+                                <small id="contadorDetalhes" class="form-text text-muted">0/80</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Enviar denúncia</button>
+                            <button type="button" class="btn btn-secondary" id="cancelar-denuncia-post" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL REPUBLICADOS -->
+        <div class="modal fade" id="republicadosUsuariosModal" tabindex="-1" role="dialog" aria-labelledby="republicadosUsuariosModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="republicadosUsuariosModalLabel">Republicações</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control mb-2" id="search-republicados-user" placeholder="Pesquisar usuário..." style="display:none;">
+                        <div id="republicados-usuarios-lista"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL CURTIDA -->
+        <div class="modal fade" id="curtidasUsuariosModal" tabindex="-1" role="dialog" aria-labelledby="curtidasUsuariosModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="curtidasUsuariosModalLabel">Curtidas</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control mb-2" id="search-curtidas-user" placeholder="Pesquisar usuário..." style="display:none;">
+                        <div id="curtidas-usuarios-lista"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL PARA COMPARTILHA POST PARA O CHAT -->
+        <div class="modal fade" id="enviarAoChatModal" tabindex="-1" role="dialog" aria-labelledby="enviarAoChatModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="enviarAoChatModalLabel">Enviar post para...</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                        <div class="form-group" id="containerPesquisaUsuarioChat">
+                            <input type="text" class="form-control" id="pesquisaUsuarioChat" placeholder="Pesquisar usuários..." onkeyup="filtrarUsuariosChat()">
+                        </div>
+                        <div id="listaUsuariosChat">
+                        <!-- OS USUARIOS SERÃO CARREGADOS AQUI -->
+                        </div>
+                        <p id="msgSemAmigos" class="text-muted text-center my-2" style="display:none;">
+                            Nenhum amigo encontrado.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
     <!-- JQUERY -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- POPPER.JS PARA O BOOTSTRAP 4 -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
     <!--SLICK CAROUSEL -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
     <!-- BOOTSTRAP JS  -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!-- SCRIPT -->
-    <script src="../static/js/apagar-comentario.js"></script>
-    <script src="../static/js/pausar-video-post.js"></script>
+    <!-- PARA PODER APAGAR COMENTARIO -->
+    <script src="../static/js/comentarios/apagar-comentario.js"></script>
+
+    <!-- PARA PODER POST COM VIDEO SE O VIDEO NAO ESTIVER APARECENDO NA TELA -->
+    <script src="../static/js/post/pausar-video-post.js"></script>
+
+    <!-- MODAL DE IMAGEM DO POST -->
+    <script src="../static/js/post/modal-foto-post.js"></script>
+
+    <!-- PARA MODAL NAO DA ERRO -->
     <script src="../static/js/modal-nao-bugar.js"></script>
-    <script src="../static/js/compartilhar-post.js"></script>
-    <script src="../static/js/modal-foto-post.js"></script>
-    <script src="../static/js/comentar-post.js"></script>
-    <script src="../static/js/carrossel-post.js"></script>
-    <script src="../static/js/verificar-foto-video.js"></script>
-    <script src="../static/js/curtir-post.js"></script>   
-    <script src="../static/js/link-post.js"> </script>
+
+    <!-- PARA GERAR LINK DO POST E JA FICA SALVO  -->
+    <!-- <script src="../static/js/compartilhar-post.js"></script> -->
+
+    <!-- PARA PODER COMENTAR EM POST -->
+    <script src="../static/js/comentarios/comentar-post.js"></script>
+
+    <!-- PARA EXIBIR POST COM FOTO E VIDEO -->
+    <script src="../static/js/post/carrossel-post.js"></script>
+
+    <!-- PARA PODER CURTIR E DESCURTIR O POST -->
+    <script src="../static/js/post/curtir-post.js"></script>  
+
+    <!-- FORMATA LINK NO POST E GERAR LINK-->
+    <script src="../static/js/post/link-post.js"></script>
+
+    <!-- MENU LATERAL ESQUERDO MOBILE -->
     <script src="../static/js/geral/menu_toggle.js"></script>
-    <script src="../static/js/preview-de-midia-post.js"></script>
+
+    <!-- PARA DEIXAR PERFIL ONLINE OU OFF -->
     <script src="../static/js/status_on_off.js"></script>
-    <script src="../static/js/pag_inicial/buscar_seguidor.js"></script>
-    <script src="../static/js/pag_inicial/mencionar_post.js"></script>
-    <script src="../static/js/geral/mencao-link.js"></script>
+    
+    <!-- COMPARTILHAR POST PARA O CHAT -->
     <script src="../static/js/geral/enviar_post_para_chat.js"></script>
+
+    <!-- CONTADOR DE MENSAGENS DO CHAT -->
     <script src="../static/js/geral/contador_novas_mensagens.js"></script>
-    <script src="../static/js/geral/gerar_link_comentario.js"></script>
+
+    <!-- PARA PODER ACESSAR PERFIL DO USUARIO EM POST PELO @ -->
+    <script src="../static/js/geral/mencao-link.js"></script>
+
+    <!-- GERAR LINK COMENTARIO -->
+    <script src="../static/js/comentarios/gerar_link_comentario.js"></script>
+
+    <!-- GERAR LINK DO PERFIL -->
     <script src="../static/js/geral/gerar_link_perfil.js"></script>
-    <script src="../static/js/sweealert2/bloquear.js"></script>
+
+    <!-- CONTAR AS NOTIFICAÇÕES DO SISTEMA NAO LIDA -->
     <script src="../static/js/geral/contador_novas_notificacoes.js"></script>
-    <script src="../static/js/deixar_de_seguir.js"></script>
+
+    <!-- NOTIFICAÇÃO DO NAVEGADOR -->
     <script src="../static/js/notificacao/notificacao.js"></script> 
+
+    <!-- BARRA DE PESQUISA -->
     <script src="../static/js/barra_pesquisa_mob.js"></script>
+
+    <!-- MODAL PARA VISUALIZAR QUEM CURTIUS OS POST -->
     <script src="../static/js/geral/modal_post_curtido.js"></script>
+
+    <!-- PARA DAR VIEWS AO POST -->
     <script src="../static/js/post/vizualizacao.js"></script>
+
+    <!-- PARA SAIR DA CONTA -->
+    <script src="../static/js/sweealert2/log_out.js"></script>
+
+    <!-- PARA DENUNCIAR -->
+    <script src="../static/js/denuncia/denunciar_post.js"></script>
+    <script src="../static/js/denuncia/denunciar_comentario.js"></script>
+    <script src="../static/js/denuncia/denunciar_perfil.js"></script>
+
+    <!-- FORMATA A HASHTAG -->
     <script src="../static/js/geral/hashtag.js"></script>
+
+    <!-- VISIBILIDADE CURTIDAS POST INFO -->
+    <script src="../static/js/post/visibilidade_curtidas_post.js"></script>
+
+    <!-- INFO COMENTARIOS POST -->
+    <script src="../static/js/post/info_comentario.js"></script>
+
+    <!-- PARA REPUBLICAR POST -->
+    <script src="../static/js/post/republicar_post.js"></script>
+
+    <!-- PARA SALVAR POST -->
+    <script src="../static/js/post/salvar_post.js"></script>
+
+    <!-- PARA BLOQUEAR USUARIO -->
+    <script src="../static/js/sweealert2/bloquear.js"></script>
+
+    <!-- TEMPO DE AMIZADE -->
+    <script src="../static/js/pag_inicial/amizade.js"></script>
+
+    <!-- PARA BUSCAR SEGUINDO E SEGUIDORES -->
+    <script src="../static/js/pag_inicial/buscar_seguidor.js"></script>
+
+    <!-- PARA BOTAO DE VOLTAR AO TOPO -->
+    <script src="../static/js/geral/voltar_topo.js" defer></script>
+
+    <!-- ALERT DE SEM PERMISSAO -->
+    <script src="../static/js/sweealert2/sem_permissao.js"></script>
+
+    <!-- FORÇAR O SCROLL -->
+    <script src="../static/js/geral/forca_scroll.js"></script>
+
+    <!-- LOADING DA PAGINA -->
+    <script src="../static/js/carregamento/loading.js"></script>
+
+    <!-- PARA CHECAR SE A NOTIFICACAO PUSH ESTA ATIVADO -->
+    <script src="../static/js/notificacao/check.js"></script>
+
+    <!-- PARA O MODAL DE QUEM REPUBLICOU O POST -->
+    <script src="../static/js/geral/modal_post_republicado.js"></script>
+
+    <!-- PARA NAO DEIXAR DOIS DISPOSTIVOS CONECTADOS -->
+    <script src="../static/js/geral/checar_sessao.js"></script>
 
 </body>
 </html>

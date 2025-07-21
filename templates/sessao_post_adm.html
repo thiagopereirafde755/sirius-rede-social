@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pagina administrador - Sirius</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png" />
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- BOOTSTRAP CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- ESTILO DA PAGINA -->
+    <link rel="stylesheet" href="../static/css/administrador.css" />
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<i class='bx bxs-dog'></i>
+			<span class="text">Sirius</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="/pagina_inicial_admin">
+					<i class='bx bxs-home'></i> 
+					<span class="text">Início</span>
+				</a>
+			</li>
+			<li>
+				<a href="/sessao_administrador">
+					<i class='bx bxs-user-detail'></i>
+					<span class="text">Administradores</span>
+				</a>
+			</li>
+			<li>
+				<a href="/sessao_usuarios">
+					<i class='bx bxs-user'></i>
+                    <span class="text">Usuários</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="/sessao_post">
+					<i class='bx bxs-file'></i>
+                    <span class="text">Posts</span>
+				</a>
+			</li>
+			<li>
+				<a href="/sessao_comentarios_adm">
+					<i class='bx bxs-comment-detail'></i>
+                    <span class="text">Comentários</span>
+				</a>
+			</li>
+			<li>
+				<a href="/sessao_mensagens_adm">
+					<i class='bx bxs-comment-detail'></i>
+                    <span class="text">Mensagens</span>
+				</a>
+			</li>
+			<li>
+				<a href="/sessao_pesquisas_adm">
+					<i class='bx bx-search'></i>
+                    <span class="text">Pesquisas</span>
+				</a>
+			</li>
+            <li>
+				<a href="#">
+					<i class='bx bxs-flag'></i>
+                    <span class="text">Denúncias</span>
+				</a>
+			</li>
+            <li>
+                <a href="/sessao_estatisticas_adm">
+                    <i class='bx bxs-bar-chart-alt-2'></i>
+                    <span class="text">Estatísticas</span>
+                </a>
+            </li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="#" class="logout">
+					<i class='bx bx-log-out'></i>
+					<span class="text">Sair</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">Categorias</a>
+			<form action="" method="get">
+                <div class="form-input">
+                    <input type="search" name="q" placeholder="Buscar pelo usuário ou id..." value="{{ request.args.get('q', '') }}">
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main class="admin-main-content">
+            <div class="admin-table-container">
+                <h1 class="admin-page-title">Lista de Post</h1>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+							<tr>
+								<th>ID</th>
+								<th>Username</th>
+								<th>Data de Postagem</th>
+								<th>Post</th>
+								<th>Ação</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% if posts %}
+								{% for post in posts %}
+								<tr>
+									<td>{{ post.post_id }}</td>
+									<td>{{ post.username }}</td>
+									<td>{{ post.data_postagem.strftime('%d/%m/%Y %H:%M') }}</td>
+									<td>{{ post.conteudo[:5] }}{% if post.conteudo|length > 5 %}...{% endif %}</td>
+									<td class="actions">
+
+										<!-- BOTÃO DE ABRIR MODAL COM DADOS -->
+										<button class="btn-edit" data-bs-toggle="modal" data-bs-target="#modalPostDetalhes{{ post.post_id }}">
+											<i class='bx bx-show'></i>
+										</button>
+
+										<!-- PARA REMOVER POST -->
+										<form method="POST" action="{{ url_for('administrador.deletar_post', post_id=post.post_id) }}" class="form-remover">
+											<input type="hidden" name="q" value="{{ request.args.get('q', '') }}">
+											<button type="submit" class="btn-delete" title="Remover post">
+												<i class='bx bx-trash'></i>
+											</button>
+										</form>
+
+									</td>
+								</tr>
+								{% endfor %}
+							{% else %}
+								<tr>
+									<td colspan="5" class="text-center text-muted py-4 aviso-sem-resultado">
+										<i class='bx bx-error-circle' style="font-size: 2rem;"></i><br>
+										Nenhum post.
+									</td>
+								</tr>
+							{% endif %}
+						</tbody>
+                    </table>
+                </div>
+            </div>
+
+			<!-- MODAL DE DETALHES DO POST -->
+			{% for post in posts %}
+			<div class="modal fade" id="modalPostDetalhes{{ post.post_id }}" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-right">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Detalhes do Post (ID {{ post.post_id }})</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+				</div>
+				<div class="modal-body">
+					<p id="conteudo-post"><strong>Conteúdo:</strong> {{ post.conteudo }}</p>
+
+					{% if post.imagem and post.video %}
+					<div id="carouselPost{{ post.post_id }}" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+						<img src="{{ post.imagem }}" class="d-block w-100">
+						</div>
+						<div class="carousel-item">
+						<video controls class="d-block w-100">
+							<source src="{{ post.video }}" type="video/mp4">
+							Seu navegador não suporta vídeos.
+						</video>
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselPost{{ post.post_id }}" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon"></span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselPost{{ post.post_id }}" data-bs-slide="next">
+						<span class="carousel-control-next-icon"></span>
+					</button>
+					</div>
+
+					{% elif post.imagem %}
+					<img src="{{ post.imagem }}" class="img-fluid mb-3">
+
+					{% elif post.video %}
+					<video controls class="w-100 mb-3">
+					<source src="{{ post.video }}" type="video/mp4">
+					Seu navegador não suporta vídeos.
+					</video>
+
+					{% endif %}
+
+					<p><strong>Curtidas:</strong> {{ post.qtd_curtidas }}</p>
+					<p><strong>Comentários:</strong> {{ post.qtd_comentarios }}</p>
+					<p><strong>Visualizações:</strong> {{ post.qtd_visualizacoes }}</p>
+					<p><strong>Republicações:</strong> {{ post.qtd_republicacoes }}</p>
+					<p><strong>Salvo:</strong> {{ post.qtd_salvo }}</p>
+				</div>
+				</div>
+			</div>
+			</div>
+			{% endfor %}
+
+        </main>
+	    <!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+    <!-- SCRIPT -->
+    <script src="../static/js/administrador/menu.js"></script>
+    <script src="../static/js/administrador/log_out.js"></script>
+    <script src="../static/js/administrador/sessao_post.js"></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

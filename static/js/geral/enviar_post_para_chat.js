@@ -1,10 +1,34 @@
-// Função para abrir o modal e carregar os usuários
 function abrirEnviarAoChatModal(postId) {
+    // limpa busca
+    document.getElementById('pesquisaUsuarioChat').value = '';
+    $('#msgSemAmigos').hide(); // esconde mensagem
     $('#enviarAoChatModal').modal('show');
     carregarUsuariosMutuos(postId);
 }
 
-// Função para carregar os usuários mútuos via AJAX
+
+function filtrarUsuariosChat() {
+    const input   = document.getElementById('pesquisaUsuarioChat');
+    const filtro  = input.value.toUpperCase();
+    const itens   = document.querySelectorAll('.usuario-chat-item');
+    const msg     = document.getElementById('msgSemAmigos');
+
+    let algumVisivel = false;
+
+    itens.forEach(item => {
+        const nome = item.querySelector('.usuario-chat-nome').textContent.toUpperCase();
+        if (nome.includes(filtro)) {
+            item.style.display = ''; 
+            algumVisivel = true;
+        } else {
+            item.style.display = 'none'; 
+        }
+    });
+
+    msg.style.display = algumVisivel ? 'none' : 'block';
+}
+
+
 function carregarUsuariosMutuos(postId) {
     $.ajax({
         url: '/get_usuarios_mutuos',
@@ -18,46 +42,37 @@ function carregarUsuariosMutuos(postId) {
                         <div class="usuario-chat-item" onclick="enviarPostParaChat(${postId}, ${usuario.id})">
                             <img src="${usuario.foto_perfil || '/static/img/icone/user.png'}" alt="${usuario.username}">
                             <div class="usuario-chat-info">
-                                <div class="usuario-chat-nome">${usuario.username}</div>
+                                <div class="usuario-chat-nome">${usuario.username} </div>
                             </div>
                         </div>
                     `;
                 });
-                
+
+                if (response.usuarios.length > 1) {
+                    document.getElementById('containerPesquisaUsuarioChat').style.display = 'block';
+                } else {
+                    document.getElementById('containerPesquisaUsuarioChat').style.display = 'none';
+                }
+
                 if (html === '') {
                     html = '<p>Nenhum amigo encontrado.</p>';
                 }
-                
+
                 $('#listaUsuariosChat').html(html);
             } else {
+                $('#containerPesquisaUsuarioChat').style.display = 'none';
                 $('#listaUsuariosChat').html('<p>Erro ao carregar usuários.</p>');
             }
         },
         error: function() {
+            document.getElementById('containerPesquisaUsuarioChat').style.display = 'none';
             $('#listaUsuariosChat').html('<p>Erro ao carregar usuários.</p>');
-        }
-    });
-}
-
-// Função para filtrar usuários na pesquisa
-function filtrarUsuariosChat() {
-    const input = document.getElementById('pesquisaUsuarioChat');
-    const filter = input.value.toUpperCase();
-    const items = document.querySelectorAll('.usuario-chat-item');
-    
-    items.forEach(item => {
-        const nome = item.querySelector('.usuario-chat-nome').textContent.toUpperCase();
-        if (nome.includes(filter)) {
-            item.style.display = '';
-        } else {
-            item.style.display = 'none';
         }
     });
 }
 
 // Função para enviar o post para o chat
 function enviarPostParaChat(postId, usuarioId) {
-    // Alerta visual de envio (SweetAlert2)
     Swal.fire({
         icon: 'info',
         title: 'Enviando...',
@@ -69,7 +84,6 @@ function enviarPostParaChat(postId, usuarioId) {
 
     $('#enviarAoChatModal').modal('hide');
     
-    // Aqui você pode fazer uma chamada AJAX para enviar o post para o chat
     $.ajax({
         url: '/enviar_post_para_chat',
         type: 'POST',

@@ -52,7 +52,6 @@ $(document).ready(function() {
         }
     });
 
-    // Delegação de eventos para os botões de bloquear/desbloquear
     $(document).on('click', '.btn-bloquear, .btn-desbloquear', function() {
         const usuarioId = $(this).data('id');
         const isBloquear = $(this).hasClass('btn-bloquear');
@@ -71,14 +70,12 @@ $(document).ready(function() {
             if (response.error) {
                 alert('Erro: ' + response.error);
             } else {
-                // Atualiza a lista de bloqueados e os resultados da pesquisa
                 carregarBloqueados();
                 $('#pesquisa-usuario').trigger('input');
             }
         });
     });
 
-    // Função para carregar a lista de usuários bloqueados
     function carregarBloqueados() {
         $.get(buscaUrl('listar_bloqueados'), function(data) {
             let bloqueados;
@@ -114,7 +111,6 @@ $(document).ready(function() {
         });
     }
 
-    // Função utilitária para resolver URLs Flask/Jinja2 (no template, substitua por valores reais)
     function buscaUrl(endpoint) {
         // Estes valores devem ser passados no template para o JS como variáveis globais
         // Exemplo de uso no template:
@@ -129,7 +125,6 @@ $(document).ready(function() {
         if (window.URL_CONFIG && window.URL_CONFIG[endpoint]) {
             return window.URL_CONFIG[endpoint];
         }
-        // fallback – deve ser substituído sempre por variáveis do template
         return endpoint;
     }
 });

@@ -1,22 +1,30 @@
-import os
-from flask import Blueprint, render_template, redirect, url_for, session, request, flash
-from werkzeug.utils import secure_filename
-from app.utils import replace_mentions, formatar_data
+from flask import Blueprint, render_template, redirect, url_for, session, request
+from app.utils import replace_mentions, aplicar_pesos_e_ordenar_sugestoes_perfil ,buscar_sugestoes_perfis, buscar_info_usuario_logado_1, aplicar_ranking_personalizado, buscar_hashtags_mais_usadas, processar_posts, gerar_filtros_busca, registrar_pesquisa_post
 from app.conexao import criar_conexao
-from flask import jsonify
-from datetime import datetime
+import pickle
 
 curtidas_post_bp = Blueprint('postcurtido', __name__)
+# =============================================================
+#  MODELO ALGORITMO TREINADO
+# =============================================================
+with open('modelo_algoritmo/modelo_feed.pkl', 'rb') as f:
+    modelo_ml = pickle.load(f)
 
-# Registre o filtro Jinja2 usando a função importada
+with open('modelo_algoritmo/modelo_perfis.pkl', 'rb') as f:
+    modelo_perfis = pickle.load(f)    
+# =============================================================
+#  FUNÇÕES
+# =============================================================
 @curtidas_post_bp.app_template_filter('replace_mentions')
 def _replace_mentions(text):
     return replace_mentions(text)
- 
+# =============================================================
+#  PAGINA DO POST CURTIDO SEM ML
+# =============================================================
 @curtidas_post_bp.route('/post-curtidos')
 def postcurtido():
     if 'usuario_id' not in session:
-        return redirect(url_for('index'))  # Redireciona se não estiver logado
+        return redirect(url_for('index'))  
 
     usuario_id = session['usuario_id']
 
@@ -25,111 +33,44 @@ def postcurtido():
 
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-    # Informações do usuário
-                cursor.execute("SELECT fotos_perfil, username, tema FROM users WHERE id = %s", (usuario_id,))
-                usuario = cursor.fetchone()
+                # INFORMAÇÃO DO USUARIO LOGADO
+                foto_perfil, nome_usuario, tema = buscar_info_usuario_logado_1(cursor, usuario_id)
 
-                if usuario:
-                    foto_perfil = usuario['fotos_perfil'] if usuario['fotos_perfil'] else url_for('static', filename='img/icone/user.png')
-                    nome_usuario = usuario['username']
-                    tema = usuario.get('tema', 'claro')
-                else:
-                    foto_perfil = url_for('static', filename='img/icone/user.png')
-                    nome_usuario = ""
-                    tema = 'claro'
+                # SUGESTOES DE PERFIL
+                sugestoes_perfis = buscar_sugestoes_perfis(cursor, usuario_id)
+
+                # MODELO ML DE SUGESTOES
+                sugestoes_perfis = aplicar_pesos_e_ordenar_sugestoes_perfil(sugestoes_perfis)
           
-                # Pegando os posts que o usuário curtiu
+                # QUAIS POST DEVE MOSTRAR
                 cursor.execute("""
-    SELECT posts.*, users.username, users.fotos_perfil, posts.users_id, users.curtidas_publicas, 
-           (SELECT COUNT(*) FROM comentarios WHERE comentarios.post_id = posts.id) AS comentarios_count
-    FROM posts 
-    JOIN users ON posts.users_id = users.id
-    JOIN curtidas ON posts.id = curtidas.post_id
-    WHERE curtidas.usuario_id = %s
-    ORDER BY curtidas.data DESC
-""", (usuario_id,))
+                    SELECT 
+                        posts.*, 
+                        users.username, 
+                        users.fotos_perfil, 
+                        posts.users_id, 
+                        users.curtidas_publicas, 
+                        users.perfil_publico,  
+                        (SELECT COUNT(*) FROM comentarios WHERE comentarios.post_id = posts.id) AS comentarios_count,
+                        EXISTS (
+                            SELECT 1 FROM seguindo 
+                            WHERE id_seguidor = %s AND id_seguindo = posts.users_id
+                        ) AS seguindo
+                    FROM posts 
+                    JOIN users ON posts.users_id = users.id
+                    JOIN curtidas ON posts.id = curtidas.post_id
+                    WHERE curtidas.usuario_id = %s
+                    AND users.suspenso = 0
+                    ORDER BY curtidas.data DESC
+                """, (usuario_id, usuario_id))
+
                 posts = cursor.fetchall()
 
-                     # Buscar as 3 hashtags mais usadas nas últimas 10 horas
-                cursor.execute("""
-                    SELECT h.nome, COUNT(*) as total
-                    FROM hashtags h
-                    JOIN post_hashtags ph ON h.id = ph.hashtag_id
-                    JOIN posts p ON ph.post_id = p.id
-                    WHERE p.data_postagem >= NOW() - INTERVAL 10 HOUR
-                    GROUP BY h.id, h.nome
-                    ORDER BY total DESC
-                    LIMIT 3
-                """)
-                hashtags_top = cursor.fetchall()
+                # HASHTAG DO MOMENTO
+                hashtags_top = buscar_hashtags_mais_usadas(cursor)
 
-                for post in posts:
-                    post_id = post['id']
-                    post['data_postagem'] = formatar_data(post['data_postagem'])
-
-                    # Pegando as curtidas
-                    cursor.execute("""
-                        SELECT COUNT(*) as curtidas
-                        FROM curtidas 
-                        WHERE post_id = %s
-                    """, (post['id'],))
-                    post['curtidas'] = cursor.fetchone()['curtidas']
-
-                    # Verificar se o usuário já segue o autor do post
-                    cursor.execute("""
-                        SELECT * FROM seguindo 
-                        WHERE id_seguidor = %s AND id_seguindo = %s
-                    """, (usuario_id, post['users_id']))
-                    post['seguindo'] = cursor.fetchone() is not None
-
-                    # Verificar se o usuário já curtiu o post
-                    cursor.execute("""
-                        SELECT * FROM curtidas 
-                        WHERE post_id = %s AND usuario_id = %s
-                    """, (post['id'], usuario_id))
-                    post['curtido_pelo_usuario'] = cursor.fetchone() is not None
-
-                    # Verificando se o usuário logado já curtiu o post
-                    cursor.execute("""
-                        SELECT 1 
-                        FROM curtidas 
-                        WHERE post_id = %s AND usuario_id = %s
-                    """, (post['id'], usuario_id))
-                    post['usuario_curtiu'] = cursor.fetchone() is not None
-
-                    cursor.execute("""
-                         SELECT comentarios_publicos FROM users WHERE id = %s
-                     """, (post['users_id'],))
-                    post['comentarios_publicos'] = cursor.fetchone()['comentarios_publicos']
-
-                     # Buscando comentários
-                    cursor.execute("""
-                        SELECT 
-                            c.*, 
-                            u.username, 
-                            u.id AS usuario_id, 
-                            u.fotos_perfil,
-                            parent.id AS parent_comment_id,
-                            parent.usuario_id AS parent_usuario_id,
-                            parent_user.username AS parent_username,
-                            (SELECT COUNT(*) FROM comentarios WHERE parent_comment_id = c.id) AS respostas_count
-                        FROM comentarios c
-                        JOIN users u ON c.usuario_id = u.id
-                        LEFT JOIN comentarios parent ON c.parent_comment_id = parent.id
-                        LEFT JOIN users parent_user ON parent.usuario_id = parent_user.id
-                        WHERE c.post_id = %s
-                        ORDER BY 
-                            CASE WHEN c.parent_comment_id IS NULL THEN c.id ELSE c.parent_comment_id END,
-                            c.id
-                    """, (post['id'],))
-                    comentarios = cursor.fetchall()
-
-                    for comentario in comentarios:
-                        comentario['data_comentario'] = formatar_data(comentario['data_comentario'])
-                        if not comentario['fotos_perfil']:
-                            comentario['fotos_perfil'] = url_for('static', filename='img/icone/user.png')
-
-                    post['comentarios'] = comentarios
+                # FOR DO POST
+                posts = processar_posts(posts, usuario_id, cursor)
 
             conexao.close()
 
@@ -138,21 +79,24 @@ def postcurtido():
                                    foto_perfil=foto_perfil, 
                                    nome_usuario=nome_usuario, 
                                    hashtags_top=hashtags_top,
-                                tema=tema)
+                                   tema=tema,
+                                   sugestoes_perfis=sugestoes_perfis)
         
         return "Erro na conexão com o banco de dados."
 
     except Exception as e:
         return f"Erro ao conectar ao banco de dados: {str(e)}"    
-    
+# =============================================================
+#  PAGINA DO POST CURTIDO PARA PESQUISAR POST SEM ML
+# =============================================================
 @curtidas_post_bp.route('/pesquisar-post-curtido')
 def pesquisar_post_curtido():
     if 'usuario_id' not in session:
-        return redirect(url_for('index'))  # Redireciona se não estiver logado
+        return redirect(url_for('index'))  
 
     usuario_id = session['usuario_id']
     query = request.args.get('query', '').strip()
-    filtro = request.args.get('filtro', 'mais_recente')  # Novo: pega filtro do GET
+    filtro = request.args.get('filtro', 'mais_recente')  
     tipo_conteudo = request.args.get('tipo_conteudo', 'geral')
 
     try:
@@ -160,112 +104,61 @@ def pesquisar_post_curtido():
 
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Informações do usuário
-                cursor.execute("SELECT fotos_perfil, username, tema FROM users WHERE id = %s", (usuario_id,))
-                usuario = cursor.fetchone()
+                # INFORMACOES DO USUARIO LOGADO
+                foto_perfil, nome_usuario, tema = buscar_info_usuario_logado_1(cursor, usuario_id)
 
-                if usuario:
-                    foto_perfil = usuario['fotos_perfil'] if usuario['fotos_perfil'] else url_for('static', filename='img/icone/user.png')
-                    nome_usuario = usuario['username']
-                    tema = usuario.get('tema', 'claro')
-                else:
-                    foto_perfil = url_for('static', filename='img/icone/user.png')
-                    nome_usuario = ""
-                    tema = 'claro'
+                # SUGESTOES DE PERFIL
+                sugestoes_perfis = buscar_sugestoes_perfis(cursor, usuario_id)
 
-                # Define o ORDER BY conforme filtro
-                if filtro == 'mais_curtido':
-                    order_by = "ORDER BY curtidas DESC"
-                elif filtro == 'mais_velho':
-                    order_by = "ORDER BY posts.data_postagem ASC"
-                else:  # mais_recente (default)
-                    order_by = "ORDER BY posts.data_postagem DESC"
-                
-                if tipo_conteudo == 'foto':
-                    filtro_tipo = (
-                        "AND posts.imagem IS NOT NULL AND posts.imagem != '' "
-                        "AND (posts.video IS NULL OR posts.video = '')"
-                    )
-                elif tipo_conteudo == 'video':
-                    filtro_tipo = (
-                        "AND posts.video IS NOT NULL AND posts.video != '' "
-                        "AND (posts.imagem IS NULL OR posts.imagem = '')"
-                    )
-                else:  # geral
-                    filtro_tipo = ""
+                # MODELO ML DE SUGESTOES
+                sugestoes_perfis = aplicar_pesos_e_ordenar_sugestoes_perfil(sugestoes_perfis)
 
-                # Pegando os posts curtidos pelo usuário, filtrando por conteúdo ou nome de usuário
+                # FILTRO
+                order_by, filtro_tipo = gerar_filtros_busca(filtro, tipo_conteudo)
+
+                # QUAIS POST DEVE MOSTRAR
                 cursor.execute(f"""
-                    SELECT posts.*, users.username, users.fotos_perfil, posts.users_id, users.curtidas_publicas,
-                           (SELECT COUNT(*) FROM comentarios WHERE comentarios.post_id = posts.id) AS comentarios_count,
-                           (SELECT COUNT(*) FROM curtidas WHERE curtidas.post_id = posts.id) AS curtidas
-                    FROM posts 
+                    SELECT 
+                        posts.*, 
+                        users.username, 
+                        users.fotos_perfil, 
+                        posts.users_id, 
+                        users.curtidas_publicas,
+                        users.perfil_publico,  
+                        (SELECT COUNT(*) FROM comentarios WHERE comentarios.post_id = posts.id) AS comentarios_count,
+                        (SELECT COUNT(*) FROM curtidas WHERE curtidas.post_id = posts.id) AS curtidas,
+                        EXISTS (
+                            SELECT 1 FROM seguindo 
+                            WHERE id_seguidor = %s AND id_seguindo = posts.users_id
+                        ) AS seguindo
+                    FROM posts
                     JOIN users ON posts.users_id = users.id
                     JOIN curtidas ON posts.id = curtidas.post_id
                     WHERE curtidas.usuario_id = %s
+                    AND users.suspenso = 0
                     AND (posts.conteudo LIKE %s OR users.username LIKE %s)
                     {filtro_tipo} {order_by}
-                """, (usuario_id, f"%{query}%", f"%{query}%"))
+                """, (
+                    usuario_id,  # para EXISTS seguindo
+                    usuario_id,  # curtidas.usuario_id
+                    f"%{query}%", 
+                    f"%{query}%"
+                ))
+
                 posts = cursor.fetchall()
 
-                # Buscar as 3 hashtags mais usadas nas últimas 10 horas
-                cursor.execute("""
-                    SELECT h.nome, COUNT(*) as total
-                    FROM hashtags h
-                    JOIN post_hashtags ph ON h.id = ph.hashtag_id
-                    JOIN posts p ON ph.post_id = p.id
-                    WHERE p.data_postagem >= NOW() - INTERVAL 10 HOUR
-                    GROUP BY h.id, h.nome
-                    ORDER BY total DESC
-                    LIMIT 3
-                """)
-                hashtags_top = cursor.fetchall()
+                # SALVAR PESQUISA
+                registrar_pesquisa_post(cursor, conexao, usuario_id, query)
 
-                for post in posts:
-                    post_id = post['id']
-                    post['data_postagem'] = formatar_data(post['data_postagem'])
-                    # As curtidas já vieram da query
+                # HASHTAG DO MOMENTO
+                hashtags_top = buscar_hashtags_mais_usadas(cursor)
 
-                    # Verificar se o usuário já curtiu o post
-                    cursor.execute("""
-                        SELECT * FROM curtidas 
-                        WHERE post_id = %s AND usuario_id = %s
-                    """, (post['id'], usuario_id))
-                    post['curtido_pelo_usuario'] = cursor.fetchone() is not None
+                # FOR DE POST
+                posts = processar_posts(posts, usuario_id, cursor)
 
-                    cursor.execute("""
-                         SELECT comentarios_publicos FROM users WHERE id = %s
-                     """, (post['users_id'],))
-                    post['comentarios_publicos'] = cursor.fetchone()['comentarios_publicos']
-
-                    # Buscando comentários
-                    cursor.execute("""
-                        SELECT 
-                            c.*, 
-                            u.username, 
-                            u.id AS usuario_id, 
-                            u.fotos_perfil,
-                            parent.id AS parent_comment_id,
-                            parent.usuario_id AS parent_usuario_id,
-                            parent_user.username AS parent_username,
-                            (SELECT COUNT(*) FROM comentarios WHERE parent_comment_id = c.id) AS respostas_count
-                        FROM comentarios c
-                        JOIN users u ON c.usuario_id = u.id
-                        LEFT JOIN comentarios parent ON c.parent_comment_id = parent.id
-                        LEFT JOIN users parent_user ON parent.usuario_id = parent_user.id
-                        WHERE c.post_id = %s
-                        ORDER BY 
-                            CASE WHEN c.parent_comment_id IS NULL THEN c.id ELSE c.parent_comment_id END,
-                            c.id
-                    """, (post['id'],))
-                    comentarios = cursor.fetchall()
-
-                    for comentario in comentarios:
-                        comentario['data_comentario'] = formatar_data(comentario['data_comentario'])
-                        if not comentario['fotos_perfil']:
-                            comentario['fotos_perfil'] = url_for('static', filename='img/icone/user.png')
-
-                    post['comentarios'] = comentarios
+                # === MODELO ML ===
+                if filtro == 'relevancia':
+                    posts = aplicar_ranking_personalizado(posts, usuario_id, modelo_ml)
 
             conexao.close()
 
@@ -277,9 +170,10 @@ def pesquisar_post_curtido():
                 query=query,
                 nome_usuario=nome_usuario,
                 hashtags_top=hashtags_top,
-                filtro=filtro,  # <-- passa filtro para o template
+                filtro=filtro,  
                 tema=tema,
                 tipo_conteudo=tipo_conteudo,
+                sugestoes_perfis=sugestoes_perfis
             )
         
         return "Erro na conexão com o banco de dados."

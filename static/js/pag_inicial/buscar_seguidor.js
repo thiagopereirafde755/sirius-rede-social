@@ -54,4 +54,13 @@ document.addEventListener('DOMContentLoaded', function() {
         'nenhum-seguindo-encontrado',
         "<i class='bx bx-user-x' style='font-size:2.5rem;'></i><p>Nenhum usuário encontrado</p>"
     );
+
+    // Filtro de amigos em comum (adicionado)
+    handleEmptyList(
+        'search-amigos-comuns',       // id do input de busca no modal de amigos em comum
+        '#amigos-comuns-list',        // seletor da lista de amigos
+        '.amigo-username',            // seletor do elemento com username dentro do li
+        'nenhum-amigo-comum-encontrado', // id para a mensagem "nenhum amigo encontrado"
+        "<i class='bx bx-user-x' style='font-size:2.5rem;'></i><p>Nenhum amigo encontrado</p>" // html da mensagem
+    );
 });

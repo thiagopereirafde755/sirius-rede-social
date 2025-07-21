@@ -30,5 +30,4 @@
 
 // Dispara a cada 5 segundos
 setInterval(atualizarStatusVisto, 5000);
-// Opcional: dispara ao abrir a conversa
 document.addEventListener('DOMContentLoaded', atualizarStatusVisto);

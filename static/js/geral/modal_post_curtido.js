@@ -6,7 +6,7 @@ $(document).ready(function() {
         var postId = $(this).data('post-id');
         $('#curtidas-usuarios-lista').html('<div class="text-center">Carregando...</div>');
         $('#curtidasUsuariosModal').modal('show');
-        $("#search-curtidas-user").hide().val(""); // Reseta busca
+        $("#search-curtidas-user").hide().val(""); 
 
         $.ajax({
             url: `/curtidas/${postId}/usuarios`,
@@ -60,15 +60,15 @@ $(document).ready(function() {
         else {
             html += '<ul class="list-group">';
             lista.forEach(function(user) {
-                var foto = user.fotos_perfil ? `/static/${user.fotos_perfil}` : '/static/img/icone/user.png';
+                var foto = user.fotos_perfil ? `${user.fotos_perfil}` : '/static/img/icone/user.png';
                 html += `
-                    <li class="list-group-item d-flex align-items-center">
-                        <a href="/info-user/${user.id}" class="font-weight-bold">
-                            <img src="${foto}" width="32" height="32" class="rounded-circle mr-2" alt="Foto de perfil">
-                            ${user.username}
-                        </a>
-                    </li>
-                `;
+                <li class="list-group-item d-flex align-items-center p-0">
+                    <a href="/info-user/${user.id}" class="font-weight-bold d-flex align-items-center w-100 px-3 py-2 text-white text-decoration-none">
+                        <img src="${foto}" width="32" height="32" class="rounded-circle mr-2" alt="Foto de perfil">
+                        ${user.username}
+                    </a>
+                </li>
+            `;
             });
             html += '</ul>';
         }

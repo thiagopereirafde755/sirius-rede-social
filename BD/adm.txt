@@ -1,0 +1,5 @@
+login adm
+
+user = administradorprincipal1
+
+senha = 30032008

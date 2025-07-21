@@ -1,46 +1,35 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify
+from flask import  Blueprint, render_template, redirect, url_for, session, request, jsonify
 import os
-from werkzeug.utils import secure_filename
-from app.conexao import criar_conexao  # Importe a função de conexão com o banco de dados
-from datetime import datetime, timedelta
+from app.conexao import criar_conexao 
+from app.utils import  buscar_info_usuario_logado_chat, buscar_contatos, data_msg
+import cloudinary.uploader
+from dotenv import load_dotenv
+import traceback
+import cloudinary
 
-def formatar_data(data):
-    hoje = datetime.now().date()
-    ontem = hoje - timedelta(days=1)
-
-    if data.date() == hoje:
-        return "Hoje"
-    elif data.date() == ontem:
-        return "Ontem"
-    else:
-        # Dicionário para mapear números de meses para nomes
-        meses = {
-            1: "janeiro", 2: "fevereiro", 3: "março", 4: "abril",
-            5: "maio", 6: "junho", 7: "julho", 8: "agosto",
-            9: "setembro", 10: "outubro", 11: "novembro", 12: "dezembro"
-        }
-
-        # Extrai o dia, mês e ano
-        dia = data.day
-        mes = meses[data.month]
-        ano = data.year
-
-        # Retorna a data formatada
-        return f"{dia} de {mes} de {ano}"
-
-
-# Blueprint para o chat
 chat_bp = Blueprint('chat', __name__)
 
-UPLOAD_FOLDER_VIDEOS = '../static/img/uploads/chat/video'
-UPLOAD_FOLDER_FOTOS = '../static/img/uploads/chat/foto'
-ALLOWED_EXTENSIONS_FOTOS = {'png', 'jpg', 'jpeg', 'gif'}
-ALLOWED_EXTENSIONS_VIDEOS = {'mp4', 'mov', 'avi'}
+# =============================================================
+#  CONFIGURAÇAO DA CLOUDINARY
+# =============================================================
+load_dotenv()
+
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET")
+)
+
+# FORMATOS ACEITO
+ALLOWED_EXTENSIONS_FOTOS = {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'webp', 'svg', 'heic', 'heif', 'jfif','ico','raw','psd','exr','dng'}
+ALLOWED_EXTENSIONS_VIDEOS = {'mp4', 'mov', 'avi', 'mkv', 'wmv', 'flv', 'webm', 'mpeg', '3gp', 'ogg', 'm4v','mts','m2ts','vob','mpg','divx','asf','3g2','f4v'}
+
 
 def allowed_file(filename, allowed_extensions):
-      return '.' in filename and \
-             filename.rsplit('.', 1)[1].lower() in allowed_extensions
-
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+# =============================================================
+#  PAGINA INICIAL DO CHAT
+# =============================================================
 @chat_bp.route('/chat')
 def chat():
     if 'usuario_id' not in session:
@@ -52,79 +41,12 @@ def chat():
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Informações do usuário
-                cursor.execute("SELECT fotos_perfil, audio_notificacoes_mensagem, tema FROM users WHERE id = %s", (usuario_id,))
-                usuario = cursor.fetchone()
-                foto_perfil = usuario['fotos_perfil'] if usuario and usuario['fotos_perfil'] else url_for('static', filename='img/icone/user.png')
-                audio_notificacoes_mensagem = usuario['audio_notificacoes_mensagem'] if usuario and usuario['audio_notificacoes_mensagem'] is not None else True
 
-                if usuario:
-                    tema = usuario.get('tema', 'claro')  # agora funciona
-                else:
-                    tema = 'claro'
+                # INFORMAÇÃO DO USER LOGADO
+                foto_perfil, audio_notificacoes_mensagem, tema = buscar_info_usuario_logado_chat(usuario_id)
 
-                # Buscar as pessoas que você segue
-                cursor.execute("""
-                    SELECT u.id, u.username, u.fotos_perfil,
-                        COALESCE(MAX(m.data_envio), '1900-01-01') as ultima_mensagem
-                    FROM users u
-                    JOIN seguindo s1 ON u.id = s1.id_seguindo
-                    JOIN seguindo s2 ON u.id = s2.id_seguidor AND s2.id_seguindo = s1.id_seguidor
-                    LEFT JOIN mensagens m ON
-                        ((m.id_remetente = u.id AND m.id_destinatario = %s) OR
-                        (m.id_destinatario = u.id AND m.id_remetente = %s))
-                    WHERE s1.id_seguidor = %s
-                    GROUP BY u.id, u.username, u.fotos_perfil
-                    ORDER BY ultima_mensagem DESC
-                """, (usuario_id, usuario_id, usuario_id))
-                seguindo_lista = cursor.fetchall()
-
-                cursor.execute("""
-                    SELECT u.id, u.username, u.fotos_perfil,
-                        COALESCE(MAX(m.data_envio), '1900-01-01') as ultima_mensagem
-                    FROM users u
-                    JOIN seguindo s1 ON u.id = s1.id_seguindo
-                    JOIN seguindo s2 ON u.id = s2.id_seguidor AND s2.id_seguindo = s1.id_seguidor
-                    LEFT JOIN mensagens m ON
-                        ((m.id_remetente = u.id AND m.id_destinatario = %s) OR
-                        (m.id_destinatario = u.id AND m.id_remetente = %s))
-                    WHERE s1.id_seguidor = %s
-                    GROUP BY u.id, u.username, u.fotos_perfil
-                    ORDER BY ultima_mensagem DESC
-                """, (usuario_id, usuario_id, usuario_id))
-                seguidores_lista = cursor.fetchall()
-
-                # Filtrar a lista de contatos para incluir apenas os usuários que estão em ambas as listas (seguidos e seguidores)
-                contatos = [usuario for usuario in seguindo_lista if usuario in seguidores_lista]
-
-                # Adicionar informações extra para cada contato
-                for contato in contatos:
-                    # Última mensagem (texto, mídia, hora)
-                    cursor.execute("""
-                        SELECT mensagem, caminho_arquivo, data_envio
-                        FROM mensagens
-                        WHERE (id_remetente = %s AND id_destinatario = %s)
-                           OR (id_remetente = %s AND id_destinatario = %s)
-                        ORDER BY data_envio DESC
-                        LIMIT 1
-                    """, (usuario_id, contato['id'], contato['id'], usuario_id))
-                    ultima = cursor.fetchone()
-                    if ultima:
-                        contato['ultima_mensagem'] = ultima['mensagem']
-                        contato['ultima_midia'] = ultima['caminho_arquivo']
-                        contato['ultima_hora'] = ultima['data_envio'].strftime('%H:%M') if ultima['data_envio'] else ""
-                    else:
-                        contato['ultima_mensagem'] = ""
-                        contato['ultima_midia'] = ""
-                        contato['ultima_hora'] = ""
-                    
-                    # Mensagens não lidas
-                    cursor.execute("""
-                        SELECT COUNT(*) as nao_vistas
-                        FROM mensagens
-                        WHERE id_remetente = %s AND id_destinatario = %s AND data_visualizacao IS NULL
-                    """, (contato['id'], usuario_id))
-                    contato['nao_vistas'] = cursor.fetchone()['nao_vistas']
+                # LISTA DE CONTATO
+                contatos = buscar_contatos(usuario_id)
 
             conexao.close()
 
@@ -141,7 +63,9 @@ def chat():
 
     except Exception as e:
         return f"Erro ao conectar ao banco de dados: {str(e)}"
-
+# =============================================================
+#  PAGINA DO CHAT DE CONVERSA
+# =============================================================
 @chat_bp.route('/chat/<int:destinatario_id>', methods=['GET'])
 def chat_conversa(destinatario_id):
     if 'usuario_id' not in session:
@@ -157,7 +81,8 @@ def chat_conversa(destinatario_id):
 
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Verificar se os usuários se seguem mutuamente
+
+                # VERIFICA SE SAO AMIGOS
                 cursor.execute("""
                     SELECT COUNT(*) as mutual_follow
                     FROM seguindo s1
@@ -169,17 +94,10 @@ def chat_conversa(destinatario_id):
                 if not mutual_follow:
                     return redirect(url_for('chat.chat'))
 
-                # Informações do usuário logado
-                cursor.execute("SELECT fotos_perfil, tema FROM users WHERE id = %s", (usuario_id,))
-                usuario = cursor.fetchone()
-                foto_perfil = usuario['fotos_perfil'] if usuario and usuario['fotos_perfil'] else url_for('static', filename='img/icone/user.png')
+                # INFORMAÇÃO DO USER LOGADO
+                foto_perfil, audio_notificacoes_mensagem, tema = buscar_info_usuario_logado_chat(usuario_id)
 
-                if usuario:
-                    tema = usuario.get('tema', 'claro')  # agora funciona
-                else:
-                    tema = 'claro'
-
-                # Mensagens da conversa
+                # MENSAGENS DA CONVERSA
                 cursor.execute("""
                     SELECT 
                         m.id, 
@@ -192,7 +110,11 @@ def chat_conversa(destinatario_id):
                         m.caminho_arquivo, 
                         m.id_mensagem_respondida,
                         m.post_id,
-                        m.data_visualizacao,       
+                        m.data_visualizacao,
+                        CASE 
+                            WHEN m.data_visualizacao IS NOT NULL THEN 1
+                            ELSE 0
+                        END as foi_visualizada,              
                         p.conteudo as post_conteudo,
                         p.imagem as post_imagem,
                         p.video as post_video,
@@ -206,6 +128,7 @@ def chat_conversa(destinatario_id):
                                 WHERE (usuario_id = %s AND bloqueado_id = p.users_id) 
                                 OR (usuario_id = p.users_id AND bloqueado_id = %s)
                             ) THEN 0
+                            WHEN up.suspenso = 1 THEN 0
                             WHEN p.users_id != %s AND up.perfil_publico = 0 AND NOT EXISTS (
                                 SELECT 1 FROM seguindo 
                                 WHERE id_seguidor = %s AND id_seguindo = p.users_id
@@ -234,81 +157,35 @@ def chat_conversa(destinatario_id):
                     LEFT JOIN users ur ON mr.id_remetente = ur.id
                     LEFT JOIN posts p ON m.post_id = p.id
                     LEFT JOIN users up ON p.users_id = up.id
-                    WHERE (m.id_remetente = %s AND m.id_destinatario = %s)
-                    OR (m.id_remetente = %s AND m.id_destinatario = %s)
+                    WHERE 
+                        u.suspenso = 0
+                        AND (
+                            (m.id_remetente = %s AND m.id_destinatario = %s)
+                            OR (m.id_remetente = %s AND m.id_destinatario = %s)
+                        )
                     ORDER BY m.data_envio
                 """, (usuario_id, usuario_id, usuario_id, usuario_id, usuario_id, destinatario_id, destinatario_id, usuario_id))
+
                 mensagens = cursor.fetchall()
 
-                # Informações do destinatário
+                # INFORMAÇAO DO DESTINATARIO
                 cursor.execute("SELECT username, fotos_perfil, online FROM users WHERE id = %s", (destinatario_id,))
                 destinatario = cursor.fetchone()
                 destinatario_username = destinatario['username']
                 destinatario_foto_perfil = destinatario['fotos_perfil']
                 destinatario_online = destinatario['online']
 
-                # Buscar as pessoas que você segue
+                # Contar total de mensagens trocadas entre os dois
                 cursor.execute("""
-                    SELECT u.id, u.username, u.fotos_perfil,
-                        COALESCE(MAX(m.data_envio), '1900-01-01') as ultima_mensagem
-                    FROM users u
-                    JOIN seguindo s1 ON u.id = s1.id_seguindo
-                    JOIN seguindo s2 ON u.id = s2.id_seguidor AND s2.id_seguindo = s1.id_seguidor
-                    LEFT JOIN mensagens m ON
-                        ((m.id_remetente = u.id AND m.id_destinatario = %s) OR
-                        (m.id_destinatario = u.id AND m.id_remetente = %s))
-                    WHERE s1.id_seguidor = %s
-                    GROUP BY u.id, u.username, u.fotos_perfil
-                    ORDER BY ultima_mensagem DESC
-                """, (usuario_id, usuario_id, usuario_id))
-                seguindo_lista = cursor.fetchall()
+                    SELECT COUNT(*) as total
+                    FROM mensagens
+                    WHERE (id_remetente = %s AND id_destinatario = %s)
+                    OR (id_remetente = %s AND id_destinatario = %s)
+                """, (usuario_id, destinatario_id, destinatario_id, usuario_id))
+                total_mensagens_trocadas = cursor.fetchone()['total']
 
-                cursor.execute("""
-                    SELECT u.id, u.username, u.fotos_perfil,
-                        COALESCE(MAX(m.data_envio), '1900-01-01') as ultima_mensagem
-                    FROM users u
-                    JOIN seguindo s1 ON u.id = s1.id_seguindo
-                    JOIN seguindo s2 ON u.id = s2.id_seguidor AND s2.id_seguindo = s1.id_seguidor
-                    LEFT JOIN mensagens m ON
-                        ((m.id_remetente = u.id AND m.id_destinatario = %s) OR
-                        (m.id_destinatario = u.id AND m.id_remetente = %s))
-                    WHERE s1.id_seguidor = %s
-                    GROUP BY u.id, u.username, u.fotos_perfil
-                    ORDER BY ultima_mensagem DESC
-                """, (usuario_id, usuario_id, usuario_id))
-                seguidores_lista = cursor.fetchall()
-
-                # Filtrar a lista de contatos para incluir apenas os usuários que estão em ambas as listas (seguidos e seguidores)
-                contatos = [usuario for usuario in seguindo_lista if usuario in seguidores_lista]
-
-                # Adicionar informações extra para cada contato
-                for contato in contatos:
-                    # Última mensagem (texto, mídia, hora)
-                    cursor.execute("""
-                        SELECT mensagem, caminho_arquivo, data_envio
-                        FROM mensagens
-                        WHERE (id_remetente = %s AND id_destinatario = %s)
-                           OR (id_remetente = %s AND id_destinatario = %s)
-                        ORDER BY data_envio DESC
-                        LIMIT 1
-                    """, (usuario_id, contato['id'], contato['id'], usuario_id))
-                    ultima = cursor.fetchone()
-                    if ultima:
-                        contato['ultima_mensagem'] = ultima['mensagem']
-                        contato['ultima_midia'] = ultima['caminho_arquivo']
-                        contato['ultima_hora'] = ultima['data_envio'].strftime('%H:%M') if ultima['data_envio'] else ""
-                    else:
-                        contato['ultima_mensagem'] = ""
-                        contato['ultima_midia'] = ""
-                        contato['ultima_hora'] = ""
-                    
-                    # Mensagens não lidas
-                    cursor.execute("""
-                        SELECT COUNT(*) as nao_vistas
-                        FROM mensagens
-                        WHERE id_remetente = %s AND id_destinatario = %s AND data_visualizacao IS NULL
-                    """, (contato['id'], usuario_id))
-                    contato['nao_vistas'] = cursor.fetchone()['nao_vistas']
+                # LISTA DE CONTATO
+                contatos = buscar_contatos(usuario_id)
 
             conexao.close()
 
@@ -317,6 +194,7 @@ def chat_conversa(destinatario_id):
             return render_template(
                 'conversa.html',
                 mensagens=mensagens,
+                total_mensagens_trocadas=total_mensagens_trocadas,
                 destinatario_id=destinatario_id,
                 destinatario_username=destinatario_username,
                 destinatario_foto_perfil=destinatario_foto_perfil,
@@ -324,110 +202,150 @@ def chat_conversa(destinatario_id):
                 contatos=contatos,
                 usuario_id=usuario_id,
                 foto_perfil=foto_perfil,
-                tema=tema
+                tema=tema,
+                audio_notificacoes_mensagem=audio_notificacoes_mensagem,
             )
 
         return "Erro na conexão com o banco de dados."
 
     except Exception as e:
         return f"Erro ao carregar a conversa: {str(e)}"
-
-#==================== 
-#PARA ENVIAR MENSAGEM
-#==================== 
+# =============================================================
+#  PARA ENVIAR AS MENSAGENS
+# =============================================================
 @chat_bp.route('/enviar', methods=['POST'])
 def enviar_mensagem():
+    print("[LOG] Início do envio de mensagem")
     if 'usuario_id' not in session:
+        print("[LOG] Usuário não autenticado")
         return jsonify({'success': False, 'error': 'Usuário não autenticado'})
 
     usuario_id = session['usuario_id']
     destinatario_id = request.form.get('destinatario_id')
-    mensagem = request.form.get('mensagem', '')
+    mensagem = request.form.get('mensagem', '').strip()
     id_mensagem_respondida = request.form.get('id_mensagem_respondida', None)
     tem_midia = False
-    caminho_arquivo = None
+    url_midia = None
+    tipo_midia = None  
+    public_id = None
 
+    print(f"[LOG] Usuário {usuario_id} enviando para destinatário {destinatario_id}")
+    print(f"[LOG] Mensagem recebida: '{mensagem}'")
+
+    # FOTO
     if 'foto' in request.files:
         foto = request.files['foto']
+        print(f"[LOG] Arquivo foto recebido: {foto.filename}")
         if foto.filename != '' and allowed_file(foto.filename, ALLOWED_EXTENSIONS_FOTOS):
-            filename = secure_filename(foto.filename)
-            caminho_foto = os.path.join(chat_bp.root_path, UPLOAD_FOLDER_FOTOS, filename)
-            foto.save(caminho_foto)
-            caminho_arquivo = os.path.join('img/uploads/chat/foto', filename)
-            tem_midia = True
+            try:
+                upload_result = cloudinary.uploader.upload(
+                    foto,
+                    folder='chat/fotos',
+                    resource_type='image'
+                )
+                url_midia = upload_result.get('secure_url')
+                public_id = upload_result.get('public_id')
+                tem_midia = True
+                tipo_midia = 'foto'
+                print(f"[LOG] Foto enviada para Cloudinary: {url_midia}")
+            except Exception as e:
+                print(f"[ERRO] Falha no upload da foto: {e}")
+                return jsonify({'success': False, 'error': f'Erro ao enviar foto: {str(e)}'})
 
+    # VIDEO
     if 'video' in request.files:
         video = request.files['video']
+        print(f"[LOG] Arquivo vídeo recebido: {video.filename}")
         if video.filename != '' and allowed_file(video.filename, ALLOWED_EXTENSIONS_VIDEOS):
-            filename = secure_filename(video.filename)
-            caminho_video = os.path.join(chat_bp.root_path, UPLOAD_FOLDER_VIDEOS, filename)
-            video.save(caminho_video)
-            caminho_arquivo = os.path.join('img/uploads/chat/video', filename)
-            tem_midia = True
+            try:
+                upload_result = cloudinary.uploader.upload(
+                    video,
+                    folder='chat/videos',
+                    resource_type='video'
+                )
+                url_midia = upload_result.get('secure_url')
+                public_id = upload_result.get('public_id')
+                tem_midia = True
+                tipo_midia = 'video'
+                print(f"[LOG] Vídeo enviado para Cloudinary: {url_midia}")
+            except Exception as e:
+                print(f"[ERRO] Falha no upload do vídeo: {e}")
+                return jsonify({'success': False, 'error': f'Erro ao enviar vídeo: {str(e)}'})
 
     if not mensagem and not tem_midia:
+        print("[LOG] Mensagem vazia e sem mídia, abortando envio")
         return jsonify({'success': False, 'error': 'A mensagem não pode estar vazia se não houver mídia.'})
 
     try:
         conexao = criar_conexao()
-        if conexao:
-            with conexao.cursor(dictionary=True) as cursor:
-                cursor.execute("SELECT id FROM users WHERE id = %s", (destinatario_id,))
-                destinatario = cursor.fetchone()
+        if not conexao:
+            print("[ERRO] Falha na conexão com o banco de dados")
+            return jsonify({'success': False, 'error': 'Erro na conexão com o banco de dados.'})
 
-                if not destinatario:
-                    return jsonify({'success': False, 'error': 'Destinatário não encontrado'})
+        with conexao.cursor(dictionary=True) as cursor:
 
+            # VERIFICA SE O DESTINATARIO EXISTE
+            cursor.execute("SELECT id FROM users WHERE id = %s", (destinatario_id,))
+            destinatario = cursor.fetchone()
+            if not destinatario:
+                print(f"[ERRO] Destinatário {destinatario_id} não encontrado")
+                return jsonify({'success': False, 'error': 'Destinatário não encontrado'})
+
+            # SALVA NO BANCO
+            cursor.execute("""
+                INSERT INTO mensagens (id_remetente, id_destinatario, mensagem, caminho_arquivo, public_id, id_mensagem_respondida)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (usuario_id, destinatario_id, mensagem or None, url_midia, public_id, id_mensagem_respondida))
+
+            conexao.commit()
+            print("[LOG] Mensagem inserida no banco de dados")
+
+            # Busca a mensagem recém inserida para retorno
+            cursor.execute("""
+                SELECT u.username, m.data_envio, m.caminho_arquivo, m.id_mensagem_respondida
+                FROM mensagens m
+                JOIN users u ON m.id_remetente = u.id
+                WHERE m.id_remetente = %s AND m.id_destinatario = %s
+                ORDER BY m.data_envio DESC
+                LIMIT 1
+            """, (usuario_id, destinatario_id))
+            resultado = cursor.fetchone()
+
+            mensagem_respondida = None
+            if resultado and resultado['id_mensagem_respondida']:
                 cursor.execute("""
-                    INSERT INTO mensagens (id_remetente, id_destinatario, mensagem, caminho_arquivo, id_mensagem_respondida)
-                    VALUES (%s, %s, %s, %s, %s)
-                """, (usuario_id, destinatario_id, mensagem, caminho_arquivo, id_mensagem_respondida))
-
-                conexao.commit()
-
-                cursor.execute("""
-                    SELECT u.username, m.data_envio, m.caminho_arquivo, m.id_mensagem_respondida
+                    SELECT m.id, m.mensagem, u.username
                     FROM mensagens m
                     JOIN users u ON m.id_remetente = u.id
-                    WHERE m.id_remetente = %s AND m.id_destinatario = %s
-                    ORDER BY m.data_envio DESC
-                    LIMIT 1
-                """, (usuario_id, destinatario_id))
-                resultado = cursor.fetchone()
+                    WHERE m.id = %s
+                """, (resultado['id_mensagem_respondida'],))
+                mensagem_respondida = cursor.fetchone()
 
-                if resultado:
-                    username = resultado['username']
-                    timestamp = resultado['data_envio'].strftime('%H:%M')
-                    caminho_arquivo_retornado = resultado['caminho_arquivo']
-                    id_mensagem_respondida_retornado = resultado['id_mensagem_respondida']
-                    
-                    # Buscar dados da mensagem respondida se existir
-                    mensagem_respondida = None
-                    if id_mensagem_respondida_retornado:
-                        cursor.execute("""
-                            SELECT m.id, m.mensagem, u.username
-                            FROM mensagens m
-                            JOIN users u ON m.id_remetente = u.id
-                            WHERE m.id = %s
-                        """, (id_mensagem_respondida_retornado,))
-                        mensagem_respondida = cursor.fetchone()
+        conexao.close()
 
-            conexao.close()
+        if not resultado:
+            print("[ERRO] Não foi possível recuperar a mensagem enviada")
+            return jsonify({'success': False, 'error': 'Erro ao recuperar mensagem enviada.'})
 
-            return jsonify({
-                'success': True,
-                'mensagem': mensagem,
-                'username': username,
-                'timestamp': timestamp,
-                'caminho_arquivo': caminho_arquivo_retornado,
-                'id_mensagem_respondida': id_mensagem_respondida_retornado,
-                'mensagem_respondida': mensagem_respondida
-            })
+        print(f"[LOG] Mensagem enviada com sucesso por {resultado['username']} às {resultado['data_envio'].strftime('%H:%M')}")
+        return jsonify({
+            'success': True,
+            'mensagem': mensagem,
+            'username': resultado['username'],
+            'timestamp': resultado['data_envio'].strftime('%H:%M'),
+            'caminho_arquivo': resultado['caminho_arquivo'],  # link Cloudinary
+            'tipo_midia': tipo_midia,
+            'id_mensagem_respondida': resultado['id_mensagem_respondida'],
+            'mensagem_respondida': mensagem_respondida
+        })
 
-        return jsonify({'success': False, 'error': 'Erro na conexão com o banco de dados.'})
     except Exception as e:
+        traceback.print_exc()
+        print(f"[ERRO] Exceção ao enviar mensagem: {e}")
         return jsonify({'success': False, 'error': str(e)})
-
+# =============================================================
+#  PARA ATUALIZAR AS MENSAGENS
+# =============================================================
 @chat_bp.route('/atualizar_mensagens/<int:destinatario_id>', methods=['GET'])
 def atualizar_mensagens(destinatario_id):
     if 'usuario_id' not in session:
@@ -462,9 +380,9 @@ def atualizar_mensagens(destinatario_id):
                         m.post_id,
                         m.data_visualizacao,
                         CASE 
-                WHEN m.data_visualizacao IS NOT NULL THEN 1
-                ELSE 0
-            END as foi_visualizada,              
+                            WHEN m.data_visualizacao IS NOT NULL THEN 1
+                            ELSE 0
+                        END as foi_visualizada,              
                         p.conteudo as post_conteudo,
                         p.imagem as post_imagem,
                         p.video as post_video,
@@ -478,6 +396,7 @@ def atualizar_mensagens(destinatario_id):
                                 WHERE (usuario_id = %s AND bloqueado_id = p.users_id) 
                                 OR (usuario_id = p.users_id AND bloqueado_id = %s)
                             ) THEN 0
+                            WHEN up.suspenso = 1 THEN 0
                             WHEN p.users_id != %s AND up.perfil_publico = 0 AND NOT EXISTS (
                                 SELECT 1 FROM seguindo 
                                 WHERE id_seguidor = %s AND id_seguindo = p.users_id
@@ -506,16 +425,19 @@ def atualizar_mensagens(destinatario_id):
                     LEFT JOIN users ur ON mr.id_remetente = ur.id
                     LEFT JOIN posts p ON m.post_id = p.id
                     LEFT JOIN users up ON p.users_id = up.id
-                    WHERE (m.id_remetente = %s AND m.id_destinatario = %s)
-                    OR (m.id_remetente = %s AND m.id_destinatario = %s)
+                    WHERE 
+                        u.suspenso = 0
+                        AND (
+                            (m.id_remetente = %s AND m.id_destinatario = %s)
+                            OR (m.id_remetente = %s AND m.id_destinatario = %s)
+                        )
                     ORDER BY m.data_envio
                 """, (usuario_id, usuario_id, usuario_id, usuario_id, usuario_id, destinatario_id, destinatario_id, usuario_id))
+
                 mensagens = cursor.fetchall()
 
-                for mensagem in mensagens:
-                    mensagem['data_envio'] = mensagem['data_envio'].strftime('%H:%M')
-                    data_dia = datetime.strptime(str(mensagem['data_dia']), '%Y-%m-%d')
-                    mensagem['data_dia'] = formatar_data(data_dia)
+                # FORMATA A DATA DA MSG
+                mensagens = data_msg(mensagens)
 
             conexao.close()
 
@@ -525,7 +447,9 @@ def atualizar_mensagens(destinatario_id):
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
-    
+# =============================================================
+#  PARA DELETAR AS MENSAGENS
+# =============================================================
 @chat_bp.route('/deletar_mensagem/<int:mensagem_id>', methods=['DELETE'])
 def deletar_mensagem(mensagem_id):
     if 'usuario_id' not in session:
@@ -535,42 +459,51 @@ def deletar_mensagem(mensagem_id):
 
     try:
         conexao = criar_conexao()
+        if not conexao:
+            return jsonify({'success': False, 'error': 'Erro na conexão com o banco de dados.'})
 
-        if conexao:
-            with conexao.cursor(dictionary=True) as cursor:
-                # Verificar se a mensagem pertence ao usuário e obter informações adicionais
-                cursor.execute("""
-                    SELECT id_remetente, id_destinatario 
-                    FROM mensagens 
-                    WHERE id = %s
-                """, (mensagem_id,))
-                mensagem = cursor.fetchone()
+        with conexao.cursor(dictionary=True) as cursor:
+            # Busca mensagem e public_id juntos
+            cursor.execute("""
+                SELECT id_remetente, id_destinatario, public_id
+                FROM mensagens
+                WHERE id = %s
+            """, (mensagem_id,))
+            mensagem = cursor.fetchone()
 
-                if not mensagem:
-                    return jsonify({'success': False, 'error': 'Mensagem não encontrada'})
+            if not mensagem:
+                return jsonify({'success': False, 'error': 'Mensagem não encontrada'})
 
-                if mensagem['id_remetente'] != usuario_id:
-                    return jsonify({'success': False, 'error': 'Você não tem permissão para apagar esta mensagem'})
+            if mensagem['id_remetente'] != usuario_id:
+                return jsonify({'success': False, 'error': 'Você não tem permissão para apagar esta mensagem'})
 
-                # Obter o ID do outro usuário na conversa
-                outro_usuario_id = mensagem['id_destinatario'] if mensagem['id_remetente'] == usuario_id else mensagem['id_remetente']
+            # SE EXISTIR MIDIA APAGA NA CLOUDINARY
+            if mensagem['public_id']:
+                try:
+                    cloudinary.uploader.destroy(mensagem['public_id'], invalidate=True)
+                except Exception as e:
+                    print(f"[ERRO] Falha ao deletar mídia da Cloudinary: {e}")
 
-                # Deletar a mensagem
-                cursor.execute("DELETE FROM mensagens WHERE id = %s", (mensagem_id,))
-                conexao.commit()
+            # Obter o outro usuário da conversa
+            outro_usuario_id = mensagem['id_destinatario'] if mensagem['id_remetente'] == usuario_id else mensagem['id_remetente']
 
-                # Retornar informações adicionais para atualização
-                return jsonify({
-                    'success': True,
-                    'mensagem_id': mensagem_id,
-                    'outro_usuario_id': outro_usuario_id
-                })
+            # APAGA A MSG DO BD
+            cursor.execute("DELETE FROM mensagens WHERE id = %s", (mensagem_id,))
+            conexao.commit()
 
-        return jsonify({'success': False, 'error': 'Erro na conexão com o banco de dados.'})
+        conexao.close()
+
+        return jsonify({
+            'success': True,
+            'mensagem_id': mensagem_id,
+            'outro_usuario_id': outro_usuario_id
+        })
 
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}) 
-    
+        return jsonify({'success': False, 'error': str(e)})
+# =============================================================
+#  PARA VERIFICAR AS MENSAGENS
+# =============================================================   
 @chat_bp.route('/verificar_mensagens/<int:destinatario_id>', methods=['GET'])
 def verificar_mensagens(destinatario_id):
     if 'usuario_id' not in session:
@@ -583,7 +516,8 @@ def verificar_mensagens(destinatario_id):
 
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Buscar as mensagens entre o usuário e o destinatário
+
+                # BUSCAR MSG ENTRE OS USER
                 cursor.execute("""
                     SELECT m.id, m.mensagem, m.data_envio, u.username, u.fotos_perfil, m.id_remetente,
                            DATE(m.data_envio) as data_dia, m.caminho_arquivo
@@ -595,11 +529,9 @@ def verificar_mensagens(destinatario_id):
                 """, (usuario_id, destinatario_id, destinatario_id, usuario_id))
                 mensagens = cursor.fetchall()
 
-                # Formatar a data_envio para exibir apenas a hora e o minuto
-                for mensagem in mensagens:
-                    mensagem['data_envio'] = mensagem['data_envio'].strftime('%H:%M')
-                    data_dia = datetime.strptime(str(mensagem['data_dia']), '%Y-%m-%d')  # Converte para objeto datetime
-                    mensagem['data_dia'] = formatar_data(data_dia)  # Formata a data
+
+                # FORMATA A DATA DA MSG
+                mensagens = data_msg(mensagens)
 
             conexao.close()
 
@@ -609,7 +541,9 @@ def verificar_mensagens(destinatario_id):
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
-    
+# =============================================================
+#  MENSAGENS NAO VISTA
+# =============================================================
 @chat_bp.route('/api/nao_vistas', methods=['GET'])
 def contar_nao_vistas():
     if 'usuario_id' not in session:
@@ -627,13 +561,14 @@ def contar_nao_vistas():
                 """, (usuario_id,))
                 resultado = cursor.fetchall()
             conexao.close()
-            # Transforma em dicionário para facilitar no JS
             counts = {str(row['contato_id']): row['nao_vistas'] for row in resultado}
             return jsonify({'success': True, 'counts': counts})
         return jsonify({'success': False, 'error': 'Erro na conexão com o banco de dados.'})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
-    
+# =============================================================
+#  MOSTRAR ULTIMA MSG MA LISTA DE CONTATOS
+# =============================================================
 @chat_bp.route('/api/ultimas_msgs', methods=['GET'])
 def ultimas_msgs():
     if 'usuario_id' not in session:
@@ -667,14 +602,15 @@ def ultimas_msgs():
                 """, (usuario_id, usuario_id, usuario_id, usuario_id, usuario_id, usuario_id, usuario_id))
                 contatos = cursor.fetchall()
             conexao.close()
-            # Formata datas e prepara para o JSON
             for contato in contatos:
                 contato['ultima_hora'] = contato['ultima_hora'].strftime('%H:%M') if contato['ultima_hora'] else ""
             return jsonify({'success': True, 'contatos': contatos})
         return jsonify({'success': False, 'error': 'Erro na conexão com o banco de dados.'})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
-    
+# =============================================================
+#  SE O USER ESTA ONLINE, OFF, AUSENTE
+# =============================================================
 @chat_bp.route('/api/status_usuario/<int:usuario_id>')
 def status_usuario(usuario_id):
     from datetime import datetime, timedelta
@@ -687,7 +623,7 @@ def status_usuario(usuario_id):
             conexao.close()
             if user:
                 if user.get('modo_status', 'normal') == 'ausente':
-                    return jsonify({'online': False})  # Sempre off
+                    return jsonify({'online': False}) 
                 ultima_atividade = user['ultima_atividade']
                 agora = datetime.now()
                 online = (agora - ultima_atividade) < timedelta(seconds=60)
@@ -695,7 +631,9 @@ def status_usuario(usuario_id):
         return jsonify({'online': False})
     except Exception as e:
         return jsonify({'online': False, 'error': str(e)})
-    
+# =============================================================
+#  SE AS MENSAGENS FORAM VISTA
+# =============================================================
 @chat_bp.route('/api/status_visto/<int:destinatario_id>')
 def status_visto(destinatario_id):
     if 'usuario_id' not in session:
@@ -705,7 +643,8 @@ def status_visto(destinatario_id):
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Apenas mensagens enviadas pelo usuário logado para o destinatário
+
+                # APENAS AS MSG ENVIADA PARA O DESTINATARIO
                 cursor.execute("""
                     SELECT id, data_visualizacao
                     FROM mensagens
@@ -713,7 +652,6 @@ def status_visto(destinatario_id):
                 """, (usuario_id, destinatario_id))
                 msgs = cursor.fetchall()
             conexao.close()
-            # Retorna um dicionário: {id: True/False}
             status = {str(m['id']): bool(m['data_visualizacao']) for m in msgs}
             return jsonify({'success': True, 'status': status})
         return jsonify({'success': False})

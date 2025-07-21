@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, session, request, flash, jsonify
-from werkzeug.utils import secure_filename
+from flask import Blueprint, session, jsonify
 from app.conexao import criar_conexao
-from datetime import datetime
 
 apagar_comentario_bp = Blueprint('apagarcommen', __name__)
 
+# =============================================================
+#  PARA APAGAR O COMENTARIO
+# =============================================================
 @apagar_comentario_bp.route('/apagar_comentario/<int:comentario_id>', methods=['POST'])
 def apagar_comentario(comentario_id):
     if 'usuario_id' not in session:
@@ -14,7 +15,8 @@ def apagar_comentario(comentario_id):
     cursor = conexao.cursor()
 
     try:
-        # Primeiro, obtemos o post_id do comentário que será apagado
+        
+        # PEGAR O ID DO POST E DO DONO
         cursor.execute("SELECT post_id, usuario_id FROM comentarios WHERE id = %s", (comentario_id,))
         resultado = cursor.fetchone()
 
@@ -24,8 +26,13 @@ def apagar_comentario(comentario_id):
         post_id = resultado[0]
         comentario_usuario_id = resultado[1]
 
-        if comentario_usuario_id == session['usuario_id']:
-            # Função recursiva para apagar respostas
+        # VERIFICA SE O USER E DONO DO POST
+        cursor.execute("SELECT users_id FROM posts WHERE id = %s", (post_id,))
+        post_resultado = cursor.fetchone()
+
+        if comentario_usuario_id == session['usuario_id'] or (post_resultado and post_resultado[0] == session['usuario_id']):
+
+            # PRIMEIRO APAGA AS RESPOSTA
             def apagar_respostas(parent_id):
                 cursor.execute("SELECT id FROM comentarios WHERE parent_comment_id = %s", (parent_id,))
                 respostas = cursor.fetchall()
@@ -33,21 +40,15 @@ def apagar_comentario(comentario_id):
                     apagar_respostas(resposta[0])
                     cursor.execute("DELETE FROM comentarios WHERE id = %s", (resposta[0],))
 
-            # Apaga todas as respostas deste comentário
             apagar_respostas(comentario_id)
-            
-            # Apaga o comentário principal
             cursor.execute("DELETE FROM comentarios WHERE id = %s", (comentario_id,))
-            
-            # Obtém a nova contagem de comentários para o post
             cursor.execute("SELECT COUNT(*) FROM comentarios WHERE post_id = %s", (post_id,))
             total_comentarios = cursor.fetchone()[0]
-            
+
             conexao.commit()
-            
             return jsonify({
                 'success': True, 
-                'message': 'Comentário e respostas apagados com sucesso.',
+                'message': 'Comentário apagado com sucesso.',
                 'comentarios_count': total_comentarios,
                 'post_id': post_id
             })

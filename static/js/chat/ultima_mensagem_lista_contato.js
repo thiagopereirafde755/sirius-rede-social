@@ -31,6 +31,5 @@ function atualizarUltimasMsgs() {
         });
 }
 
-// Atualiza a cada 5 segundos (ajuste conforme desejar)
 setInterval(atualizarUltimasMsgs, 2000);
 window.addEventListener('DOMContentLoaded', atualizarUltimasMsgs);

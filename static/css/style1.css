@@ -28,10 +28,11 @@ body {
   background-color: var(--fundo-escuro);
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   min-height: 100vh;
   color: var(--texto-principal);
-  padding: 40px 20px; /* Adiciona espaçamento interno no body */
+  padding: 0;
 }
 
 /* ================================
@@ -39,7 +40,7 @@ body {
    ================================ */
 .login-container {
   background-color: var(--fundo-cards);
-  width: 100%;
+  width: 90%;
   max-width: 420px;
   padding: 30px 30px;
   border-radius: 16px;
@@ -47,10 +48,9 @@ body {
   text-align: center;
   transition: transform 0.3s ease;
   border: 1px solid var(--borda);
-  margin: 5px 0; /* Adiciona margem superior e inferior */
+  margin-top: 10vh !important;
+  margin-bottom: 5vh !important;
 }
-
-
 .login-container h1 {
   color: var(--roxo-claro);
   font-size: 2.5rem;
@@ -316,7 +316,7 @@ form {
    ================================ */
 .confirma-conta {
   background-color: var(--fundo-cards);
-  width: 100%;
+  width: 90% !important;
   max-width: 420px;
   padding: 40px 30px;
   border-radius: 16px;
@@ -325,6 +325,8 @@ form {
   border: 1px solid var(--borda);
   margin: 20px auto;
   animation: float 6s ease-in-out infinite;
+    margin-top: 10vh !important;
+  margin-bottom: 5vh !important;
 }
 
 .confirma-conta h2 {
@@ -798,4 +800,136 @@ form {
 }
 .senha-group .olho-senha:hover {
     color: #333;
+}
+
+/* ================================
+   FOOTER (TEMA ESCURO)
+   ================================ */
+.site-footer {
+  background-color: var(--fundo-cards);
+  color: var(--texto-principal);
+  padding: 40px 0 20px;
+  margin-top: 30vh;
+  border-top: 1px solid var(--borda);
+  width: 100%;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.footer-section {
+  margin-bottom: 20px;
+}
+
+.footer-section h3 {
+  color: var(--roxo-claro);
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 2px;
+  background-color: var(--roxo);
+}
+
+.footer-section p {
+  color: var(--texto-secundario);
+  line-height: 1.6;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: var(--texto-secundario);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.footer-section ul li a:hover {
+  color: var(--roxo-claro);
+  transform: translateX(5px);
+}
+
+.privacy-link {
+  color: var(--roxo-claro);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.privacy-link:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 30px auto 0;
+  padding: 20px;
+  border-top: 1px solid var(--borda);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: var(--texto-secundario);
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-links a {
+  color: var(--texto-secundario);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--roxo-claro);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+  }
+  
+  .footer-links {
+    margin-top: 10px;
+  }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- TITULO DA PAGINA -->
     <title>Recuperaração de senha - Verificar codigo</title>
     <!-- ICONES -->
@@ -27,8 +27,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- CSS DO BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
@@ -36,217 +34,238 @@
 </head>
 <body class="{{ tema }}">
 
-<!-- CABEÇALHO MOBILE -->
-<div class="pesquisa-para-mobile">
-    <a href="/inicio">
-    <div class="logo" id="logo-no-mobile">
-        <i class='bx bxs-dog'></i>
-    </div>
-    </a>
-</div>
-
-<!-- CABEÇALHO DESKTOP -->
-<header class="header">
-    <div class="logoSearch">
-        <a href="/inicio">
-        <div class="logo" id="logo">
+    <!-- CABEÇALHO MOBILE -->
+    <div class="pesquisa-para-mobile">
+        <div class="logo" id="logo-no-mobile">
             <i class='bx bxs-dog'></i>
+        </div>
     </div>
-    </a>
-</div>
 
-<!-- OPÇOES NA PARTE INFERIOR DO MOBILE -->
-<div class="mobile-header-icons">
+    <!-- CABEÇALHO DESKTOP -->
+    <header class="header">
+        <div class="logoSearch">
+            <div class="logo" id="logo">
+                <i class='bx bxs-dog'></i>
+            </div>
+         </div>
 
-    <!-- MINHA FOTO -->
-    <div class="minha-foto-mobile">
-        <a href="/inicio">
-            <img src="{{foto_perfil}}" id="foto-mobile-header" alt="my-photo">
-        </a>
-    </div>
+    <!-- OPÇOES NA PARTE INFERIOR DO MOBILE -->
+    <div class="mobile-header-icons">
+
+        <!-- MINHA FOTO -->
+        <div class="minha-foto-mobile">
+            <a href="/inicio">
+                <img src="{{foto_perfil}}" id="foto-mobile-header" alt="my-photo">
+            </a>
+        </div>
     
-    <!-- EXPLORAR -->
-    <div class="opcao-mobile">
-        <i class='bx bxs-home'></i>
-    </div>
-            
-    <!-- CHAT -->
-    <a href="/chat">
-    <div class="opcao-mobile">
-        <i class='bx bxs-chat'></i>
-    </div>
-    </a>
-
-    <!-- VIDEOS -->
-    <div class="opcao-mobile">
-        <i class='bx bxs-videos'></i>
-    </div>
-
-    <!-- NOTIFICAÇÃO -->
-    <div class="opcao-mobile">
-        <i class='bx bxs-bell' ></i>
-    </div>
-    
-    <!-- MENU -->
-    <div class="opcao-mobile1">
-        <i class='bx bx-menu'></i>
-    </div>
-</div>
-        
-<!-- OPÇOES DO HEADER -->
-<div class="mainMenu">
-
-<!-- EXPLORAR -->
-<a href="/home">
-<div class="svg ">
-    <i class='bx bxs-home'></i>
-</div>
-</a>
-
-<!-- SEGUINDO -->
-<a href="/post-seguindo">
-<div class="svg">
-    <i class='bx bxs-user'></i>
-</div>
-</a>
-
-<!-- VIDEOS -->
-<a href="/post-video">
-<div class="svg">
-    <i class='bx bxs-videos'></i>
-</div>
-</a>
-
-<!-- CURTIDOS -->
-<a href="/post-curtidos">
-<div class="svg">
-    <i class='bx bxs-heart'></i>
-</div>
-</a>
-</div>
-
-<!-- PERFIL -->
-<a href="/inicio">
-<div class="profileTools">
-    <div class="profile">
-        <div class="img" style="background-image: url('{{foto_perfil}}');"></div>
-        <div class="username">Perfil</div>
-</div>
-</a>
-
-<div class="tools">
-    <!-- NOTIFICAÇOES -->
-    <div class="svg">
-        <i class='bx bxs-bell'></i>
-    </div>
-
-    <!-- CHAT -->
-    <a href="/chat">
-    <div class="svg">
-        <i class='bx bxs-chat'></i>
-    </div>
-    </a>
-    
-    <!-- CONFIGURAÇOES -->
-    <a href="/configuracao">
-    <div class="svg">
-        <i class='bx bxs-cog'></i>
-    </div>
-    </a>
-
-    </div>
-</div>
-</header>
-
-<!-- MENU ESQUERDO DE OPÇOES -->
-<div class="sidebar-esquerdo">
-    <div class="aside-esquerdo-mobile">
-
         <!-- EXPLORAR -->
-        <a href="/home">  
-        <div class="globalProfile ">
-            <i class='bx bxs-home'></i>
-            <div class="name">Explorar</div>
-        </div>
-        </a>
-
-        <!-- SEGUINDO -->
-        <a href="/post-seguindo">
-        <div class="globalProfile">
-            <i class='bx bxs-user'></i>
-        <div class="name">Seguindo</div>
-        </div>
-        </a>
-        
-        <!-- VIDEOS -->
-        <a href="/post-video">
-        <div class="globalProfile">
-            <i class='bx bxs-videos'></i>
-        <div class="name">Videos</div>
-        </div>
-        </a>
-
-        <!-- CURTIDAS -->
-        <a href="/post-curtidos">
-        <div class="globalProfile">
-            <i class='bx bxs-heart'></i>
-        <div class="name">Curtidas</div>
-        </div>
-        </a>
-        
-        <!-- PROCURAR USER -->
-        <a href="/procurar-user">
-        <div class="globalProfile">
-            <i class='bx bxs-user-plus'></i>
-        <div class="name">Procurar</div>
-        </div>
-        </a>
-
+         <a href="/home">
+            <div class="opcao-mobile">
+                <i class='bx bxs-home'></i>
+            </div>
+        </a>  
+            
         <!-- CHAT -->
         <a href="/chat">
-        <div class="globalProfile">
-            <i class='bx bxs-chat'></i>
-        <div class="name">Mensagem</div>
-        <span class="badge-nao-vistas" id="badge-chat-notify">0</span>
-        </div>
+            <div class="opcao-mobile">
+                <i class='bx bxs-chat'></i>
+            </div>
         </a>
 
-        <!-- MEU PERFIL -->
-        <a href="/inicio">
-        <div class="globalProfile ">
-            <i class='bx bxs-user'></i>
-        <div class="name">Perfil</div>
-        </div>
+        <!-- VIDEOS -->
+        <a href="/post-video">
+            <div class="opcao-mobile">
+                <i class='bx bxs-videos'></i>
+            </div>
         </a>
 
         <!-- NOTIFICAÇÃO -->
         <a href="/notificacoes">
-        <div class="globalProfile">
-            <i class='bx bxs-bell'></i>
-        <div class="name">Notificação</div>
-        <span class="badge-nao-vistas" id="badge-notificacao-notify">0</span>
+            <div class="opcao-mobile">
+                <i class='bx bxs-bell' ></i>
+            </div>
+        </a>
+    
+        <!-- MENU -->
+        <div class="opcao-mobile1">
+            <i class='bx bx-menu'></i>
         </div>
-         </a>
+    </div>
+        
+    <!-- OPÇOES DO HEADER -->
+    <div class="mainMenu">
 
-        <!-- CONFIGURAÇÃO -->
+    <!-- EXPLORAR -->
+    <a href="/home">
+    <div class="svg ">
+        <i class='bx bxs-home'></i>
+    </div>
+    </a>
+
+    <!-- SEGUINDO -->
+    <a href="/post-seguindo">
+    <div class="svg">
+        <i class='bx bxs-user'></i>
+    </div>
+    </a>
+
+    <!-- VIDEOS -->
+    <a href="/post-video">
+    <div class="svg">
+        <i class='bx bxs-videos'></i>
+    </div>
+    </a>
+
+    <!-- CURTIDOS -->
+    <a href="/post-curtidos">
+    <div class="svg">
+        <i class='bx bxs-heart'></i>
+    </div>
+    </a>
+    </div>
+
+    <!-- PERFIL -->
+    <a href="/inicio">
+    <div class="profileTools">
+        <div class="profile">
+            <div class="img" style="background-image: url('{{foto_perfil}}');"></div>
+            <div class="username">Perfil</div>
+    </div>
+    </a>
+
+    <div class="tools">
+        
+        <!-- NOTIFICAÇOES -->
+        <a href="/notificacoes">
+            <div class="svg">
+                <i class='bx bxs-bell'></i>
+            </div>
+        </a>
+
+        <!-- CHAT -->
+        <a href="/chat">
+        <div class="svg">
+            <i class='bx bxs-chat'></i>
+        </div>
+        </a>
+        
+        <!-- CONFIGURAÇOES -->
         <a href="/configuracao">
-        <div class="globalProfile active">
+        <div class="svg">
             <i class='bx bxs-cog'></i>
-        <div class="name-active">Configuração</div>
         </div>
         </a>
 
-        <!-- SAIR DA CONTA -->
-  <a href="#" id="logout-link">
+        </div>
+    </div>
+    </header>
+
+    <!-- MENU ESQUERDO DE OPÇOES -->
+    <div class="sidebar-esquerdo">
+        <div class="aside-esquerdo-mobile">
+
+            <!-- EXPLORAR -->
+            <a href="/home">  
+            <div class="globalProfile ">
+                <i class='bx bxs-home'></i>
+                <div class="name">Explorar</div>
+            </div>
+            </a>
+
+            <!-- SEGUINDO -->
+            <a href="/post-seguindo">
+            <div class="globalProfile">
+                <i class='bx bxs-user'></i>
+            <div class="name">Seguindo</div>
+            </div>
+            </a>
+            
+            <!-- VIDEOS -->
+            <a href="/post-video">
+            <div class="globalProfile">
+                <i class='bx bxs-videos'></i>
+            <div class="name">Videos</div>
+            </div>
+            </a>
+
+            <!-- CURTIDAS -->
+            <a href="/post-curtidos">
+            <div class="globalProfile">
+                <i class='bx bxs-heart'></i>
+            <div class="name">Curtidas</div>
+            </div>
+            </a>
+
+            <!-- REPUBLICADO -->
+            <a href="/post-republicados">
                 <div class="globalProfile">
-                    <i class='bx bx-log-out'></i>
-                    <div class="name">Sair</div>
+                    <i class='bx bx-repost'></i>
+                    <div class="name">Republicados</div>
                 </div>
             </a>
-    </div>
-</div>
 
- <!-- ASIDEBAR DIREITO DESKTOP -->
+            <!-- SALVO -->
+            <a href="/post-salvo">
+                <div class="globalProfile">
+                    <i class='bx bxs-bookmark'></i>
+                    <div class="name">Salvo</div>
+                </div>
+            </a>
+            
+            <!-- PROCURAR USER -->
+            <a href="/procurar-user">
+            <div class="globalProfile">
+                <i class='bx bxs-user-plus'></i>
+            <div class="name">Procurar</div>
+            </div>
+            </a>
+
+            <!-- CHAT -->
+            <a href="/chat">
+            <div class="globalProfile">
+                <i class='bx bxs-chat'></i>
+            <div class="name">Mensagem</div>
+            <span class="badge-nao-vistas" id="badge-chat-notify">0</span>
+            </div>
+            </a>
+
+            <!-- MEU PERFIL -->
+            <a href="/inicio">
+            <div class="globalProfile ">
+                <i class='bx bxs-user'></i>
+            <div class="name">Perfil</div>
+            </div>
+            </a>
+
+            <!-- NOTIFICAÇÃO -->
+            <a href="/notificacoes">
+            <div class="globalProfile">
+                <i class='bx bxs-bell'></i>
+            <div class="name">Notificação</div>
+            <span class="badge-nao-vistas" id="badge-notificacao-notify">0</span>
+            </div>
+            </a>
+
+            <!-- CONFIGURAÇÃO -->
+            <a href="/configuracao">
+            <div class="globalProfile active">
+                <i class='bx bxs-cog'></i>
+            <div class="name-active">Configuração</div>
+            </div>
+            </a>
+
+            <!-- SAIR DA CONTA -->
+            <a href="#" id="logout-link">
+            <div class="globalProfile">
+                <i class='bx bx-log-out'></i>
+                <div class="name">Sair</div>
+            </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ASIDEBAR DIREITO DESKTOP -->
     <div class="sideBarContainer">
         <div class="sidebar left"></div>
         <div class="sidebar right">
@@ -259,7 +278,7 @@
                 <a href="/inicio">
                     <div class="globalProfile">
                         <div class="globalRoundProfile" style="background-image: url('{{ foto_perfil }}');"></div>
-                        <div class="name">{{nome_usuario}}</div>
+                        <div class="name">{{ username }}</div>
                     </div>
                 </a> 
             </div>
@@ -274,9 +293,8 @@
                         {% for hashtag in hashtags_top %}
                             <a href="/pesquisar?query={{ hashtag.nome|urlencode }}" class="hashtag-btn" >
                                 <span class="hashtag-nome">
-  <span class="hashtag-nome-truncado" title="{{ hashtag.nome }}">{{ hashtag.nome }}</span> - {{ hashtag.total }}
-</span>
-
+                                    <span class="hashtag-nome-truncado" title="{{ hashtag.nome }}">{{ hashtag.nome }}</span> - {{ hashtag.total | numcurto }}
+                                </span>
                             </a>
                         {% endfor %}
                     </div>
@@ -301,7 +319,7 @@
             <a href="/inicio">
                 <div class="globalProfile">
                     <div class="globalRoundProfile" style="background-image: url('{{ foto_perfil }}');"></div>
-                    <div class="name">{{nome_usuario}}</div>
+                    <div class="name">{{ username }}</div>
                 </div>
             </a> 
         </div>
@@ -313,7 +331,7 @@
                 <div class="hashtags-top">
                     {% for hashtag in hashtags_top %}
                         <a href="/pesquisar?query={{ hashtag.nome|urlencode }}" class="hashtag-btn hashtag-btn-mob" >
-                            <span class="hashtag-nome">{{ hashtag.nome }} - {{ hashtag.total }}</span>
+                            <span class="hashtag-nome">{{ hashtag.nome }} - {{ hashtag.total | numcurto }}</span>
                         </a>
                     {% endfor %}
                 </div>
@@ -324,56 +342,50 @@
     </div>
  
     <main class="sectionCenter">
+        <div class="container-recuperacao">
+            <h2><i class='bx bx-lock-alt'></i> Verificação de Código</h2>
+            <p>Enviamos um código de 6 dígitos para seu email. Digite-o abaixo:</p>
+            <form method="POST" class="form-recuperacao">
+                <div class="form-group">
+                    <label for="codigo">Código:</label>
+                    <input type="text" id="codigo" name="codigo" required class="form-control">
+                </div>
+                
+                <button type="submit" class="btn-confirmar botao-recuperar-senha-logado">
+                    <i class='bx bx-check'></i> Verificar
+                </button>
+            </form>
 
-<div class="container-recuperacao">
-    <h2><i class='bx bx-lock-alt'></i> Verificação de Código</h2>
-    <p>Enviamos um código de 6 dígitos para seu email. Digite-o abaixo:</p>
-    
-    <form method="POST" class="form-recuperacao">
-        <div class="form-group">
-            <label for="codigo">Código:</label>
-            <input type="text" id="codigo" name="codigo" required 
-                     class="form-control">
+            <!-- BOTAO DE REENVIAR CODIGO -->
+            <div style="margin-bottom: 1rem; margin-top: 1rem;">
+                <button id="reenviarCodigo" class="btn-confirmar botao-recuperar-senha-logado">
+                    <i class='bx bx-reset'></i> Reenviar Código <span id="timer"></span>
+                </button>
+            </div>
+                
+            <a href="{{ url_for('recuperar_senha_logado.recuperar_senha_logado_part1') }}" class="btn-cancelar">
+                <i class='bx bx-arrow-back'></i> Voltar
+            </a>
         </div>
-        
-        <button type="submit" class="btn-confirmar">
-            <i class='bx bx-check'></i> Verificar
-        </button>
-        
-        <a href="{{ url_for('recuperar_senha_logado.recuperar_senha_logado_part1') }}" class="btn-cancelar">
-            <i class='bx bx-arrow-back'></i> Voltar
-        </a>
-    </form>
-</div>
-
     </main>
 
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Scripts -->
+    <!-- SCRIPT -->
+    <!-- CONTAR MSG DO CHAT -->
     <script src="../static/js/geral/contador_novas_mensagens.js"></script>
+    <!-- CONTAR NOTIFICAÇÕES DO SISTEMA -->
     <script src="../static/js/geral/contador_novas_notificacoes.js"></script>
-    <script src="../static/js/configuracao/visibilidade_perfil.js"></script>
-    <script src="../static/js/configuracao/comentarios_on_of.js"></script>
-    <script src="../static/js/configuracao/visibilidade_modal_seguidores.js"></script>
-    <script src="../static/js/configuracao/tema.js"></script>
-    <script>
-        window.URL_CONFIG = {
-            pesquisar_usuarios: "{{ url_for('configuracao.pesquisar_usuarios') }}",
-            bloquear_usuario: "{{ url_for('configuracao.bloquear_usuario') }}",
-            desbloquear_usuario: "{{ url_for('configuracao.desbloquear_usuario') }}",
-            listar_bloqueados: "{{ url_for('configuracao.listar_bloqueados') }}"
-        }
-    </script>
-    <script src="../static/js/configuracao/bloqueados.js"></script>
-    <script src="../static/js/configuracao/modal_curtida_publica_privada.js"></script>
-    <script src="../static/js/configuracao/audio_mensagens.js"></script>
-    <script src="../static/js/configuracao/alterar_status_on-off.js"></script>
+    <!-- PARA DEIXAR PERFIL ONLINE OU OFF -->
     <script src="../static/js/status_on_off.js"></script>
-        <script src="../static/js/sweealert2/log_out.js"></script>
-        <script src="../static/js/geral/menu_toggle.js"></script>
-    
+    <!-- PARA DAR LOGOUT -->
+    <script src="../static/js/sweealert2/log_out.js"></script>
+    <!-- MENU ESQUERDO LATERAL MOBILE  -->
+    <script src="../static/js/geral/menu_toggle.js"></script>
+    <!-- PARA FORMATAR A HASHTAG -->
+    <script src="../static/js/geral/hashtag.js"></script>
+    <!-- TRATAMENTO DE ERRO -->
     {% if erro_email %}
     <script>window.erroEmail = true;</script>
     {% endif %}
@@ -386,7 +398,15 @@
     window.msgErroSenha = "{{ msg_erro|escapejs }}";
     </script>
     {% endif %}
+    <!-- JS DA PAGINA -->
     <script src="../static/js/recuperacao_senha/recuperar_senha_logado.js"></script>
-<script src="../static/js/geral/hashtag.js"></script>
+    <script>
+        window.REENVIAR_URL = "{{ url_for('recuperar_senha_logado.reenviar_codigo') }}";
+    </script>
+    <script type="module" src="../static/js/recuperacao_senha/recuperar_senha_logado_2.js"></script>
+
+    <!-- PARA NAO DEIXAR DOIS DISPOSTIVOS CONECTADOS -->
+    <script src="../static/js/geral/checar_sessao.js"></script>
+
 </body>
 </html>

@@ -27,6 +27,7 @@ body.claro .postagem-secao {
 body.escuro .postagem-secao {
     background-color: var(--roxo2);
 }
+
 /* Header */
 .postagem-secao-header h3 {
     color: var(--white);
@@ -41,12 +42,14 @@ body.claro .postagem-secao-header h3 {
 body.escuro .postagem-secao-header h3 {
     border-bottom: 1px solid var(--roxo);
 }
+
 /* Formulário */
 .postagem-secao-form-container {
     display: flex;
     gap: 12px;
     align-items: flex-start;
 }
+
 /* Avatar */
 .postagem-secao-avatar {
     flex-shrink: 0;
@@ -63,6 +66,7 @@ body.claro .postagem-secao-avatar img {
 body.escuro .postagem-secao-avatar img {
     border: 2px solid var(--roxo);
 }
+
 /* Textarea */
 .postagem-secao-form-content {
     flex-grow: 1;
@@ -84,6 +88,7 @@ body.escuro .postagem-secao-avatar img {
 .postagem-secao form textarea::placeholder {
     color: #65676b;
 }
+
 /* Botões de mídia */
 .icon-buttons-container {
     display: flex;
@@ -151,6 +156,7 @@ body.claro .postagem-secao form input[type="submit"]:hover {
 body.escuro .postagem-secao form input[type="submit"]:hover {
     background-color: var(--cor-secundaria);
 }
+
 /* Preview */
 .preview-container {
     margin: 12px 0;
@@ -203,6 +209,7 @@ body.escuro .postagem-secao form input[type="submit"]:hover {
 .remove-preview:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
+
 /* Responsividade */
 @media (max-width: 768px) {
     .postagem-secao {

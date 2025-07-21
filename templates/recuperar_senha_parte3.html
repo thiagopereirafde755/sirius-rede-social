@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- ESTILO DA PAGINA -->
     <link rel="stylesheet" href="../static/css/style1.css" />
+    <link rel="stylesheet" href="../static/css/loading.css">
     <style>
     .input-group i {
         top: 50% !important;
@@ -19,6 +20,11 @@
     </style>
 </head>
 <body>
+
+    <!-- TELA DE CARREGAMENTO -->
+    <div id="loadingScreen">
+        <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
+    </div>
 
     <div class="confirma-conta recuperar-senha"> 
         <h2>Recuperar senha</h2>
@@ -47,8 +53,117 @@
         </div>
     </div>
 
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Sobre Nós</h3>
+                <p>Sirius é uma plataforma social criada para conectar pessoas e compartilhar momentos especiais. Nossa missão é proporcionar uma experiência segura e agradável para todos os usuários.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a target="_blank" href="/central_ajuda">Central de Ajuda</a></li>
+                    <li><a target="_blank" href="/termos-de-uso">Termos de Uso</a></li>
+                    <li><a target="_blank" href="/politica-de-privacidade">Política de Privacidade</a></li>
+                    <li><a target="_blank"  href="/central_ajuda/suporte">Suporte</a></li>
+                    <li><a target="_blank" href="/sobre_nos">Sobre nós</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Política de Privacidade</h3>
+                <p>Respeitamos sua privacidade. Todas as informações coletadas são usadas para melhorar sua experiência e não são compartilhadas com terceiros sem seu consentimento.</p>
+                <a target="_blank" href="/politica-de-privacidade" class="privacy-link">Leia nossa política completa</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sirius Social Network. Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a target="_blank" href="/cookies">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+
     <!-- SCRIPT -->
     <script src="../static/js/recuperacao_senha/recuperar_senha_nao_logado_3.js"></script>
+    <script src="../static/js/carregamento/loading.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('formRecuperarSenha');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Mostra SweetAlert de carregando
+    Swal.fire({
+      title: 'Aguarde...',
+      text: 'Redefinindo sua senha',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      background: '#2d2a32',
+      color: '#e0e0e0',
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    const formData = new FormData(form);
+    const data = {
+      nova_senha: formData.get('nova_senha'),
+      confirmar_senha: formData.get('confirmar_senha'),
+    };
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        Swal.fire({
+          title: 'Sucesso!',
+          text: result.message,
+          icon: 'success',
+          confirmButtonColor: '#a76ab6',
+          background: '#2d2a32',
+          color: '#e0e0e0'
+        }).then(() => {
+          window.location.href = result.redirect;
+        });
+      } else {
+        Swal.fire({
+          title: 'Erro!',
+          text: result.error,
+          icon: 'error',
+          confirmButtonColor: '#a76ab6',
+          background: '#2d2a32',
+          color: '#e0e0e0'
+        });
+      }
+
+    } catch (error) {
+      Swal.fire({
+        title: 'Erro inesperado',
+        text: 'Tente novamente mais tarde.',
+        icon: 'error',
+        confirmButtonColor: '#a76ab6',
+        background: '#2d2a32',
+        color: '#e0e0e0'
+      });
+      console.error('Erro na requisição:', error);
+    }
+  });
+});
+
+</script>
 
 </body>
 </html>

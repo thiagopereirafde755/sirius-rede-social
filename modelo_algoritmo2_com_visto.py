@@ -4,7 +4,6 @@ import os
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-
 from app.conexao import criar_conexao
 
 def carregar_dados():
@@ -25,7 +24,7 @@ def carregar_dados():
     top_hashtags = [row['id'] for row in cursor.fetchall()] or [-1]
     format_strings = ','.join(['%s'] * len(top_hashtags))
 
-    # Curtidas (exemplo positivo, exibido=1)
+    # Curtidas (exemplo positivo, exibido=1) incluindo posts_republicados
     cursor.execute(f"""
         SELECT
             c.usuario_id,
@@ -38,6 +37,7 @@ def carregar_dados():
             (SELECT COUNT(*) FROM comentarios cm2 WHERE cm2.post_id = p.id) AS comentarios_post,
             TIMESTAMPDIFF(HOUR, p.data_postagem, NOW()) AS tempo_post,
             IF(ph.hashtag_id IN ({format_strings}), 1, 0) AS top_hashtag,
+            (SELECT COUNT(*) FROM posts_republicados pr WHERE pr.post_id = p.id) AS posts_republicados,
             1 AS exibido,
             -- Se já viu ou não o post
             IF(EXISTS (
@@ -54,7 +54,7 @@ def carregar_dados():
     """, top_hashtags)
     positivos = cursor.fetchall()
 
-    # Visualizações (exemplo negativo, exibido=0)
+    # Visualizações (exemplo negativo, exibido=0) incluindo posts_republicados
     cursor.execute(f"""
         SELECT
             v.usuario_id,
@@ -67,6 +67,7 @@ def carregar_dados():
             (SELECT COUNT(*) FROM comentarios cm2 WHERE cm2.post_id = p.id) AS comentarios_post,
             TIMESTAMPDIFF(HOUR, p.data_postagem, NOW()) AS tempo_post,
             IF(ph.hashtag_id IN ({format_strings}), 1, 0) AS top_hashtag,
+            (SELECT COUNT(*) FROM posts_republicados pr WHERE pr.post_id = p.id) AS posts_republicados,
             0 AS exibido,
             -- Se já viu ou não (para visualizações sempre 1, pois já viu)
             1 AS ja_visto
@@ -88,11 +89,11 @@ def carregar_dados():
     df = pd.DataFrame(positivos + negativos)
     return df
 
-
 def treinar_modelo(df):
     features = [
         'curtiu', 'comentou', 'segue_autor', 'perfil_publico',
         'curtidas_post', 'comentarios_post', 'tempo_post', 'top_hashtag',
+        'posts_republicados',  # NOVA FEATURE ADICIONADA AQUI
         'ja_visto'
     ]
     X = df[features]
@@ -109,15 +110,13 @@ def treinar_modelo(df):
 
     return modelo
 
-
 def salvar_modelo(modelo, caminho='modelo_algoritmo/modelo_feed.pkl'):
     os.makedirs(os.path.dirname(caminho), exist_ok=True)
     with open(caminho, 'wb') as f:
         pickle.dump(modelo, f)
     print(f"✔️ Modelo salvo em: {caminho}")
 
-
-# Exemplo função para aplicar o ranking considerando o peso para ja_visto
+# Exemplo função para aplicar o ranking considerando posts_republicados
 def aplicar_ranking_personalizado(posts, usuario_id, modelo_ml):
     import pandas as pd
 
@@ -131,7 +130,7 @@ def aplicar_ranking_personalizado(posts, usuario_id, modelo_ml):
             'comentarios_post': int(post.get('comentarios_count', 0)),
             'tempo_post': int(post.get('tempo_post', 0)),
             'top_hashtag': int(post.get('top_hashtag', 0)),
-            # Aqui você teria que preencher essa info para cada post, por exemplo:
+            'posts_republicados': int(post.get('posts_republicados', 0)),  # NOVA FEATURE
             'ja_visto': int(post.get('ja_visto', 0)),
         }
 
@@ -141,7 +140,16 @@ def aplicar_ranking_personalizado(posts, usuario_id, modelo_ml):
     if df.empty:
         return posts
 
-    scores = modelo_ml.predict_proba(df)[:, 1]
+    # Selecionar as features que o modelo conhece (mesmo conjunto do treino)
+    features_modelo = [
+        'curtiu', 'comentou', 'segue_autor', 'perfil_publico',
+        'curtidas_post', 'comentarios_post', 'tempo_post', 'top_hashtag',
+        'posts_republicados',
+        'ja_visto'
+    ]
+    df_modelo = df[features_modelo]
+
+    scores = modelo_ml.predict_proba(df_modelo)[:, 1]
 
     # PESOS
     peso_score_ml = 2.5
@@ -149,7 +157,8 @@ def aplicar_ranking_personalizado(posts, usuario_id, modelo_ml):
     peso_comentarios = 2.5
     peso_seguindo = 1.8
     peso_frescor = 0.15
-    peso_ja_visto = -1.5  # Penaliza posts já vistos
+    peso_ja_visto = -1.5
+    peso_republicados = 1.5  # Peso para republicações
 
     for i, post in enumerate(posts):
         score_ml = scores[i]
@@ -160,6 +169,7 @@ def aplicar_ranking_personalizado(posts, usuario_id, modelo_ml):
         seguindo = int(post.get('seguindo', False))
         tempo_post = post.get('tempo_post', 0)
         ja_visto = int(post.get('ja_visto', 0))
+        republicados = int(post.get('posts_republicados', 0))
 
         frescor = max(0, (24 - tempo_post)) * peso_frescor
 
@@ -169,18 +179,20 @@ def aplicar_ranking_personalizado(posts, usuario_id, modelo_ml):
             comentarios * peso_comentarios +
             seguindo * peso_seguindo +
             frescor +
-            ja_visto * peso_ja_visto,
+            ja_visto * peso_ja_visto +
+            republicados * peso_republicados,
             4
         )
 
     posts.sort(key=lambda x: x['score_total'], reverse=True)
     return posts
 
-
 if __name__ == '__main__':
     print("📥 Carregando dados de interação...")
     df = carregar_dados()
     print(f"🔢 Total de registros: {len(df)}")
+    print(df.columns)  # Verificar se 'posts_republicados' está aqui
+    print(df['posts_republicados'].head())
 
     print("🧠 Treinando modelo de recomendação...")
     modelo = treinar_modelo(df)

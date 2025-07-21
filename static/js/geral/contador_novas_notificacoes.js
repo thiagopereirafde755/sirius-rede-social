@@ -1,21 +1,26 @@
- function atualizarBadgeNotificacao() {
+function atualizarBadgeNotificacao() {
     $.ajax({
         url: "/api/notificacoes_nao_lidas",
         method: "GET",
         dataType: "json",
         cache: false,
         success: function(data) {
-            if (data.success && typeof data.nao_lidas !== "undefined") {
-                let totalNaoLidas = data.nao_lidas;
-                if (totalNaoLidas > 0) {
-                    $("#badge-notificacao-notify")
-                      .text(totalNaoLidas > 99 ? "99+" : totalNaoLidas)
-                      .show();
+            const $badge = $("#badge-notificacao-notify");
+
+            if (data.success && typeof data.total !== "undefined") {
+                const total = Number(data.total);
+
+                if (total > 0) {
+                    const textoBadge = total > 99 ? "99+" : String(total);
+                    if ($badge.text() !== textoBadge) {
+                        $badge.text(textoBadge);
+                    }
+                    $badge.show();
                 } else {
-                    $("#badge-notificacao-notify").hide();
+                    $badge.hide();
                 }
             } else {
-                $("#badge-notificacao-notify").hide();
+                $badge.hide();
             }
         },
         error: function() {

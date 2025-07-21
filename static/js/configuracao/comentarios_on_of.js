@@ -3,10 +3,9 @@ $(document).ready(function() {
         e.preventDefault();
 
         const url = $(this).data('url');
-        const visibilidade = $('#comentarios_publicos').val(); // 'publico' ou 'privado'
-        const formData = {
-            comentarios_publicos: visibilidade === 'publico' ? 1 : 0
-        };
+        const visibilidade = $('#comentarios_publicos').val();
+
+        const formData = { comentarios_publicos: visibilidade };
 
         $.ajax({
             url: url,

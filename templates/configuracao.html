@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="../static/css/modais.css">
     <link rel="stylesheet" href="../static/css/layout-perfil.css">
     <link rel="stylesheet" href="../static/css/configuracao.css">
+    <link rel="stylesheet" href="../static/css/loading.css">
     <!-- BIBLIOTECAS -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
@@ -35,217 +36,248 @@
 </head>
 <body class="{{ tema }}">
 
-<!-- CABEÇALHO MOBILE -->
-<div class="pesquisa-para-mobile">
-    <a href="/inicio">
-    <div class="logo" id="logo-no-mobile">
-        <i class='bx bxs-dog'></i>
+    <!-- TELA DE CARREGAMENTO -->
+    <div id="loadingScreen">
+        <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
     </div>
-    </a>
-</div>
 
-<!-- CABEÇALHO DESKTOP -->
-<header class="header">
-    <div class="logoSearch">
+
+    <!-- CABEÇALHO MOBILE -->
+    <div class="pesquisa-para-mobile">
         <a href="/inicio">
-        <div class="logo" id="logo">
+        <div class="logo" id="logo-no-mobile">
             <i class='bx bxs-dog'></i>
-    </div>
-    </a>
-</div>
-
-<!-- OPÇOES NA PARTE INFERIOR DO MOBILE -->
-<div class="mobile-header-icons">
-
-    <!-- MINHA FOTO -->
-    <div class="minha-foto-mobile">
-        <a href="/inicio">
-            <img src="{{foto_perfil}}" id="foto-mobile-header" alt="my-photo">
+        </div>
         </a>
     </div>
-    
-    <!-- EXPLORAR -->
-    <div class="opcao-mobile">
-        <i class='bx bxs-home'></i>
-    </div>
+
+    <!-- CABEÇALHO DESKTOP -->
+    <header class="header">
+        <div class="logoSearch">
+                <a href="/inicio">
+                <div class="logo" id="logo">
+                    <i class='bx bxs-dog'></i>
+                </div>
+            </a>
+        </div>
+
+        <!-- OPÇOES NA PARTE INFERIOR DO MOBILE -->
+        <div class="mobile-header-icons">
+
+            <!-- MINHA FOTO -->
+            <div class="minha-foto-mobile">
+                <a href="/inicio">
+                    <img src="{{foto_perfil}}" id="foto-mobile-header" alt="my-photo">
+                </a>
+            </div>
+        
+            <!-- EXPLORAR -->
+            <a href="/home">
+                <div class="opcao-mobile">
+                    <i class='bx bxs-home'></i>
+                </div>
+            </a>
+                    
+            <!-- CHAT -->
+            <a href="/chat">
+                <div class="opcao-mobile">
+                    <i class='bx bxs-chat'></i>
+                </div>
+            </a>
+
+            <!-- VIDEOS -->
+            <a href="/post-video">
+                <div class="opcao-mobile">
+                    <i class='bx bxs-videos'></i>
+                </div>
+            </a>
+
+            <!-- NOTIFICAÇÃO -->
+            <a href="/notificacoes">
+                <div class="opcao-mobile">
+                    <i class='bx bxs-bell' ></i>
+                </div>
+            </a>
+        
+            <!-- MENU -->
+            <div class="opcao-mobile1">
+                <i class='bx bx-menu'></i>
+            </div>
+        </div>
+        
+        <!-- OPÇOES DO HEADER -->
+        <div class="mainMenu">
+
+            <!-- EXPLORAR -->
+            <a href="/home">
+                <div class="svg ">
+                    <i class='bx bxs-home'></i>
+                </div>
+            </a>
+
+            <!-- SEGUINDO -->
+            <a href="/post-seguindo">
+                <div class="svg">
+                    <i class='bx bxs-user'></i>
+                </div>
+            </a>
+
+            <!-- VIDEOS -->
+            <a href="/post-video">
+                <div class="svg">
+                    <i class='bx bxs-videos'></i>
+                </div>
+            </a>
+
+            <!-- CURTIDOS -->
+            <a href="/post-curtidos">
+                <div class="svg">
+                    <i class='bx bxs-heart'></i>
+                </div>
+            </a>
+        </div>
+
+        <!-- PERFIL -->
+        <a href="/inicio">
+            <div class="profileTools">
+                <div class="profile">
+                    <div class="img" style="background-image: url('{{foto_perfil}}');"></div>
+                    <div class="username">Perfil</div>
+            </div>
+        </a>
+
+        <div class="tools">
+
+            <!-- NOTIFICAÇOES -->
+            <a href="/notificacoes">
+                <div class="svg">
+                    <i class='bx bxs-bell'></i>
+                </div>
+            </a>
+
+            <!-- CHAT -->
+            <a href="/chat">
+                <div class="svg">
+                    <i class='bx bxs-chat'></i>
+                </div>
+            </a>
+        
+            <!-- CONFIGURAÇOES -->
+            <a href="/configuracao">
+                <div class="svg">
+                    <i class='bx bxs-cog'></i>
+                </div>
+            </a>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- MENU ESQUERDO DE OPÇOES -->
+    <div class="sidebar-esquerdo">
+        <div class="aside-esquerdo-mobile">
+
+            <!-- EXPLORAR -->
+            <a href="/home">  
+                <div class="globalProfile ">
+                    <i class='bx bxs-home'></i>
+                    <div class="name">Explorar</div>
+                </div>
+            </a>
+
+            <!-- SEGUINDO -->
+            <a href="/post-seguindo">
+                <div class="globalProfile">
+                    <i class='bx bxs-user'></i>
+                <div class="name">Seguindo</div>
+                </div>
+            </a>
             
-    <!-- CHAT -->
-    <a href="/chat">
-    <div class="opcao-mobile">
-        <i class='bx bxs-chat'></i>
-    </div>
-    </a>
+            <!-- VIDEOS -->
+            <a href="/post-video">
+                <div class="globalProfile">
+                    <i class='bx bxs-videos'></i>
+                <div class="name">Videos</div>
+                </div>
+            </a>
 
-    <!-- VIDEOS -->
-    <div class="opcao-mobile">
-        <i class='bx bxs-videos'></i>
-    </div>
+            <!-- CURTIDAS -->
+            <a href="/post-curtidos">
+                <div class="globalProfile">
+                    <i class='bx bxs-heart'></i>
+                    <div class="name">Curtidas</div>
+                </div>
+            </a>
 
-    <!-- NOTIFICAÇÃO -->
-    <div class="opcao-mobile">
-        <i class='bx bxs-bell' ></i>
-    </div>
-    
-    <!-- MENU -->
-    <div class="opcao-mobile1">
-        <i class='bx bx-menu'></i>
-    </div>
-</div>
-        
-<!-- OPÇOES DO HEADER -->
-<div class="mainMenu">
+            <!-- REPUBLICADO -->
+            <a href="/post-republicados">
+                <div class="globalProfile">
+                    <i class='bx bx-repost'></i>
+                    <div class="name">Republicados</div>
+                </div>
+            </a>
 
-<!-- EXPLORAR -->
-<a href="/home">
-<div class="svg ">
-    <i class='bx bxs-home'></i>
-</div>
-</a>
+            <!-- SALVO -->
+            <a href="/post-salvo">
+                <div class="globalProfile">
+                    <i class='bx bxs-bookmark'></i>
+                    <div class="name">Salvo</div>
+                </div>
+            </a>
+            
+            <!-- PROCURAR USER -->
+            <a href="/procurar-user">
+                <div class="globalProfile">
+                    <i class='bx bxs-user-plus'></i>
+                    <div class="name">Procurar</div>
+                </div>
+            </a>
 
-<!-- SEGUINDO -->
-<a href="/post-seguindo">
-<div class="svg">
-    <i class='bx bxs-user'></i>
-</div>
-</a>
+            <!-- CHAT -->
+            <a href="/chat">
+                <div class="globalProfile">
+                    <i class='bx bxs-chat'></i>
+                    <div class="name">Mensagem</div>
+                    <span class="badge-nao-vistas" id="badge-chat-notify">0</span>
+                </div>
+            </a>
 
-<!-- VIDEOS -->
-<a href="/post-video">
-<div class="svg">
-    <i class='bx bxs-videos'></i>
-</div>
-</a>
+            <!-- MEU PERFIL -->
+            <a href="/inicio">
+                <div class="globalProfile ">
+                    <i class='bx bxs-user'></i>
+                    <div class="name">Perfil</div>
+                </div>
+            </a>
 
-<!-- CURTIDOS -->
-<a href="/post-curtidos">
-<div class="svg">
-    <i class='bx bxs-heart'></i>
-</div>
-</a>
-</div>
+            <!-- NOTIFICAÇÃO -->
+            <a href="/notificacoes">
+                <div class="globalProfile">
+                    <i class='bx bxs-bell'></i>
+                    <div class="name">Notificação</div>
+                    <span class="badge-nao-vistas" id="badge-notificacao-notify">0</span>
+                </div>
+            </a>
 
-<!-- PERFIL -->
-<a href="/inicio">
-<div class="profileTools">
-    <div class="profile">
-        <div class="img" style="background-image: url('{{foto_perfil}}');"></div>
-        <div class="username">Perfil</div>
-</div>
-</a>
+            <!-- CONFIGURAÇÃO -->
+            <a href="/configuracao">
+                <div class="globalProfile active">
+                    <i class='bx bxs-cog'></i>
+                    <div class="name-active">Configuração</div>
+                </div>
+            </a>
 
-<div class="tools">
-    <!-- NOTIFICAÇOES -->
-    <div class="svg">
-        <i class='bx bxs-bell'></i>
-    </div>
-
-    <!-- CHAT -->
-    <a href="/chat">
-    <div class="svg">
-        <i class='bx bxs-chat'></i>
-    </div>
-    </a>
-    
-    <!-- CONFIGURAÇOES -->
-    <a href="/configuracao">
-    <div class="svg">
-        <i class='bx bxs-cog'></i>
-    </div>
-    </a>
-
-    </div>
-</div>
-</header>
-
-<!-- MENU ESQUERDO DE OPÇOES -->
-<div class="sidebar-esquerdo">
-    <div class="aside-esquerdo-mobile">
-
-        <!-- EXPLORAR -->
-        <a href="/home">  
-        <div class="globalProfile ">
-            <i class='bx bxs-home'></i>
-            <div class="name">Explorar</div>
-        </div>
-        </a>
-
-        <!-- SEGUINDO -->
-        <a href="/post-seguindo">
-        <div class="globalProfile">
-            <i class='bx bxs-user'></i>
-        <div class="name">Seguindo</div>
-        </div>
-        </a>
-        
-        <!-- VIDEOS -->
-        <a href="/post-video">
-        <div class="globalProfile">
-            <i class='bx bxs-videos'></i>
-        <div class="name">Videos</div>
-        </div>
-        </a>
-
-        <!-- CURTIDAS -->
-        <a href="/post-curtidos">
-        <div class="globalProfile">
-            <i class='bx bxs-heart'></i>
-        <div class="name">Curtidas</div>
-        </div>
-        </a>
-        
-        <!-- PROCURAR USER -->
-        <a href="/procurar-user">
-        <div class="globalProfile">
-            <i class='bx bxs-user-plus'></i>
-        <div class="name">Procurar</div>
-        </div>
-        </a>
-
-        <!-- CHAT -->
-        <a href="/chat">
-        <div class="globalProfile">
-            <i class='bx bxs-chat'></i>
-        <div class="name">Mensagem</div>
-        <span class="badge-nao-vistas" id="badge-chat-notify">0</span>
-        </div>
-        </a>
-
-        <!-- MEU PERFIL -->
-        <a href="/inicio">
-        <div class="globalProfile ">
-            <i class='bx bxs-user'></i>
-        <div class="name">Perfil</div>
-        </div>
-        </a>
-
-        <!-- NOTIFICAÇÃO -->
-        <a href="/notificacoes">
-        <div class="globalProfile">
-            <i class='bx bxs-bell'></i>
-        <div class="name">Notificação</div>
-        <span class="badge-nao-vistas" id="badge-notificacao-notify">0</span>
-        </div>
-         </a>
-
-        <!-- CONFIGURAÇÃO -->
-        <a href="/configuracao">
-        <div class="globalProfile active">
-            <i class='bx bxs-cog'></i>
-        <div class="name-active">Configuração</div>
-        </div>
-        </a>
-
-        <!-- SAIR DA CONTA -->
-  <a href="#" id="logout-link">
+            <!-- SAIR DA CONTA -->
+            <a href="#" id="logout-link">
                 <div class="globalProfile">
                     <i class='bx bx-log-out'></i>
                     <div class="name">Sair</div>
                 </div>
             </a>
+        </div>
     </div>
-</div>
 
- <!-- ASIDEBAR DIREITO DESKTOP -->
+    <!-- ASIDEBAR DIREITO DESKTOP -->
     <div class="sideBarContainer">
         <div class="sidebar left"></div>
         <div class="sidebar right">
@@ -273,9 +305,8 @@
                         {% for hashtag in hashtags_top %}
                             <a href="/pesquisar?query={{ hashtag.nome|urlencode }}" class="hashtag-btn" >
                                 <span class="hashtag-nome">
-  <span class="hashtag-nome-truncado" title="{{ hashtag.nome }}">{{ hashtag.nome }}</span> - {{ hashtag.total }}
-</span>
-
+                                    <span class="hashtag-nome-truncado" title="{{ hashtag.nome }}">{{ hashtag.nome }}</span> - {{ hashtag.total | numcurto }}
+                                </span>
                             </a>
                         {% endfor %}
                     </div>
@@ -312,7 +343,7 @@
                 <div class="hashtags-top">
                     {% for hashtag in hashtags_top %}
                         <a href="/pesquisar?query={{ hashtag.nome|urlencode }}" class="hashtag-btn hashtag-btn-mob" >
-                            <span class="hashtag-nome">{{ hashtag.nome }} - {{ hashtag.total }}</span>
+                            <span class="hashtag-nome">{{ hashtag.nome }} - {{ hashtag.total | numcurto }}</span>
                         </a>
                     {% endfor %}
                 </div>
@@ -324,221 +355,298 @@
  
     <main class="sectionCenter">
         <h4 style="text-align: center;">Configurações de {{username}}</h4>
-<div class="center-section">
-        <!-- SEÇÃO DE CONFIGUAÇÃO -->
-        <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="center-section">
 
-            <!-- PERSONALIZAÇÃO -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i>
-                    Personalização
-                </button>
-                </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+            <!-- SEÇÃO DE CONFIGUAÇÃO -->
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+
+                <!-- PERSONALIZAÇÃO -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i>
+                            Personalização
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="settings-container">
+                            <h2>Personalização</h2>
+
+                            <!-- PARA ALTERAR O TEMA -->
+                            <form id="form-alterar-tema" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_tema') }}">
+                                <label for="tema"> <i class='bx bx-sun' style="margin-right: 6px;"></i> Tema:</label>
+                                <select id="tema" name="tema" class="form-control">
+                                    <option value="claro" {% if tema == 'claro' %}selected{% endif %}>☀️ Claro</option>
+                                    <option value="escuro" {% if tema == 'escuro' %}selected{% endif %}>🌑 Escuro</option>
+                                </select>
+                                <button type="submit" class="btn-salvar"> <i class='bx bx-save' style="margin-right: 6px;"></i> Salvar</button>
+                            </form>
+
+                            <!-- PARA PERMITIR AUDIO DE NOVAS MENSAGENS -->
+                            <form id="form-audio-notificacoes-mensagem" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_audio_notificacoes_mensagem') }}">
+                                <label for="audio_notificacoes_mensagem"><i class='bx bx-bell' style="margin-right: 6px;"></i> Som para notificações de mensagens:</label>
+                                <select id="audio_notificacoes_mensagem" name="audio_notificacoes_mensagem" class="form-control">
+                                    <option value="ativado" {% if audio_notificacoes_mensagem %}selected{% endif %}>🔔 Ativado</option>
+                                    <option value="desativado" {% if not audio_notificacoes_mensagem %}selected{% endif %}>🔕 Desativado</option>
+                                </select>
+                                <button type="submit" class="btn-salvar"> <i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
+                            </form>
+
+                            <!-- NOTIFICACAO PUSH DO NAVEGADOR -->
+                            <form id="form-notificacoes-navegador" class="visibilidade-form">
+                                <label for="notificacoes_navegador"><i class='bx bx-desktop' style="margin-right: 6px;"></i> Notificações do navegador:</label>
+                                <select id="notificacoes_navegador" name="notificacoes_navegador" class="form-control">
+                                    <option value="ativado">✅ Ativado</option>
+                                    <option value="desativado">🚫 Desativado</option>
+                                </select>
+                                <button type="submit" class="btn-salvar"> <i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
+                            </form>
+                        </div>
+                    </div>       
+                </div>
+
+                <!-- PRIVACIDADE DA CONTA -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i>
+                            Privacidade da conta
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="settings-container">
+                            <h2>Configurações de Privacidade</h2>
+            
+                            <!-- PARA DEIXAR PERFIL PUBLICO OU PRIVADO -->
+                            <form id="form-visibilidade-perfil" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_visibilidade') }}">
+                                <label for="perfil_publico"> <i class='bx bx-user' style="margin-right: 6px;"></i>Visibilidade do Perfil:</label>
+                                <select id="perfil_publico" name="perfil_publico" class="form-control">
+                                    <option value="publico" {% if perfil_publico %}selected{% endif %}>🌐 Público</option>
+                                    <option value="privado" {% if not perfil_publico %}selected{% endif %}>🔒 Privado</option>
+                                </select>
+                                <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
+                            </form>
+
+                            <!-- PARA DEIXAR OS COMENTARIOS PUBLICO, AMIGOS OU PRIVADO -->
+                            <form id="form-visibilidade-comentarios" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_visibilidade_comentarios') }}">
+                                <label for="comentarios_publicos"><i class='bx bx-comment-detail' style="margin-right: 6px;"></i>Comentários:</label>
+                                <select id="comentarios_publicos" name="comentarios_publicos" class="form-control">
+                                    <option value="todos" {% if comentarios_publicos == 'todos' %}selected{% endif %}>🌐 Todos</option>
+                                    <option value="privado" {% if comentarios_publicos == 'privado' %}selected{% endif %}>🔒 Privado</option>
+                                    <option value="seguidores_mutuos" {% if comentarios_publicos == 'seguidores_mutuos' %}selected{% endif %}>👥 Amigos</option>
+                                </select>
+                                <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
+                            </form>
+
+                            <!-- PARA DEIXAR MODAL DE CURTIDAS PUBLICAS OU PRIVADAS -->
+                            <form id="form-curtidas-publicas" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_curtidas_publicas') }}">
+                                <label for="curtidas_publicas"><i class='bx bx-like' style="margin-right: 6px;"></i>Visibilidade de curtidas:</label>
+                                <select id="curtidas_publicas" name="curtidas_publicas" class="form-control">
+                                    <option value="publico" {% if curtidas_publicas %}selected{% endif %}>🌐 Público</option>
+                                    <option value="privado" {% if not curtidas_publicas %}selected{% endif %}>🔒 Privado</option>
+                                </select>
+                                <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
+                            </form>
+                        
+                            <!-- PARA DEIXAR O MODAL DE SEGUIDORES PUBLICO OU PRIVADO  -->
+                            <form id="form-visibilidade-seguidores" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_visibilidade_seguidores') }}">
+                                <label for="visibilidade_seguidores"> <i class='bx bx-user-plus' style="margin-right: 6px;"></i>Visibilidade de Seguidores:</label>
+                                <select id="visibilidade_seguidores" name="visibilidade_seguidores" class="form-control">
+                                    <option value="publico" {% if curtidas_publicas %}selected{% endif %}>🌐 Público</option>
+                                    <option value="privado" {% if not curtidas_publicas %}selected{% endif %}>🔒 Privado</option>
+                                </select>
+                                <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
+                            </form>
+
+                            <!-- STATUS DE ONN/OFF -->
+                            <form id="form-modo-status" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_modo_status') }}">
+                                <label for="modo_status"><i class='bx bx-radio-circle-marked' style="margin-right: 6px;"></i>Status de disponibilidade:</label>
+                                <select id="modo_status" name="modo_status" class="form-control">
+                                    <option value="normal" {% if modo_status == 'normal' %}selected{% endif %}>🟢 Normal (mostrar online/offline)</option>
+                                    <option value="ausente" {% if modo_status == 'ausente' %}selected{% endif %}>⚫ Ausente (sempre off)</option>
+                                </select>
+                                <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GERENCIAR USUARIOS BLOQUEADOS -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i>
+                            Bloqueados
+                        </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="settings-container">
+                            <div class="bloqueio-container">
+                                <h4>Gerenciar Usuários Bloqueados</h4>
+    
+                                <div class="search-container">
+                                    <input type="text" id="pesquisa-usuario" placeholder="Pesquisar usuários..." class="search-input">
+                                    <div id="resultados-pesquisa" class="resultados-pesquisa"></div>
+                                </div>
+    
+                                <div class="bloqueados-container">
+                                    <h5><i class="fas fa-user-lock"></i> Usuários Bloqueados</h5>
+                                    <div id="lista-bloqueados" class="lista-bloqueados"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IR A CENTRA DE AJUDA -->
+                <div class="accordion-item">
+                     <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                        <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i>
+                            Central de ajuda
+                        </button>
+                    </h2>
+                    <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="settings-container">
+                            <h2>Ajuda</h2>
+
+                            <a target="_blank" href="/central_ajuda" class="conf-conta" >
+                                <i class='bx bx-book'></i> Ir para central de ajuda
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MINHAS ESTATISTICAS -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                        <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i>
+                            Minhas Estatísticas
+                        </button>
+                    </h2>
+                    <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="settings-container">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Total de posts: <strong>{{ total_posts }}</strong></li>
+                                <li class="list-group-item">Total de curtidas recebidas: <strong>{{ total_curtidas }}</strong></li>
+                                <li class="list-group-item">Total de republicações dos seus posts: <strong>{{ total_republicacoes }}</strong></li>
+                                <li class="list-group-item">Total de vezes que seus posts foram salvos: <strong>{{ total_salvos }}</strong></li>
+
+                                <li class="list-group-item">Total de posts que você curtiu: <strong>{{ total_posts_que_curti }}</strong></li>
+                                <li class="list-group-item">Total de posts que você republicou: <strong>{{ total_posts_que_republiquei }}</strong></li>
+                                <li class="list-group-item">Total de posts que você salvou: <strong>{{ total_posts_que_salvei }}</strong></li>
+
+                                <li class="list-group-item">Total de comentários recebidos: <strong>{{ total_comentarios }}</strong></li>
+                                <li class="list-group-item">Total de visualizações: <strong>{{ total_visualizacoes }}</strong></li>
+                                <li class="list-group-item">Total de vezes que você comentou: <strong>{{ total_comentarios_feitos }}</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTA -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+                        <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i> Conta
+                        </button>
+                    </h2>
+                     <div id="flush-collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                     <div class="settings-container">
-                        <h2>Personalização</h2>
+                        <h2>Conta</h2>
 
-                        <!-- PARA ALTERAR O TEMA -->
-                        <form id="form-alterar-tema" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_tema') }}">
-                            <label for="tema"> <i class='bx bx-sun' style="margin-right: 6px;"></i> Tema:</label>
-                            <select id="tema" name="tema" class="form-control">
-                                <option value="claro" {% if tema == 'claro' %}selected{% endif %}>☀️ Claro</option>
-                                <option value="escuro" {% if tema == 'escuro' %}selected{% endif %}>🌑 Escuro</option>
-                            </select>
-                            <button type="submit" class="btn-salvar"> <i class='bx bx-save' style="margin-right: 6px;"></i> Salvar</button>
-                        </form>
+                        <!-- ALTERAR SENHA -->
+                        <a href="#" class="conf-conta" data-bs-toggle="modal" data-bs-target="#alterarSenhaModal">
+                            <i class='bx bx-lock-alt'></i> 
+                            Alterar senha
+                        </a>
 
-                        <!-- PARA PERMITIR AUDIO DE NOVAS MENSAGENS -->
-                        <form id="form-audio-notificacoes-mensagem" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_audio_notificacoes_mensagem') }}">
-                            <label for="audio_notificacoes_mensagem"><i class='bx bx-bell' style="margin-right: 6px;"></i> Som para notificações de mensagens:</label>
-                            <select id="audio_notificacoes_mensagem" name="audio_notificacoes_mensagem" class="form-control">
-                                <option value="ativado" {% if audio_notificacoes_mensagem %}selected{% endif %}>🔔 Ativado</option>
-                                <option value="desativado" {% if not audio_notificacoes_mensagem %}selected{% endif %}>🔕 Desativado</option>
-                            </select>
-                            <button type="submit" class="btn-salvar"> <i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
-                        </form>
+
+                        <!-- RECUPERAR CONTA -->
+                        <a href="/recuperar_senha_logado_part1" class="conf-conta"> 
+                            <i class='bx bx-lock-alt'></i>
+                            Esqueceu a senha?
+                        </a>
+
+                        <!-- EXCLUIR CONTA -->
+                        <a href="#" class="conf-conta" data-bs-toggle="modal" data-bs-target="#excluirContaModal">
+                            <i class='bx bx-trash'></i> Excluir conta
+                        </a>
 
                     </div>
-                </div>       
-            </div>
-
-        <!-- PRIVACIDADE DA CONTA -->
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-               <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i>
-                Privacidade da conta
-            </button>
-            </h2>
-            <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                <div class="settings-container">
-                    <h2>Configurações de Privacidade</h2>
-        
-                    <!-- PARA DEIXAR PERFIL PUBLICO OU PRIVADO -->
-                    <form id="form-visibilidade-perfil" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_visibilidade') }}">
-                        <label for="perfil_publico"> <i class='bx bx-user' style="margin-right: 6px;"></i>Visibilidade do Perfil:</label>
-                        <select id="perfil_publico" name="perfil_publico" class="form-control">
-                            <option value="publico" {% if perfil_publico %}selected{% endif %}>🌐 Público</option>
-                            <option value="privado" {% if not perfil_publico %}selected{% endif %}>🔒 Privado</option>
-                        </select>
-                        <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
-                    </form>
-
-                    <!-- PARA DEIXAR OS COMENTARIOS PUBLICO OU PRIVADO -->
-                    <form id="form-visibilidade-comentarios" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_visibilidade_comentarios') }}">
-                        <label for="comentarios_publicos"><i class='bx bx-comment-detail' style="margin-right: 6px;"></i>Comentários:</label>
-                        <select id="comentarios_publicos" name="comentarios_publicos" class="form-control">
-                            <option value="publico" {% if comentarios_publicos == 1 %}selected{% endif %}>🌐 Público</option>
-                            <option value="privado" {% if comentarios_publicos == 0 %}selected{% endif %}>🔒 Privado</option>
-                        </select>
-                        <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
-                    </form>
-
-                    <!-- PARA DEIXAR MODAL DE CURTIDAS PUBLICAS OU PRIVADAS -->
-                    <form id="form-curtidas-publicas" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_curtidas_publicas') }}">
-                        <label for="curtidas_publicas"><i class='bx bx-like' style="margin-right: 6px;"></i>Visibilidade de curtidas:</label>
-                        <select id="curtidas_publicas" name="curtidas_publicas" class="form-control">
-                            <option value="publico" {% if curtidas_publicas %}selected{% endif %}>🌐 Público</option>
-                            <option value="privado" {% if not curtidas_publicas %}selected{% endif %}>🔒 Privado</option>
-                        </select>
-                        <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
-                    </form>
-                    
-                    <!-- PARA DEIXAR O MODAL DE SEGUIDORES PUBLICO OU PRIVADO  -->
-                    <form id="form-visibilidade-seguidores" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_visibilidade_seguidores') }}">
-                        <label for="visibilidade_seguidores"> <i class='bx bx-user-plus' style="margin-right: 6px;"></i>Visibilidade de Seguidores:</label>
-                        <select id="visibilidade_seguidores" name="visibilidade_seguidores" class="form-control">
-                            <option value="publico" {% if curtidas_publicas %}selected{% endif %}>🌐 Público</option>
-                            <option value="privado" {% if not curtidas_publicas %}selected{% endif %}>🔒 Privado</option>
-                        </select>
-                        <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
-                    </form>
-
-                    <!-- STATUD DE ONN/OFF -->
-                    <form id="form-modo-status" class="visibilidade-form" data-url="{{ url_for('configuracao.alterar_modo_status') }}">
-                        <label for="modo_status"><i class='bx bx-radio-circle-marked' style="margin-right: 6px;"></i>Status de disponibilidade:</label>
-                        <select id="modo_status" name="modo_status" class="form-control">
-                            <option value="normal" {% if modo_status == 'normal' %}selected{% endif %}>🟢 Normal (mostrar online/offline)</option>
-                            <option value="ausente" {% if modo_status == 'ausente' %}selected{% endif %}>⚫ Ausente (sempre off)</option>
-                        </select>
-                        <button type="submit" class="btn-salvar"><i class='bx bx-save' style="margin-right: 6px;"></i>Salvar</button>
-                    </form>
-
                 </div>
             </div>
-        </div>
 
-        <!-- GERENCIAR USUARIOS BLOQUEADOS -->
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-               <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i>
-                Bloqueados
-            </button>
-            </h2>
-            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                <div class="settings-container">
-                    <div class="bloqueio-container">
-                        <h4>Gerenciar Usuários Bloqueados</h4>
-    
-                        <div class="search-container">
-                            <input type="text" id="pesquisa-usuario" placeholder="Pesquisar usuários..." class="search-input">
-                            <div id="resultados-pesquisa" class="resultados-pesquisa"></div>
+            <!-- MODAL PARA ALTERAR SENHA -->
+            <div class="modal fade" id="alterarSenhaModal" tabindex="-1" aria-labelledby="alterarSenhaModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="alterarSenhaModalLabel">
+                                <i class='bx bx-lock-alt' style="margin-right: 8px;"></i> Alterar Senha
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-    
-                        <div class="bloqueados-container">
-                            <h5><i class="fas fa-user-lock"></i> Usuários Bloqueados</h5>
-                            <div id="lista-bloqueados" class="lista-bloqueados"></div>
+                        <div class="modal-body">
+                            <form id="formAlterarSenha">
+                                <div class="mb-3 password-container">
+                                    <label for="senhaAtual" class="form-label">Senha Atual</label>
+                                    <div class="input-with-icon">
+                                        <input type="password" class="form-control" id="senhaAtual" required>
+                                        <i class='bx bx-show eye-icon' id="toggleSenhaAtual"></i>
+                                    </div>
+                                </div>
+                                <div class="mb-3 password-container">
+                                    <label for="novaSenha" class="form-label">Nova Senha</label>
+                                    <div class="input-with-icon">
+                                        <input type="password" class="form-control" minlength="6" maxlength="12" id="novaSenha" required>
+                                        <i class='bx bx-show eye-icon' id="toggleNovaSenha"></i>
+                                    </div>
+                                    <div class="form-text">Mínimo de 6 caracteres</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmarSenha" class="form-label">Confirmar Nova Senha</label>
+                                    <input type="password" class="form-control" minlength="6" maxlength="12" id="confirmarSenha" required >
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                <i class='bx bx-x'></i> Cancelar
+                            </button>
+                            <button type="button" class="btn btn-primary" id="btnSalvarSenha">
+                                <i class='bx bx-save'></i> Salvar Alterações
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-       interação
-      </button>
-    </h2>
-    <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">
-        <!-- Conteúdo da nova seção vai aqui -->
-        <p>Este é o conteúdo da nova seção que você adicionou.</p>
-        <p>Você pode adicionar formulários, textos ou outros elementos como nas outras seções.</p>
-      </div>
-    </div>
-  </div>
-   <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-       Mais informações e suporte
-      </button>
-    </h2>
-    <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">
-        <!-- Conteúdo da nova seção vai aqui -->
-        <p>Este é o conteúdo da nova seção que você adicionou.</p>
-        <p>Você pode adicionar formulários, textos ou outros elementos como nas outras seções.</p>
-      </div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
-      <i class='bx bx-cog' style="margin-right: 8px; color: #fff;"></i> Conta
-      </button>
-    </h2>
-    <div id="flush-collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                <div class="settings-container">
-                    <h2>Conta</h2>
-
-                 <a href="#" class="conf-conta" data-bs-toggle="modal" data-bs-target="#alterarSenhaModal">
-    <i class='bx bx-lock-alt'></i> Alterar senha
-</a>
-
-
-                    <a href="/recuperar_senha_logado_part1" class="conf-conta"> <i class='bx bx-lock-alt'></i>
- Esqueceu a senha?</a>
-
-                    <a href="" class="conf-conta"><i class='bx bx-trash'></i>
- Excluir conta</a>
-
-
-        
-                   
-
-                </div>
-            </div>
-        </div>
-
-        <!-- MODAL PARA ALTERAR SENHA -->
-        <div class="modal fade" id="alterarSenhaModal" tabindex="-1" aria-labelledby="alterarSenhaModalLabel" aria-hidden="true">
+        <!-- MODAL EXCLUIR CONTA -->
+        <div class="modal fade" id="excluirContaModal" tabindex="-1" aria-labelledby="excluirContaModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="alterarSenhaModalLabel">
-                            <i class='bx bx-lock-alt' style="margin-right: 8px;"></i> Alterar Senha
+                        <h5 class="modal-title" id="excluirContaModalLabel">
+                            <i class='bx bx-trash' style="margin-right: 8px;"></i> Excluir Conta
                         </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="formAlterarSenha">
-                            <div class="mb-3">
-                                <label for="senhaAtual" class="form-label">Senha Atual</label>
-                                <input type="password" class="form-control" id="senhaAtual" required >
+                        <form id="formExcluirConta" method="POST" action="/excluir_conta">
+                            <div class="mb-3 password-container">
+                                <label for="senhaExcluir" class="form-label">Digite sua senha</label>
+                                <div class="input-with-icon">
+                                    <input type="password" class="form-control" id="senhaExcluir" name="senha" required minlength="6" maxlength="12">
+                                    <i class='bx bx-show eye-icon' id="toggleSenhaExcluir"></i>
+                                </div>
                             </div>
                             <div class="mb-3">
-                                <label for="novaSenha" class="form-label">Nova Senha</label>
-                                <input type="password" class="form-control" id="novaSenha" required >
-                                <div class="form-text">Mínimo de 6 caracteres</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmarSenha" class="form-label">Confirmar Nova Senha</label>
-                                <input type="password" class="form-control" id="confirmarSenha" required >
+                                <label for="confirmarSenhaExcluir" class="form-label">Confirme sua senha</label>
+                                <input type="password" class="form-control" id="confirmarSenhaExcluir" required minlength="6" maxlength="12">
                             </div>
                         </form>
                     </div>
@@ -546,8 +654,8 @@
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             <i class='bx bx-x'></i> Cancelar
                         </button>
-                        <button type="button" class="btn btn-primary" id="btnSalvarSenha">
-                            <i class='bx bx-save'></i> Salvar Alterações
+                        <button type="submit" class="btn btn-danger" form="formExcluirConta" id="btnConfirmarExclusao">
+                            <i class='bx bx-trash'></i> Excluir Conta
                         </button>
                     </div>
                 </div>
@@ -560,12 +668,25 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Scripts -->
+    <!-- CONTAR MENSAGENS -->
     <script src="../static/js/geral/contador_novas_mensagens.js"></script>
+
+    <!-- CONTAS NOTIFICACOES -->
     <script src="../static/js/geral/contador_novas_notificacoes.js"></script>
+
+    <!-- CONF PERFIL PRIVADO/PUBLICO -->
     <script src="../static/js/configuracao/visibilidade_perfil.js"></script>
+
+    <!-- CONF MODAL COMENTARIOS -->
     <script src="../static/js/configuracao/comentarios_on_of.js"></script>
+
+    <!-- CONF MODAL SEGUIDORES/SEGUINDO -->
     <script src="../static/js/configuracao/visibilidade_modal_seguidores.js"></script>
+
+    <!-- PARA ALTERAR TEMA -->
     <script src="../static/js/configuracao/tema.js"></script>
+
+    <!-- CONF USER -->
     <script>
         window.URL_CONFIG = {
             pesquisar_usuarios: "{{ url_for('configuracao.pesquisar_usuarios') }}",
@@ -575,14 +696,48 @@
             alterar_senha: "{{ url_for('configuracao.alterar_senha') }}"
         }
     </script>
+
+    <!-- PARA BLOQUEAR USUARIO -->
     <script src="../static/js/configuracao/bloqueados.js"></script>
+
+    <!-- PARA A CONF MODAL CURTIDA -->
     <script src="../static/js/configuracao/modal_curtida_publica_privada.js"></script>
+
+    <!-- PARA ATIVAR SOM DE NOTIFICACAO CHAT -->
     <script src="../static/js/configuracao/audio_mensagens.js"></script>
+
+    <!-- DEIXAR ON/OFF OU AUSENTE -->
     <script src="../static/js/configuracao/alterar_status_on-off.js"></script>
+
+    <!-- DEIXAR ON/OFF -->
     <script src="../static/js/status_on_off.js"></script>
+
+    <!-- PARA SAIR DA CONTA -->
     <script src="../static/js/sweealert2/log_out.js"></script>
+
+    <!-- MENU LATERAL ESQUERDO MOBILE -->
     <script src="../static/js/geral/menu_toggle.js"></script>
+
+    <!-- PARA ALTERAR SENHA -->
     <script src="../static/js/configuracao/alterar_senha.js"></script>
+
+    <!-- FORMATAR HASHTAG -->
     <script src="../static/js/geral/hashtag.js"></script>
+
+    <!-- NOTIFICACAO DO NAVEGADOR -->
+    <script src="../static/js/notificacao/notificacao.js"></script>
+
+    <!-- PARA CHECAR SE A NOTIFICACAO PUSH ESTA ATIVADO -->
+    <script src="../static/js/notificacao/check.js"></script>
+
+    <!-- CARREGAMENTO DA PAGINA -->
+    <script src="../static/js/carregamento/loading.js"></script>
+
+    <!-- PARA APAGAR CONTA -->
+    <script src="../static/js/configuracao/excluir_conta.js"></script>
+
+    <!-- PARA NAO DEIXAR DOIS DISPOSTIVOS CONECTADOS -->
+    <script src="../static/js/geral/checar_sessao.js"></script>
+
 </body>
 </html>

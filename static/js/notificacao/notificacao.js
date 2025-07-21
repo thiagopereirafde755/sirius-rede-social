@@ -1,71 +1,84 @@
-// Garante exibição de cada notificação push apenas uma vez por usuário (enquanto não marcar como lida)
-let ultimaNotificacaoId = localStorage.getItem('ultimaNotificacaoId') || null;
+let notificacoesExibidas = JSON.parse(localStorage.getItem('notificacoesExibidas') || '[]');
 
-// Função para montar a mensagem igual ao template do backend
+let idsProcessados = new Set();
+
 function montaMensagemNotificacao(item) {
     if (!item) return null;
+
     let username = item.origem_username || 'Usuário';
-    let msg = '';
-    if (item.tipo === 'curtida') {
-        msg = `${username} curtiu seu post.`;
-    } else if (item.tipo === 'comentario') {
-        msg = `${username} comentou no seu post.`;
-    } else if (item.tipo === 'resposta') {
-        msg = `${username} respondeu seu comentário.`;
-    } else if (item.tipo === 'seguidor') {
-        msg = `${username} começou a te seguir.`;
-    } else if (item.tipo === 'mencao') {
-        msg = item.comentario_id ? `${username} mencionou você em um comentário.` : `${username} mencionou você em um post.`;
-    } else if (item.tipo === 'aceite_pedido') {
-        msg = `${username} aceitou seu pedido para seguir.`;
-    } else if (item.tipo === 'pedido_seguir') {
-        msg = `${username} pediu para te seguir.`;
+    switch (item.tipo) {
+        case 'curtida':
+            return `${username} curtiu seu post.`;
+        case 'republicado':
+            return `${username} republicou seu post.`;
+        case 'comentario':
+            return `${username} comentou no seu post.`;
+        case 'resposta':
+            return `${username} respondeu seu comentário.`;
+        case 'seguidor':
+            return `${username} começou a te seguir.`;
+        case 'mencao':
+            return item.comentario_id
+                ? `${username} mencionou você em um comentário.`
+                : `${username} mencionou você em um post.`;
+        case 'aceite_pedido':
+            return `${username} aceitou seu pedido para seguir.`;
+        case 'pedido_seguir':
+            return `${username} pediu para te seguir.`;
+        default:
+            return null;
     }
-    return msg;
 }
 
-// Função para exibir a notificação push
 function exibirNotificacao(item) {
-    if (!item) return;
-    if (String(item.id) === String(ultimaNotificacaoId)) return; // Já exibiu essa notificação
+    if (!item || idsProcessados.has(item.id) || notificacoesExibidas.includes(item.id)) return;
 
-    ultimaNotificacaoId = item.id;
-    localStorage.setItem('ultimaNotificacaoId', item.id);
+    idsProcessados.add(item.id);
+    notificacoesExibidas.push(item.id);
+    localStorage.setItem('notificacoesExibidas', JSON.stringify(notificacoesExibidas));
 
     let mensagem = montaMensagemNotificacao(item);
-    let url = '/notificacoes'; // link padrão
+    if (!mensagem) return;
+
+    let url = '/notificacoes';
     if (item.post_id) {
         url = `/post/${item.post_id}`;
         if (item.comentario_id) url += `?comentario_id=${item.comentario_id}`;
     }
+
     let icon = item.origem_foto || '/static/img/icone/user.png';
 
-    if (Notification.permission === 'granted') {
+    if (Notification.permission === 'granted' && notificacoesAtivadas) {
         let notification = new Notification('Nova notificação', {
             body: mensagem,
             icon: icon
         });
-        notification.onclick = function () {
-            window.open(url, '_blank');
-        }
+
+        notification.onclick = () => window.open(url, '_blank');
     }
 }
 
-// Função periódica para buscar novas notificações
 function checarNovasNotificacoes() {
     fetch('/api/notificacoes_ultimas')
         .then(res => res.json())
         .then(data => {
-            if (data.success && data.notificacao) {
-                exibirNotificacao(data.notificacao);
+            if (data.success) {
+                let novas = Array.isArray(data.notificacao)
+                    ? data.notificacao
+                    : [data.notificacao];
+
+                novas.forEach(notif => exibirNotificacao(notif));
             }
         });
 }
 
-if (window.Notification) {
+if ('Notification' in window) {
     if (Notification.permission !== 'granted') {
         Notification.requestPermission();
     }
-    // Checa a cada 2 segundos (ajuste se quiser menos frequente)
-    setInterval(checarNovasNotificacoes, 2000);
+
+    setInterval(() => {
+        idsProcessados.clear(); 
+        checarNovasNotificacoes();
+    }, 2000);
 }

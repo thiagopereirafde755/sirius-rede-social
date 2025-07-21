@@ -1,12 +1,12 @@
-import os
-from flask import Blueprint, render_template, redirect, url_for, session, request, flash
-from werkzeug.utils import secure_filename
+from flask import Blueprint, url_for, session, request
 from app.conexao import criar_conexao
 from flask import jsonify
-from datetime import datetime
 
 enviar_post_chat_bp = Blueprint('eviarpostchat', __name__)
 
+# =============================================================
+#  PEGA OS AMIGOS
+# =============================================================
 @enviar_post_chat_bp.route('/get_usuarios_mutuos')
 def get_usuarios_mutuos():
     if 'usuario_id' not in session:
@@ -19,7 +19,7 @@ def get_usuarios_mutuos():
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Busca usuários que o usuário atual segue E que também seguem o usuário atual
+
                 cursor.execute("""
                     SELECT u.id, u.username, u.fotos_perfil
                     FROM users u
@@ -33,24 +33,30 @@ def get_usuarios_mutuos():
                     )
                     ORDER BY u.username
                 """, (usuario_id, usuario_id, usuario_id, usuario_id))
-                
+
                 usuarios = cursor.fetchall()
-                
-                # Formatar as URLs das fotos de perfil
+
                 for usuario in usuarios:
                     if usuario['fotos_perfil']:
-                        usuario['foto_perfil'] = url_for('static', filename=usuario['fotos_perfil'])
-                
+                        if usuario['fotos_perfil'].startswith('http'):
+                            usuario['foto_perfil'] = usuario['fotos_perfil']
+                        else:
+                            usuario['foto_perfil'] = url_for('static', filename=usuario['fotos_perfil'])
+                    else:
+                        usuario['foto_perfil'] = None  # pode substituir por uma URL default
+
                 return jsonify({
                     'success': True,
                     'usuarios': usuarios
                 })
-        
+
         return jsonify({'success': False, 'message': 'Erro na conexão com o banco de dados'})
-    
+
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
-
+# =============================================================
+#  ENVIAR O POST AO CHAT
+# =============================================================
 @enviar_post_chat_bp.route('/enviar_post_para_chat', methods=['POST'])
 def enviar_post_para_chat():
     if 'usuario_id' not in session:
@@ -64,7 +70,8 @@ def enviar_post_para_chat():
         conexao = criar_conexao()
         if conexao:
             with conexao.cursor(dictionary=True) as cursor:
-                # Verificar se o post existe e pertence a um usuário visível
+
+                # VERIFICA SE O POST EXISTE
                 cursor.execute("""
                     SELECT p.id, p.users_id
                     FROM posts p
@@ -81,7 +88,7 @@ def enviar_post_para_chat():
                 if not post:
                     return jsonify({'success': False, 'message': 'Post não encontrado ou acesso negado'})
 
-                # Verificar se o destinatário pode ver o post
+                # VERIFICA SE O DESTINATARIO PODE VER O POST
                 cursor.execute("""
                     SELECT 1 FROM users WHERE id = %s AND (
                         perfil_publico = 1
@@ -96,7 +103,7 @@ def enviar_post_para_chat():
                 if not cursor.fetchone():
                     return jsonify({'success': False, 'message': 'O destinatário não pode ver este post'})
 
-                # Inserir mensagem no chat com referência ao post
+                # INSERI A MSG NO CHAT 
                 mensagem = "Confira este post"
                 cursor.execute("""
                     INSERT INTO mensagens 

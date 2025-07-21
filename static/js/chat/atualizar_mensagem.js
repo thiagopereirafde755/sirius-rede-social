@@ -70,7 +70,7 @@ function openImageModal(src, alt) {
     });
 }
 
-// FUNÇÃO PARA VERIFICA SE O USUARIO ESTA PERTO DO FINAL DO CHAT
+// FUNÇÃO PARA VERIFICAR SE O USUÁRIO ESTÁ PERTO DO FINAL DO CHAT
 function isNearBottom(container, threshold = 100) {
     if (!container) return true;
     const scrollPosition = container.scrollTop + container.clientHeight;
@@ -137,8 +137,7 @@ function createMediaCarousel(images, videos) {
                 ${slides}
             </div>
             <div class="carousel-controls">
-                <span class="carousel-prev">&#10094;</span>
-                <span class="carousel-next">&#10095;</span>
+                
             </div>
             <div class="carousel-indicators">
                 ${indicators}
@@ -148,175 +147,210 @@ function createMediaCarousel(images, videos) {
 }
 
 // FUNÇÃO PARA ATUALIZAR AS MENSAGENS
-function atualizarMensagens(forceScroll = false, isUserMessage = false) {
+function atualizarMensagens(forceScroll = false, isUserMessage = false, isExclusao = false) {
     if (window.isVideoPlaying || window.isUserScrollingUp) return;
+    
     const destinatarioId = document.querySelector('input[name="destinatario_id"]')?.value;
     if (!destinatarioId) return;
+    
     const mensagensContainer = document.getElementById('mensagens-container');
     if (!mensagensContainer) return;
+    
     const wasNearBottom = isNearBottom(mensagensContainer, 400);
     const scrollPositionBeforeUpdate = mensagensContainer.scrollTop;
     const scrollHeightBeforeUpdate = mensagensContainer.scrollHeight;
+    
     fetch(`/atualizar_mensagens/${destinatarioId}`)
         .then(response => {
             if (!response.ok) throw new Error('Erro na requisição');
             return response.json();
         })
         .then(data => {
-            if (data.success && data.mensagens.length > 0) {
-                if (data.mensagens.length === lastMessageCount && !forceScroll) return;
+            if (data.success) {
+                if (data.mensagens.length === lastMessageCount && !forceScroll && !isExclusao) return;
+                
                 mensagensContainer.innerHTML = '';
                 let ultimaData = '';
+                
+                if (data.mensagens.length === 0) {
+                    mensagensContainer.innerHTML = `
+                    <div class="selecione-contato">
+                        <p><i class='bx bxs-chat'></i></p>
+                        <p>Inicie uma conversa!</p>
+                    </div>
+                `;
+                return;
+                } else {
+                    data.mensagens.forEach(mensagem => {
+                        if (mensagem.data_dia !== ultimaData) {
+                            const dataDiv = document.createElement('div');
+                            dataDiv.classList.add('mensagem-data');
+                            dataDiv.textContent = mensagem.data_dia;
+                            mensagensContainer.appendChild(dataDiv);
+                            ultimaData = mensagem.data_dia;
+                        }
+                        
+                        const novaMensagem = document.createElement('div');
+                        novaMensagem.classList.add('message', mensagem.id_remetente == window.usuarioId ? 'sent' : 'received');
+                        novaMensagem.setAttribute('data-message-id', mensagem.id);
+                        
+                        let conteudoMensagem = `
+                            <div class="message-header">
+                                <div class="username">${mensagem.username}</div>
+                                <div class="message-options">
+                                    <button class="options-btn" onclick="toggleDropdown(this)">&#x22EE;</button>
+                                    <div class="dropdown-menu">
+                                        <button class="reply-btn" data-message-id="${mensagem.id}"><i class='bx bx-reply'></i> Responder</button>`;
+                        
+                        if (mensagem.id_remetente == window.usuarioId) {
+                            conteudoMensagem += `<button class="delete-message" data-message-id="${mensagem.id}"><i class='bx bx-trash'></i> Apagar</button>`;
+                        }
+                        
+                        if (mensagem.id_remetente != window.usuarioId) {
+                            conteudoMensagem += `<button class="btn-denunciar-mensagem" data-mensagem-id="${mensagem.id}"><i class='bx bx-error'></i> Denunciar</button>`;
+                        }
+                        
+                        conteudoMensagem += `</div></div></div>`;
+                        
+                        if (mensagem.post_id) {
+                            if (mensagem.post_disponivel) {
+                                conteudoMensagem += `
+                                
+                                    <div class="shared-post">
+                                    <a href="/post/${mensagem.post_id}" target="_blank" style="text-decoration: none;">
+                                        <div class="shared-post-content">
+                                            <div class="post-author">Post de ${mensagem.post_autor_username || 'usuário'}</div>`;
+                                
+                                let images = [];
+                                let videos = [];
+                                if (mensagem.post_imagem) images.push(`${mensagem.post_imagem}`);
+                                if (mensagem.post_video) videos.push(`${mensagem.post_video}`);
+                                
+                                if (mensagem.post_conteudo) {
+                                    conteudoMensagem += `<div class="post-text">${mensagem.post_conteudo}</div>`;
+                                }
+                                
+                                if (images.length + videos.length > 1) {
+                                    conteudoMensagem += createMediaCarousel(images, videos);
+                                } else {
+                                    if (images.length === 1) {
+                                        conteudoMensagem += `<a href="/post/${mensagem.post_id}" target="_blank"><img src="${images[0]}" class="post-image"></a>`;
+                                    }
+                                    if (videos.length === 1) {
+                                        conteudoMensagem += `
+                                        </a>
+                                            <a href="/post/${mensagem.post_id}" target="_blank">
+                                                <video controls class="post-video">
+                                                    <source src="${videos[0]}" type="video/mp4">
+                                                </video>
+                                            </a>`;
+                                    }
+                                }
+                                
+                                conteudoMensagem += `
+                                    <div style="text-align:center;margin-top:8px;">
+                                        <a href="/post/${mensagem.post_id}" target="_blank" class="ver-post-btn">
+                                            <i class="fa fa-external-link-alt"></i> Ver post
+                                        </a>
+                                    </div>
+                                </div></div>`;
+                            } else {
+                                conteudoMensagem += `
+                                    <div class="shared-post unavailable">
+                                        <div class="shared-post-content">
+                                            <div class="post-unavailable">
+                                                <i class='bx bxs-lock'></i>
+                                                <span>Post indisponível</span>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                            }
+                        }
+                        
+                        if (mensagem.id_mensagem_respondida) {
+                            let quotedContent = '<div class="quoted-content">';
+                            if (mensagem.username_respondido) {
+                                quotedContent += `<div class="quoted-username">${mensagem.username_respondido}</div>`;
+                            }
+                            if (mensagem.midia_respondida) {
+                                const extensao = mensagem.midia_respondida.split('.').pop().toLowerCase();
+                                if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'webp', 'svg', 'heic', 'heif', 'jfif','ico','raw','psd','exr','dng'].includes(extensao)) {
+                                    quotedContent += `<img src="${mensagem.midia_respondida}" class="quoted-photo">`;
+                                } else if (['mp4', 'mov', 'avi', 'mkv', 'wmv', 'flv', 'webm', 'mpeg', '3gp', 'ogg', 'm4v','mts','m2ts','vob','mpg','divx','asf','3g2','f4v'].includes(extensao)) {
+                                    quotedContent += `
+                                        <video controls class="quoted-video">
+                                            <source src="${mensagem.midia_respondida}" type="video/mp4">
+                                            Seu navegador não suporta o vídeo.
+                                        </video>
+                                    `;
+                                }
+                            }
+                            if (mensagem.mensagem_respondida) {
+                                quotedContent += `<div class="quoted-text">${mensagem.mensagem_respondida}</div>`;
+                            }
+                            quotedContent += '</div>';
+                            
+                            conteudoMensagem += `
+                                <div class="quoted-message" data-quoted-id="${mensagem.id_mensagem_respondida}" onclick="scrollToQuotedMessage(this)">
+                                    ${quotedContent}
+                                </div>
+                            `;
+                        }
+                        
+                        if (mensagem.caminho_arquivo) {
+                            const extensao = mensagem.caminho_arquivo.split('.').pop().toLowerCase();
+                            if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'webp', 'svg', 'heic', 'heif', 'jfif','ico','raw','psd','exr','dng'].includes(extensao)) {
+                                conteudoMensagem += `
+                                    <div class="media">
+                                        <img src="${mensagem.caminho_arquivo}" 
+                                             class="mensagem-midia" 
+                                             alt="Imagem enviada por ${mensagem.username}">
+                                    </div>`;
+                            } else if (['mp4', 'mov', 'avi', 'mkv', 'wmv', 'flv', 'webm', 'mpeg', '3gp', 'ogg', 'm4v','mts','m2ts','vob','mpg','divx','asf','3g2','f4v'].includes(extensao)) {
+                                conteudoMensagem += `
+                                    <div class="media">
+                                        <video src="${mensagem.caminho_arquivo}" controls class="mensagem-midia"></video>
+                                    </div>`;
+                            }
+                        }
+                        
+                        if (mensagem.mensagem) {
+                            conteudoMensagem += `<div class="content">${mensagem.mensagem}</div>`;
+                        }
+
+                        let timestampContent = `<div class="timestamp-status">`;
+                        timestampContent += `<span class="timestamp-text">${mensagem.data_envio}</span>`;
+                        if (mensagem.id_remetente == window.usuarioId) {
+                            if (mensagem.data_visualizacao) {
+                                timestampContent += `<span class="status-visto" title="Visualizada"><i class='bx bx-check-double'></i></span>`;
+                            } else {
+                                timestampContent += `<span class="status-nao-visto" title="Entregue"><i class='bx bx-check'></i></span>`;
+                            }
+                        }
+                        timestampContent += `</div>`;
+                        
+                        conteudoMensagem += timestampContent;
+                        novaMensagem.innerHTML = conteudoMensagem;
+                        mensagensContainer.appendChild(novaMensagem);
+                    });
+                }
+                
                 setTimeout(processMessageLinks, 0);
                 setTimeout(initImageModals, 0);
-                data.mensagens.forEach(mensagem => {
-                    if (mensagem.data_dia !== ultimaData) {
-                        const dataDiv = document.createElement('div');
-                        dataDiv.classList.add('mensagem-data');
-                        dataDiv.textContent = mensagem.data_dia;
-                        mensagensContainer.appendChild(dataDiv);
-                        ultimaData = mensagem.data_dia;
-                    }
-                    const novaMensagem = document.createElement('div');
-                    novaMensagem.classList.add('message', mensagem.id_remetente == window.usuarioId ? 'sent' : 'received');
-                    novaMensagem.setAttribute('data-message-id', mensagem.id);
-                    let conteudoMensagem = `
-                        <div class="message-header">
-                            <div class="username">${mensagem.username}</div>
-                            <div class="message-options">
-                                <button class="options-btn" onclick="toggleDropdown(this)">&#x22EE;</button>
-                                <div class="dropdown-menu">
-                                    <button class="reply-btn" data-message-id="${mensagem.id}"> <i class='bx bx-reply'></i> Responder</button>`;
-                    if (mensagem.id_remetente == window.usuarioId) {
-                        conteudoMensagem += `<button class="delete-message" data-message-id="${mensagem.id}"> <i class='bx bx-trash'></i> Apagar</button>`;
-                    }
-                    conteudoMensagem += `</div></div></div>`;
-                    // BLOCO DE MENSAGEM DE POST
-                    if (mensagem.post_id) {
-                        if (mensagem.post_disponivel) {
-                            conteudoMensagem += `
-                                <div class="shared-post">
-                                    <div class="shared-post-content">
-                                        <div class="post-author">Post de ${mensagem.post_autor_username || 'usuário'}</div>`;
-                            let images = [];
-                            let videos = [];
-                            if (mensagem.post_imagem) images.push(`../static/${mensagem.post_imagem}`);
-                            if (mensagem.post_video) videos.push(`../static/${mensagem.post_video}`);
-                            if (mensagem.post_conteudo) {
-                                conteudoMensagem += `<div class="post-text">${mensagem.post_conteudo}</div>`;
-                            }
-                            if (images.length + videos.length > 1) {
-                                conteudoMensagem += createMediaCarousel(images, videos);
-                            } else {
-                                if (images.length === 1) {
-                                    conteudoMensagem += `<a href="/post/${mensagem.post_id}" target="_blank"><img src="${images[0]}" class="post-image"></a>`;
-                                }
-                                if (videos.length === 1) {
-                                    conteudoMensagem += `
-                                        <a href="/post/${mensagem.post_id}" target="_blank">
-                                        <video controls class="post-video">
-                                            <source src="${videos[0]}" type="video/mp4">
-                                        </video>
-                                        </a>`;
-                                }
-                            }
-                            conteudoMensagem += `
-                                <div style="text-align:center;margin-top:8px;">
-                                    <a href="/post/${mensagem.post_id}" target="_blank" class="ver-post-btn" style="display:inline-block;padding:2px 18px 2px 10px;font-size:15px;border-radius:18px;background:#222;color:#fff;text-decoration:none;">
-                                        <i class="fa fa-external-link-alt"></i> Ver post
-                                    </a>
-                                </div>
-                            </div></div>`;
-                        } else {
-                            conteudoMensagem += `
-                                <div class="shared-post unavailable">
-                                    <div class="shared-post-content">
-                                        <div class="post-unavailable">
-                                            <i class='bx bxs-lock'></i>
-                                            <span>Post indisponível</span>
-                                        </div>
-                                    </div>
-                                </div>`;
-                        }
-                    }
-                    // BLOCO DE MENSAGEM RESPONDIDA
-                    if (mensagem.id_mensagem_respondida) {
-                        let quotedContent = '<div class="quoted-content">';
-                        if (mensagem.username_respondido) {
-                            quotedContent += `<div class="quoted-username">${mensagem.username_respondido}</div>`;
-                        }
-                        if (mensagem.midia_respondida) {
-                            const extensao = mensagem.midia_respondida.split('.').pop().toLowerCase();
-                            if (['png', 'jpg', 'jpeg', 'gif'].includes(extensao)) {
-                                quotedContent += `<img src="../static/${mensagem.midia_respondida}" class="quoted-photo">`;
-                            } else if (['mp4', 'mov', 'avi'].includes(extensao)) {
-                                quotedContent += `
-                                    <video controls class="quoted-video">
-                                        <source src="../static/${mensagem.midia_respondida}" type="video/mp4">
-                                        Seu navegador não suporta o vídeo.
-                                    </video>
-                                `;
-                            }
-                        }
-                        if (mensagem.mensagem_respondida) {
-                            quotedContent += `<div class="quoted-text">${mensagem.mensagem_respondida}</div>`;
-                        }
-                        quotedContent += '</div>';
-                        conteudoMensagem += `
-                            <div class="quoted-message" data-quoted-id="${mensagem.id_mensagem_respondida}" onclick="scrollToQuotedMessage(this)">
-                                ${quotedContent}
-                            </div>
-                        `;
-                    }
-                    // BLOCO DE FOTO E VIDEO
-                    if (mensagem.caminho_arquivo) {
-                        const extensao = mensagem.caminho_arquivo.split('.').pop().toLowerCase();
-                        if (['png', 'jpg', 'jpeg', 'gif'].includes(extensao)) {
-                            conteudoMensagem += `
-                                <div class="media">
-                                    <img src="../static/${mensagem.caminho_arquivo}" 
-                                         class="mensagem-midia" 
-                                         alt="Imagem enviada por ${mensagem.username}">
-                                </div>`;
-                        } else if (['mp4', 'mov', 'avi'].includes(extensao)) {
-                            conteudoMensagem += `<div class="media"><video src="../static/${mensagem.caminho_arquivo}" controls class="mensagem-midia"></video></div>`;
-                        }
-                    }
-                    // BLOCO DE CONTEUDO DA MENSAGEM
-                    if (mensagem.mensagem) {
-                        conteudoMensagem += `<div class="content">${mensagem.mensagem}</div>`;
-                    }
-                    // HORA E VISTO DA MENSAGEM
-                    let timestampContent = `<div class="timestamp-status">`;
-                    timestampContent += `<span class="timestamp-text">${mensagem.data_envio}</span>`;
-                    if (mensagem.id_remetente == window.usuarioId) {
-                        if (mensagem.data_visualizacao) {
-                            timestampContent += `<span class="status-visto" title="Visualizada"><i class='bx bx-check-double'></i></span>`;
-                        } else {
-                            timestampContent += `<span class="status-nao-visto" title="Entregue"><i class='bx bx-check' ></i></span>`;
-                        }
-                    }
-                    timestampContent += `</div>`;
-                    conteudoMensagem += timestampContent;
-                    novaMensagem.innerHTML = conteudoMensagem;
-                    mensagensContainer.appendChild(novaMensagem);
-                });
-                if (forceScroll || isUserMessage) {
-                    setTimeout(() => scrollToBottom(), 50);
-                } else if (wasNearBottom) {
+                
+                if (isExclusao) {
+                    const newScrollHeight = mensagensContainer.scrollHeight;
+                    const heightDifference = newScrollHeight - scrollHeightBeforeUpdate;
+                    mensagensContainer.scrollTop = scrollPositionBeforeUpdate + heightDifference;
+                } else if (forceScroll || isUserMessage || wasNearBottom) {
                     setTimeout(() => scrollToBottom(), 50);
                 } else {
-                    const lastMessage = data.mensagens[data.mensagens.length - 1];
-                    const isFromCurrentUser = lastMessage.id_remetente == window.usuarioId;
-                    if (isFromCurrentUser) {
-                        setTimeout(() => scrollToBottom(), 50);
-                    } else {
-                        showNewMessagesButton();
-                    }
+                    showNewMessagesButton();
                     const newScrollHeight = mensagensContainer.scrollHeight;
                     const heightDifference = newScrollHeight - scrollHeightBeforeUpdate;
                     mensagensContainer.scrollTop = scrollPositionBeforeUpdate + heightDifference;
                 }
+                
                 lastMessageCount = data.mensagens.length;
             }
         })
@@ -325,7 +359,7 @@ function atualizarMensagens(forceScroll = false, isUserMessage = false) {
         });
 }
 
-// FUNÇÃO PARA VERIFICAR POSIÇÃO DO USUARIO NO CHAT
+// FUNÇÃO PARA VERIFICAR POSIÇÃO DO USUÁRIO NO CHAT
 function setupScrollPositionChecker() {
     backToBottomBtn = document.getElementById('back-to-bottom-btn');
     const mensagensContainer = document.getElementById('mensagens-container');

@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
         charCount.textContent = `${len}/${maxLength}`;
         charCount.style.color = (len >= maxLength) ? 'red' : '';
         
-        // Modificação principal: Remove a verificação "len === 0" para permitir envio sem texto
         sendButton.disabled = len > maxLength; // Apenas desabilita se exceder o limite
         
         if (len > maxLength) {
@@ -25,6 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(function () {
             textarea.value = '';
             updateCharCount();
-        }, 1000);
+        }, 100);
     });
 });

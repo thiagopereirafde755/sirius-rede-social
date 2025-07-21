@@ -1,3 +1,16 @@
+
+function formatarNumeroCurto(numero) {
+  if (numero >= 1_000_000_000) {
+    return (numero / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+  } else if (numero >= 1_000_000) {
+    return (numero / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+  } else if (numero >= 1_000) {
+    return (numero / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+  } else {
+    return numero.toString();
+  }
+}
+
 // Helper para encontrar a palavra depois de #
 function getHashtagQuery(textarea) {
     const caret = textarea.selectionStart;
@@ -24,7 +37,7 @@ textarea.addEventListener('keyup', function () {
                 if (data.length > 0) {
                     let html = '';
                     data.forEach(item => {
-                        html += `<div class="hashtag-suggestion-item" data-hashtag="${item.nome}">${item.nome} <span class="hashtag-count">${item.total}</span></div>`;
+                        html += `<div class="hashtag-suggestion-item" data-hashtag="${item.nome}">${item.nome} <span class="hashtag-count">${formatarNumeroCurto(item.total)}</span></div>`;
                     });
                     suggestionsBox.innerHTML = html;
                     suggestionsBox.style.display = 'block';
@@ -95,8 +108,16 @@ function contarHashtags(text) {
 
 // Validações durante a digitação
 textarea.addEventListener('input', function (e) {
-    const texto = textarea.value;
+    let texto = textarea.value;
     const caret = textarea.selectionStart;
+
+    // Remove ocorrências de ## para apenas #
+    if (texto.includes('##')) {
+        const novaPos = caret - (texto.length - texto.replace(/##/g, '#').length);
+        texto = texto.replace(/##/g, '#');
+        textarea.value = texto;
+        textarea.setSelectionRange(novaPos, novaPos);
+    }
 
     // 1. Limite de hashtags
     if (contarHashtags(texto) > 3) {
@@ -127,14 +148,14 @@ textarea.addEventListener('input', function (e) {
     }
 
     // 3. Limite total de 280 caracteres
-    if (query && texto.length > 280) {
+    if (texto.length > 280) {
         Swal.fire({
             icon: 'warning',
             title: 'Limite de caracteres',
-            text: 'Sua hashtag faz a postagem ultrapassar o limite de 280 caracteres.',
+            text: 'Sua postagem ultrapassa o limite de 280 caracteres.',
             confirmButtonColor: '#3085d6'
         });
-        textarea.value = texto.replace(/#\w*$/, ''); // Remove hashtag parcial
+        textarea.value = texto.substring(0, 280);
         atualizarContador();
         return;
     }

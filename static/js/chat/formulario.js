@@ -8,40 +8,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const sendButton = document.getElementById('send-button');
     const previewContainer = document.getElementById('preview-container');
 
-    // Função para verificar se há conteúdo para enviar
-// formulario.js - Modifique a função hasContentToSend()
 function hasContentToSend() {
     return (
-        (messageInput && messageInput.value.trim() !== '') ||  // Tem texto
-        (photoInput && photoInput.files.length > 0) ||        // Tem foto selecionada
-        (videoInput && videoInput.files.length > 0) ||        // Tem vídeo selecionado
-        (previewContainer && previewContainer.querySelector('.preview-item') !== null)  // Tem preview visível
+        (messageInput && messageInput.value.trim() !== '') ||  
+        (photoInput && photoInput.files.length > 0) ||        
+        (videoInput && videoInput.files.length > 0) ||       
+        (previewContainer && previewContainer.querySelector('.preview-item') !== null)  
     );
 }
-    // Atualiza a visibilidade do botão de enviar
     function updateSendButton() {
         sendButton.style.display = hasContentToSend() ? 'flex' : 'none';
     }
 
-    // Event listeners para todos os elementos que podem conter conteúdo
     messageInput.addEventListener('input', updateSendButton);
     photoInput.addEventListener('change', updateSendButton);
     videoInput.addEventListener('change', updateSendButton);
 
-    // Observar mudanças no container de preview (para quando mídias são adicionadas/removidas)
     const observer = new MutationObserver(updateSendButton);
     observer.observe(previewContainer, {
         childList: true,
         subtree: true
     });
 
-    // Ajuste automático da altura do textarea
     messageInput.addEventListener('input', function() {
         this.style.height = 'auto';
         this.style.height = Math.min(this.scrollHeight, 200) + 'px';
     });
 
-    // Envio com Enter (exceto Shift+Enter)
     messageInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && !e.shiftKey && hasContentToSend()) {
             e.preventDefault();
@@ -49,12 +42,25 @@ function hasContentToSend() {
         }
     });
 
-    // Submissão do formulário
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
         if (form.dataset.isSubmitting === 'true') return;
         form.dataset.isSubmitting = 'true';
+
+  const hasPhoto = photoInput.files.length > 0;
+const hasVideo = videoInput.files.length > 0;
+
+if (hasPhoto || hasVideo) {
+    Swal.fire({
+        title: 'Enviando mídia...',
+        text: 'Aguarde enquanto sua midia é enviado',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
 
         const formData = new FormData(form);
         
@@ -64,18 +70,20 @@ function hasContentToSend() {
         })
         .then(response => response.json())
         .then(data => {
+            Swal.close();
             if (data.success) {
-                // Limpa os campos após envio
                 messageInput.value = '';
                 photoInput.value = '';
                 videoInput.value = '';
                 previewContainer.innerHTML = '';
                 messageInput.style.height = 'auto';
                 
-                // Atualiza a interface
                 updateSendButton();
+
+                if (typeof window.cancelReply === 'function') {
+                    window.cancelReply();
+                }
                 
-                // Se houver função para atualizar mensagens
                 if (typeof window.atualizarMensagens === 'function') {
                     window.atualizarMensagens(true, true);
                 }
@@ -86,6 +94,5 @@ function hasContentToSend() {
         });
     });
 
-    // Verificação inicial
     updateSendButton();
 });

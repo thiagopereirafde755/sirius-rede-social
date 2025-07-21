@@ -15,8 +15,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- ESTILO DA PAGINA -->
     <link rel="stylesheet" href="../static/css/style1.css" />
+    <link rel="stylesheet" href="../static/css/loading.css">
 </head>
 <body>
+
+    <!-- TELA DE CARREGAMENTO -->
+    <div id="loadingScreen">
+        <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
+    </div>
 
     <div class="login-container">
         <h1>SIRIUS</h1>
@@ -84,8 +90,43 @@
         </div>
     </div>
 
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Sobre Nós</h3>
+                <p>Sirius é uma plataforma social criada para conectar pessoas e compartilhar momentos especiais. Nossa missão é proporcionar uma experiência segura e agradável para todos os usuários.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a target="_blank" href="/central_ajuda">Central de Ajuda</a></li>
+                    <li><a target="_blank" href="/termos-de-uso">Termos de Uso</a></li>
+                    <li><a target="_blank" href="/politica-de-privacidade">Política de Privacidade</a></li>
+                    <li><a target="_blank"  href="/central_ajuda/suporte">Suporte</a></li>
+                    <li><a target="_blank" href="/sobre_nos">Sobre nós</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Política de Privacidade</h3>
+                <p>Respeitamos sua privacidade. Todas as informações coletadas são usadas para melhorar sua experiência e não são compartilhadas com terceiros sem seu consentimento.</p>
+                <a target="_blank" href="/politica-de-privacidade" class="privacy-link">Leia nossa política completa</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sirius Social Network. Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a target="_blank" href="/cookies">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+
     <!-- SCRIPT  -->
     <script src="../static/js/validacao_cadastro.js"></script>
+    <script src="../static/js/carregamento/loading.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suspensão de Conta - Central de Ajuda</title>
+    <!-- ICONES -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/css/central_ajuda.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Conteúdo principal -->
+        <div class="main-content">
+
+            <div class="header">
+                <div class="header-content">
+                    <a href="/central_ajuda" class="back-button">
+                        <i class='bx bx-arrow-back'></i>
+                        Voltar
+                    </a>
+                    <h1>Suspensão de Conta</h1>
+                </div>
+            </div>
+
+            <div class="guide-container">
+                <h2 class="guide-title">Informações sobre suspensão de contas</h2>
+                
+                <div class="danger-box">
+                    <h3><i class='bx bx-error-alt'></i> Importante</h3>
+                    <p>Esta página contém informações sobre contas suspensas. Se sua conta foi suspensa, você receberá um e-mail com os detalhes específicos da sua situação.</p>
+                </div>
+                
+                <div class="suspension-section">
+                    <h3 class="section-title"><i class='bx bx-list-ul'></i> Motivos comuns para suspensão</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Violações que podem levar à suspensão</h3>
+                            <p class="step-description">
+                                Sua conta pode ser suspensa pelos seguintes motivos:
+                            </p>
+                            <ul class="step-list">
+                                <li><strong>Spam:</strong> Envio repetido de mensagens não solicitadas</li>
+                                <li><strong>Conteúdo inapropriado:</strong> Postagem de material ofensivo ou ilegal</li>
+                                <li><strong>Comportamento abusivo:</strong> Assédio ou bullying a outros usuários</li>
+                                <li><strong>Falsidade ideológica:</strong> Uso de identidade falsa ou roubo de identidade</li>
+                                <li><strong>Violação de direitos autorais:</strong> Uso não autorizado de material protegido</li>
+                                <li><strong>Atividades automatizadas:</strong> Uso de bots ou scripts não autorizados</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="suspension-section">
+                    <h3 class="section-title"><i class='bx bx-shield-alt-2'></i> Como evitar suspensão</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Boas práticas na plataforma</h3>
+                            <p class="step-description">
+                                Para manter sua conta em bom standing:
+                            </p>
+                            <ol class="step-list">
+                                <li>Leia e compreenda nossos <a href="/termos-de-uso">Termos de Serviço</a></li>
+                                <li>Não compartilhe conteúdo ofensivo ou ilegal</li>
+                                <li>Respeite todos os usuários da plataforma</li>
+                                <li>Não tente burlar limites ou restrições</li>
+                                <li>Use apenas informações verdadeiras no seu perfil</li>
+                                <li>Denuncie problemas em vez de tomar ações por conta própria</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <h3><i class='bx bx-info-circle'></i> Aviso</h3>
+                        <p>Algumas suspensões ocorrem automaticamente quando o sistema detecta atividades suspeitas. Mesmo que não tenha intenção de violar as regras, certos comportamentos podem levar à suspensão temporária.</p>
+                    </div>
+                </div>
+                
+                <div class="suspension-section">
+                    <h3 class="section-title"><i class='bx bx-time'></i> Tipos de suspensão</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Diferenças entre suspensões</h3>
+                            <p class="step-description">
+                                Existem diferentes níveis de restrição:
+                            </p>
+                            <ul class="step-list">
+                                <li><strong>Suspensão temporária:</strong> 24h a 7 dias (para violações menores)</li>
+                                <li><strong>Suspensão prolongada:</strong> 1 semana a 1 mês (violações graves ou reincidência)</li>
+                                <li><strong>Banimento permanente:</strong> Para violações extremas ou reincidência constante</li>
+                                <li><strong>Limitação de recursos:</strong> Restrição parcial de funcionalidades</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="suspension-section">
+                    <h3 class="section-title"><i class='bx bx-refresh'></i> Recuperação de conta</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Como solicitar a reativação</h3>
+                            <p class="step-description">
+                                Se sua conta foi suspensa:
+                            </p>
+                            <ol class="step-list">
+                                <li>Aguarde o término do período de suspensão (para casos temporários)</li>
+                                <li>Verifique seu e-mail para instruções específicas</li>
+                                <li>Se aplicável, preencha o formulário de recurso</li>
+                                <li>Forneça informações adicionais se solicitado</li>
+                                <li>Acompanhe o status pelo o e-mail da conta</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Processo de recurso</h3>
+                            <p class="step-description">
+                                Para suspensões permanentes ou contestação:
+                            </p>
+                            <ul class="step-list">
+                                <li>Você tem 30 dias para recorrer da decisão</li>
+                                <li>O recurso será analisado por nossa equipe</li>
+                                <li>O prazo médio de resposta é de 5 dias úteis</li>
+                                <li>Decisões finais são comunicadas por e-mail</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="success-box">
+                        <h3><i class='bx bx-check-circle'></i> Dica</h3>
+                        <p>Se estiver recorrendo de uma suspensão, seja claro e forneça todas as informações relevantes que possam ajudar na revisão do seu caso.</p>
+                    </div>
+                </div>
+                
+                <div class="helpful-links">
+                    <h3>Perguntas Frequentes</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="faq-item" data-mensagem="O tempo de análise de um recurso pode levar até 7 dias úteis, dependendo da complexidade do caso. Você será notificado assim que houver uma decisão.">
+                                <i class='bx bx-question-mark'></i>
+                                Quanto tempo leva para analisar meu recurso?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="faq-item" data-mensagem="Sim, você pode criar uma nova conta usando um endereço de e-mail diferente, desde que siga as diretrizes da comunidade para evitar novos banimentos.">
+                                <i class='bx bx-question-mark'></i>
+                                Posso criar uma nova conta se minha conta foi banida?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="faq-item" data-mensagem="Por motivos de segurança e análise interna, não exibimos publicamente o conteúdo que causou a suspensão. Para mais detalhes, entre em contato com o suporte.">
+                                <i class='bx bx-question-mark'></i>
+                                Como saber qual conteúdo específico causou a suspensão?
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="contact-support">
+                    <h3>Precisa de ajuda específica?</h3>
+                    <p>Se você recebeu uma notificação de suspensão e precisa de assistência:</p>
+                    <div class="contact-options">
+                        <a target="_blank" href="https://mail.google.com/mail/?view=cm&fs=1&to=siriusnetworkmedia@gmail.com" class="contact-button">
+                            <i class='bx bx-envelope'></i> Enviar e-mail
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Sobre Nós</h3>
+                <p>Sirius é uma plataforma social criada para conectar pessoas e compartilhar momentos especiais. Nossa missão é proporcionar uma experiência segura e agradável para todos os usuários.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a target="_blank" href="/termos-de-uso">Termos de Uso</a></li>
+                    <li><a target="_blank" href="/politica-de-privacidade">Política de Privacidade</a></li>
+                    <li><a target="_blank"  href="/central_ajuda/suporte">Suporte</a></li>
+                    <li><a target="_blank" href="/sobre_nos">Sobre nós</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Política de Privacidade</h3>
+                <p>Respeitamos sua privacidade. Todas as informações coletadas são usadas para melhorar sua experiência e não são compartilhadas com terceiros sem seu consentimento.</p>
+                <a target="_blank" href="/politica-de-privacidade" class="privacy-link">Leia nossa política completa</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sirius Social Network. Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a target="_blank" href="/cookies">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script src="../static/js/central_ajuda/centra_ajuda_info.js"></script>
+
+</body>
+</html>

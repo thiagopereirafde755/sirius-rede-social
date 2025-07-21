@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function explicarVisualizacoes() {
     Swal.fire({
         title: 'Visualizações',
-        html: 'Vezes que este post foi visto. Para saber mais, consulte a <a href="/central-de-ajuda" target="_blank" style="color: #3b7ddd; text-decoration: underline;">Central de Ajuda</a>.',
+        html: 'Vezes que este post foi visto.',
         icon: 'info',
         confirmButtonText: 'Entendi'
     });

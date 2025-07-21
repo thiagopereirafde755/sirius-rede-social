@@ -1,14 +1,11 @@
-import os
-from flask import Blueprint, render_template, redirect, url_for, session, request, flash, Request
-from werkzeug.utils import secure_filename
+from flask import Blueprint, session, request
 from app.conexao import criar_conexao
-from app.utils import replace_mentions, formatar_data, replace_hashtags
-from flask import jsonify
-from datetime import datetime
-import pickle
 
 visualizacao_bp = Blueprint('vizualizacao', __name__)
 
+# =============================================================
+#  MARCAR POST COMO VISTO
+# =============================================================
 @visualizacao_bp.route('/marcar_visualizacao', methods=['POST'])
 def marcar_visualizacao():
     if 'usuario_id' not in session:

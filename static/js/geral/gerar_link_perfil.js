@@ -9,7 +9,7 @@ $(document).on('click', '.btn-compartilhar-perfil', function(e) {
             text: "Veja esse perfil:",
             url: url,
         }).catch(err => {
-            copiarLink(url); // fallback
+            copiarLink(url); 
         });
     } else {
         copiarLink(url);
