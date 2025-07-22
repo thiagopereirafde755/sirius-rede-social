@@ -2,14 +2,14 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Login administrador - Sirius</title>
     <!-- ICONES -->
     <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png" />
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- ESTILO DA PAGINA -->
-    <link rel="stylesheet" href="../static/css/style1.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}" />
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -40,7 +40,7 @@
     </div>
 
     <!-- SCRIPT -->
-    <script src="../static/js/visualizar_campo_senha.js"></script>
+    <script src="{{ url_for('static', filename='js/visualizar_campo_senha.js') }}"></script>
 
 </body>
 </html>

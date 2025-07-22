@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Excluir Conta - Central de Ajuda</title>
     <!-- ICONES -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- CSS -->
-    <link rel="stylesheet" href="../static/css/central_ajuda.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/central_ajuda.css') }}">
 </head>
 <body>
     <div class="container">
@@ -158,7 +158,7 @@
     </footer>
 
     <!-- SCRIPT -->
-    <script src="../static/js/central_ajuda/centra_ajuda_info.js"></script>
+    <script src="{{ url_for('static', filename='js/central_ajuda/centra_ajuda_info.js') }}"></script>
 
 </body>
 </html>

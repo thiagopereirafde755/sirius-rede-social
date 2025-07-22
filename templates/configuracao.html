@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- TITULO DA PAGINA -->
     <title>Configurações de {{username}}</title>
     <!-- ICONES -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../static/css/sweealert2.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweealert2.css') }}">
     <!-- STYLES -->
-    <link rel="stylesheet" href="../static/css/principal.css">
-    <link rel="stylesheet" href="../static/css/modais.css">
-    <link rel="stylesheet" href="../static/css/layout-perfil.css">
-    <link rel="stylesheet" href="../static/css/configuracao.css">
-    <link rel="stylesheet" href="../static/css/loading.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modais.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-perfil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/configuracao.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loading.css') }}">
     <!-- BIBLIOTECAS -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
@@ -38,7 +38,7 @@
 
     <!-- TELA DE CARREGAMENTO -->
     <div id="loadingScreen">
-        <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
+        <img src="{{ url_for('static', filename='img/logo/logo_sirius.png') }}" alt="Logo Sirius" />
     </div>
 
 
@@ -669,22 +669,22 @@
 
     <!-- Scripts -->
     <!-- CONTAR MENSAGENS -->
-    <script src="../static/js/geral/contador_novas_mensagens.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/contador_novas_mensagens.js') }}"></script>
 
     <!-- CONTAS NOTIFICACOES -->
-    <script src="../static/js/geral/contador_novas_notificacoes.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/contador_novas_notificacoes.js') }}"></script>
 
     <!-- CONF PERFIL PRIVADO/PUBLICO -->
-    <script src="../static/js/configuracao/visibilidade_perfil.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/visibilidade_perfil.js') }}"></script>
 
     <!-- CONF MODAL COMENTARIOS -->
-    <script src="../static/js/configuracao/comentarios_on_of.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/comentarios_on_of.js') }}"></script>
 
     <!-- CONF MODAL SEGUIDORES/SEGUINDO -->
-    <script src="../static/js/configuracao/visibilidade_modal_seguidores.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/visibilidade_modal_seguidores.js') }}"></script>
 
     <!-- PARA ALTERAR TEMA -->
-    <script src="../static/js/configuracao/tema.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/tema.js') }}"></script>
 
     <!-- CONF USER -->
     <script>
@@ -698,46 +698,43 @@
     </script>
 
     <!-- PARA BLOQUEAR USUARIO -->
-    <script src="../static/js/configuracao/bloqueados.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/bloqueados.js') }}"></script>
 
     <!-- PARA A CONF MODAL CURTIDA -->
-    <script src="../static/js/configuracao/modal_curtida_publica_privada.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/modal_curtida_publica_privada.js') }}"></script>
 
     <!-- PARA ATIVAR SOM DE NOTIFICACAO CHAT -->
-    <script src="../static/js/configuracao/audio_mensagens.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/audio_mensagens.js') }}"></script>
 
     <!-- DEIXAR ON/OFF OU AUSENTE -->
-    <script src="../static/js/configuracao/alterar_status_on-off.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/alterar_status_on-off.js') }}"></script>
 
     <!-- DEIXAR ON/OFF -->
-    <script src="../static/js/status_on_off.js"></script>
+    <script src="{{ url_for('static', filename='js/status_on_off.js') }}"></script>
 
     <!-- PARA SAIR DA CONTA -->
-    <script src="../static/js/sweealert2/log_out.js"></script>
+    <script src="{{ url_for('static', filename='js/sweealert2/log_out.js') }}"></script>
 
     <!-- MENU LATERAL ESQUERDO MOBILE -->
-    <script src="../static/js/geral/menu_toggle.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/menu_toggle.js') }}"></script>
 
     <!-- PARA ALTERAR SENHA -->
-    <script src="../static/js/configuracao/alterar_senha.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/alterar_senha.js') }}"></script>
 
     <!-- FORMATAR HASHTAG -->
-    <script src="../static/js/geral/hashtag.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/hashtag.js') }}"></script>
 
     <!-- NOTIFICACAO DO NAVEGADOR -->
-    <script src="../static/js/notificacao/notificacao.js"></script>
+    <script src="{{ url_for('static', filename='js/notificacao/notificacao.js') }}"></script>
 
     <!-- PARA CHECAR SE A NOTIFICACAO PUSH ESTA ATIVADO -->
-    <script src="../static/js/notificacao/check.js"></script>
+    <script src="{{ url_for('static', filename='js/notificacao/check.js') }}"></script>
 
     <!-- CARREGAMENTO DA PAGINA -->
-    <script src="../static/js/carregamento/loading.js"></script>
+    <script src="{{ url_for('static', filename='js/carregamento/loading.js') }}"></script>
 
     <!-- PARA APAGAR CONTA -->
-    <script src="../static/js/configuracao/excluir_conta.js"></script>
-
-    <!-- PARA NAO DEIXAR DOIS DISPOSTIVOS CONECTADOS -->
-    <script src="../static/js/geral/checar_sessao.js"></script>
+    <script src="{{ url_for('static', filename='js/configuracao/excluir_conta.js') }}"></script>
 
 </body>
 </html>

@@ -7,20 +7,20 @@
     <!-- TITULO DA PAGINA -->
     <title>Recuperaração de senha - Solicitar codigo</title>
     <!-- ICONES -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../static/css/sweealert2.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweealert2.css') }}">
     <!-- STYLES -->
-    <link rel="stylesheet" href="../static/css/principal.css">
-    <link rel="stylesheet" href="../static/css/modais.css">
-    <link rel="stylesheet" href="../static/css/layout-perfil.css">
-    <link rel="stylesheet" href="../static/css/configuracao.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modais.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-perfil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/configuracao.css') }}">
     <!-- BIBLIOTECAS -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
@@ -365,17 +365,17 @@
 
     <!-- SCRIPT -->
     <!-- CONTAR MSG DO CHAT -->
-    <script src="../static/js/geral/contador_novas_mensagens.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/contador_novas_mensagens.js') }}"></script>
     <!-- CONTAR NOTIFICAÇÕES DO SISTEMA -->
-    <script src="../static/js/geral/contador_novas_notificacoes.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/contador_novas_notificacoes.js') }}"></script>
     <!-- PARA DEIXAR PERFIL ONLINE OU OFF -->
-    <script src="../static/js/status_on_off.js"></script>
+    <script src="{{ url_for('static', filename='js/status_on_off.js') }}"></script>
     <!-- PARA DAR LOGOUT -->
-    <script src="../static/js/sweealert2/log_out.js"></script>
+    <script src="{{ url_for('static', filename='js/sweealert2/log_out.js') }}"></script>
     <!-- MENU ESQUERDO LATERAL MOBILE  -->
-    <script src="../static/js/geral/menu_toggle.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/menu_toggle.js') }}"></script>
     <!-- PARA FORMATAR A HASHTAG -->
-    <script src="../static/js/geral/hashtag.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/hashtag.js') }}"></script>
     <!-- TRATAMENTO DE ERRO -->
     {% if erro_email %}
     <script>window.erroEmail = true;</script>
@@ -390,10 +390,7 @@
     </script>
     {% endif %}
     <!-- JS DA PAGINA -->
-    <script src="../static/js/recuperacao_senha/recuperar_senha_logado.js"></script>
-
-    <!-- PARA NAO DEIXAR DOIS DISPOSTIVOS CONECTADOS -->
-    <script src="../static/js/geral/checar_sessao.js"></script>
+    <script src="{{ url_for('static', filename='js/recuperacao_senha/recuperar_senha_logado.js') }}"></script>
 
 </body>
 </html>

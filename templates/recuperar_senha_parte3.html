@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Recuperar senha - Sirius</title>
     <!-- ICONES -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- ESTILO DA PAGINA -->
-    <link rel="stylesheet" href="../static/css/style1.css" />
-    <link rel="stylesheet" href="../static/css/loading.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loading.css') }}" />
     <style>
     .input-group i {
         top: 50% !important;
@@ -23,7 +23,7 @@
 
     <!-- TELA DE CARREGAMENTO -->
     <div id="loadingScreen">
-        <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
+        <img src="{{ url_for('static', filename='img/logo/logo_sirius.png') }}" alt="Logo Sirius" />
     </div>
 
     <div class="confirma-conta recuperar-senha"> 
@@ -86,84 +86,9 @@
         </div>
     </footer>
 
-    <!-- SCRIPT -->
-    <script src="../static/js/recuperacao_senha/recuperar_senha_nao_logado_3.js"></script>
-    <script src="../static/js/carregamento/loading.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('formRecuperarSenha');
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    // Mostra SweetAlert de carregando
-    Swal.fire({
-      title: 'Aguarde...',
-      text: 'Redefinindo sua senha',
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      background: '#2d2a32',
-      color: '#e0e0e0',
-      didOpen: () => {
-        Swal.showLoading();
-      }
-    });
-
-    const formData = new FormData(form);
-    const data = {
-      nova_senha: formData.get('nova_senha'),
-      confirmar_senha: formData.get('confirmar_senha'),
-    };
-
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        Swal.fire({
-          title: 'Sucesso!',
-          text: result.message,
-          icon: 'success',
-          confirmButtonColor: '#a76ab6',
-          background: '#2d2a32',
-          color: '#e0e0e0'
-        }).then(() => {
-          window.location.href = result.redirect;
-        });
-      } else {
-        Swal.fire({
-          title: 'Erro!',
-          text: result.error,
-          icon: 'error',
-          confirmButtonColor: '#a76ab6',
-          background: '#2d2a32',
-          color: '#e0e0e0'
-        });
-      }
-
-    } catch (error) {
-      Swal.fire({
-        title: 'Erro inesperado',
-        text: 'Tente novamente mais tarde.',
-        icon: 'error',
-        confirmButtonColor: '#a76ab6',
-        background: '#2d2a32',
-        color: '#e0e0e0'
-      });
-      console.error('Erro na requisição:', error);
-    }
-  });
-});
-
-</script>
+  <!-- SCRIPT -->
+  <script src="{{ url_for('static', filename='js/recuperacao_senha/recuperar_senha_nao_logado_3.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/carregamento/loading.js') }}"></script>
 
 </body>
 </html>

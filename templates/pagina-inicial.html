@@ -3,29 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- BANNER COOKIE -->
-    <script src="../static/js/cookie-banner.js"></script>
+    <script src="{{ url_for('static', filename='js/cookie-banner.js') }}"></script>
     <!-- TITULO DA PAGINA COM NOME DO USUARIO -->
     <title>{{username}}</title>
     <!-- ICONES -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../static/css/sweealert2.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweealert2.css') }}">
     <!-- STYLES -->
-    <link rel="stylesheet" href="../static/css/principal.css">
-    <link rel="stylesheet" href="../static/css/post.css">
-    <link rel="stylesheet" href="../static/css/modais.css">
-    <link rel="stylesheet" href="../static/css/area-da-postagem.css">
-    <link rel="stylesheet" href="../static/css/recorte-de-foto.css">
-    <link rel="stylesheet" href="../static/css/layout-perfil.css">
-    <link rel="stylesheet" href="../static/css/loading.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modais.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/area-da-postagem.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recorte-de-foto.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-perfil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loading.css') }}">
     <!-- CSS DO BOOTSTRAP -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <!-- BIBLIOTECAS -->
@@ -63,7 +63,7 @@
 
     <!-- TELA DE CARREGAMENTO -->
     <div id="loadingScreen">
-        <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
+        <img src="{{ url_for('static', filename='img/logo/logo_sirius.png') }}" alt="Logo Sirius" />
     </div>
 
     <!-- CABEÇALHO MOBILE -->    
@@ -1151,138 +1151,135 @@
 
     <!-- SCRIPT -->
     <!-- PARA PODER APAGAR COMENTARIO -->
-    <script src="../static/js/comentarios/apagar-comentario.js"></script>
+    <script src="{{ url_for('static', filename='js/comentarios/apagar-comentario.js') }}"></script>
 
     <!-- COMPARTILHAR COMENTARIO -->
-    <script src="../static/js/comentarios/gerar_link_comentario.js"></script>
+    <script src="{{ url_for('static', filename='js/comentarios/gerar_link_comentario.js') }}"></script>
 
     <!-- PARA PODER POST COM VIDEO SE O VIDEO NAO ESTIVER APARECENDO NA TELA -->
-    <script src="../static/js/post/pausar-video-post.js"></script>
+    <script src="{{ url_for('static', filename='js/post/pausar-video-post.js') }}"></script>
 
     <!-- PARA MODAL NAO DA ERRO -->
-    <script src="../static/js/modal-nao-bugar.js"></script>
+    <script src="{{ url_for('static', filename='js/modal-nao-bugar.js') }}"></script>
 
     <!-- PARA GERAR LINK DO POST E JA FICA SALVO  -->
-    <!-- <script src="../static/js/compartilhar-post.js"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/compartilhar-post.js') }}"></script> -->
 
     <!-- MODAL DE IMAGEM DO POST -->
-    <script src="../static/js/post/modal-foto-post.js"></script>
+    <script src="{{ url_for('static', filename='js/post/modal-foto-post.js') }}"></script>
 
     <!-- PARA PODER COMENTAR EM POST -->
-    <script src="../static/js/comentarios/comentar-post.js"></script>
+    <script src="{{ url_for('static', filename='js/comentarios/comentar-post.js') }}"></script>
 
     <!-- PARA EXIBIR POST COM FOTO E VIDEO -->
-    <script src="../static/js/post/carrossel-post.js"></script>
+    <script src="{{ url_for('static', filename='js/post/carrossel-post.js') }}"></script>
 
     <!-- PREVIEW DE FOTO E VIDEO -->
-    <script src="../static/js/pag_inicial/verificar-foto-video.js"></script>
+    <script src="{{ url_for('static', filename='js/pag_inicial/verificar-foto-video.js') }}"></script>
 
     <!-- PARA PODER CURTIR E DESCURTIR O POST -->
-    <script src="../static/js/post/curtir-post.js"></script>  
-    <script src="../static/js/post/link-post.js"> </script>
+    <script src="{{ url_for('static', filename='js/post/curtir-post.js') }}"></script>  
+    <script src="{{ url_for('static', filename='js/post/link-post.js') }}"></script>
 
     <!-- PARA O MENU ESQUERDO LATERAL MOBILE -->
-    <script src="../static/js/geral/menu_toggle.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/menu_toggle.js') }}"></script>
 
     <!-- PREVIEW DO POST -->
-    <script src="../static/js/pag_inicial/preview-de-midia-post.js"></script>
+    <script src="{{ url_for('static', filename='js/pag_inicial/preview-de-midia-post.js') }}"></script>
 
     <!-- RECORTAR FOTO OU CAPA -->
-    <script src="../static/js/pag_inicial/recorte-capa-foto.js"></script>
+    <script src="{{ url_for('static', filename='js/pag_inicial/recorte-capa-foto.js') }}"></script>
 
     <!-- PARA O MODAL DE EDITAR PERFIL -->
-    <script src="../static/js/sweealert2/editar_perfil.js"></script>
+    <script src="{{ url_for('static', filename='js/sweealert2/editar_perfil.js') }}"></script>
 
     <!-- PARA BUSCAR SEGUINDO OU SEGUIDORES -->
-    <script src="../static/js/pag_inicial/buscar_seguidor.js"></script>
+    <script src="{{ url_for('static', filename='js/pag_inicial/buscar_seguidor.js') }}"></script>
 
     <!-- MENCIONAR USUARIO NO POST -->
-    <script src="../static/js/pag_inicial/mencionar_post.js"></script>
+    <script src="{{ url_for('static', filename='js/pag_inicial/mencionar_post.js') }}"></script>
 
     <!-- PARA IR ATE A PAGINA DO USER PELA MENÇÃO -->
-    <script src="../static/js/geral/mencao-link.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/mencao-link.js') }}"></script>
 
     <!-- EXCLUIR POST -->
-    <script src="../static/js/sweealert2/excluir_post.js"></script>
+    <script src="{{ url_for('static', filename='js/sweealert2/excluir_post.js') }}"></script>
 
     <!-- ENVIAR POST PARA O CHAT -->
-    <script src="../static/js/geral/enviar_post_para_chat.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/enviar_post_para_chat.js') }}"></script>
 
     <!-- LIMITE DE CARACTERE PARA POST -->
-    <script src="../static/js/pag_inicial/limite_caractere_postagem.js"></script>
+    <script src="{{ url_for('static', filename='js/pag_inicial/limite_caractere_postagem.js') }}"></script>
 
     <!-- CONTA AS NOVAS MENSAGENS -->
-    <script src="../static/js/geral/contador_novas_mensagens.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/contador_novas_mensagens.js') }}"></script>
 
     <!-- CONTAR AS NOTIFICAÇÕES DO SISTEMA NAO LIDA -->
-    <script src="../static/js/geral/contador_novas_notificacoes.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/contador_novas_notificacoes.js') }}"></script>
 
     <!-- PARA COMPARTILHAR COMENTARIO -->
-    <script src="../static/js/geral/gerar_link_comentario.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/gerar_link_comentario.js') }}"></script>
 
     <!-- PARA COMPARTILHAR O PERFIL -->
-    <script src="../static/js/geral/gerar_link_perfil.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/gerar_link_perfil.js') }}"></script>
 
     <!-- PARA COLOCAR HASHTAG EM POST -->
-    <script src="../static/js/pag_inicial/mencionar_hashtag.js"></script>
+    <script src="{{ url_for('static', filename='js/pag_inicial/mencionar_hashtag.js') }}"></script>
 
     <!-- NOTIFICAÇÃO DO NAVEGADOR -->
-    <script src="../static/js/notificacao/notificacao.js"></script> 
+    <script src="{{ url_for('static', filename='js/notificacao/notificacao.js') }}"></script> 
 
     <!-- BARRA DE PESQUISA -->
-    <script src="../static/js/barra_pesquisa_mob.js"></script>
+    <script src="{{ url_for('static', filename='js/barra_pesquisa_mob.js') }}"></script>
 
     <!-- MODAL PARA VISUALIZAR QUEM CURTIUS OS POST -->
-    <script src="../static/js/geral/modal_post_curtido.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/modal_post_curtido.js') }}"></script>
 
     <!-- PARA REMOVER SEGUIDOR OU SEGUINDO DIRETO DO MODAL -->
-    <script src="../static/js/pag_inicial/remover_seguidores_seguindo.js"></script>
+    <script src="{{ url_for('static', filename='js/pag_inicial/remover_seguidores_seguindo.js') }}"></script>
 
     <!-- PARA SAIR DA CONTA -->
-    <script src="../static/js/sweealert2/log_out.js"></script>
+    <script src="{{ url_for('static', filename='js/sweealert2/log_out.js') }}"></script>
 
     <!-- PARA DAR VIEWS AO POST -->
-    <script src="../static/js/post/vizualizacao.js"></script>
+    <script src="{{ url_for('static', filename='js/post/vizualizacao.js') }}"></script>
 
     <!-- FORMATA A HASHTAG -->
-    <script src="../static/js/geral/hashtag.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/hashtag.js') }}"></script>
 
     <!-- PARA DEIXAR PERFIL ONLINE OU OFF -->
-    <script src="../static/js/status_on_off.js"></script>
-    
+    <script src="{{ url_for('static', filename='js/status_on_off.js') }}"></script>
+
     <!-- PARA DENUNCIAR -->
-    <script src="../static/js/denuncia/denunciar_post.js"></script>
-    <script src="../static/js/denuncia/denunciar_comentario.js"></script>
+    <script src="{{ url_for('static', filename='js/denuncia/denunciar_post.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/denuncia/denunciar_comentario.js') }}"></script>
 
     <!-- INFO COMENTARIOS POST -->
-    <script src="../static/js/post/info_comentario.js"></script>
+    <script src="{{ url_for('static', filename='js/post/info_comentario.js') }}"></script>
 
     <!-- PARA REPUBLICAR POST -->
-    <script src="../static/js/post/republicar_post.js"></script>
+    <script src="{{ url_for('static', filename='js/post/republicar_post.js') }}"></script>
 
     <!-- PARA SALVAR POST -->
-    <script src="../static/js/post/salvar_post.js"></script>
+    <script src="{{ url_for('static', filename='js/post/salvar_post.js') }}"></script>
 
     <!-- PARA BOTAO DE VOLTAR AO TOPO -->
-    <script src="../static/js/geral/voltar_topo.js" defer></script>
+    <script src="{{ url_for('static', filename='js/geral/voltar_topo.js') }}" defer></script>
 
     <!-- PARA INFORMAÇÃO DA CONTA E CARREGAMENTO DO POST -->
-    <script src="../static/js/pag_inicial/outros.js"></script>
+    <script src="{{ url_for('static', filename='js/pag_inicial/outros.js') }}"></script>
 
     <!-- FORÇAR O SCROLL -->
-    <script src="../static/js/geral/forca_scroll.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/forca_scroll.js') }}"></script>
 
     <!-- LOADING DA PAGINA -->
-    <script src="../static/js/carregamento/loading.js"></script>
+    <script src="{{ url_for('static', filename='js/carregamento/loading.js') }}"></script>
 
     <!-- PARA CHECAR SE A NOTIFICACAO PUSH ESTA ATIVADO -->
-    <script src="../static/js/notificacao/check.js"></script>
+    <script src="{{ url_for('static', filename='js/notificacao/check.js') }}"></script>
 
     <!-- PARA O MODAL DE QUEM REPUBLICOU O POST -->
-    <script src="../static/js/geral/modal_post_republicado.js"></script>
-    
-    <!-- PARA NAO DEIXAR DOIS DISPOSTIVOS CONECTADOS -->
-    <script src="../static/js/geral/checar_sessao.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/modal_post_republicado.js') }}"></script>
 
 </body>
 </html>

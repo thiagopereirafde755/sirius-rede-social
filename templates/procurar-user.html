@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- TITULO DA PAGINA -->
     <title>Procurar usuário</title>
     <!-- ICONES -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- CSS DO BOOTSTRAP -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../static/css/sweealert2.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweealert2.css') }}">
     <!-- STYLES -->
-    <link rel="stylesheet" href="../static/css/principal.css">
-    <link rel="stylesheet" href="../static/css/post.css">
-    <link rel="stylesheet" href="../static/css/procurar-user.css">
-    <link rel="stylesheet" href="../static/css/loading.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/procurar-user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loading.css') }}">
     <!-- BIBLIOTECAS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -30,7 +30,7 @@
 
     <!-- TELA DE CARREGAMENTO -->
     <div id="loadingScreen">
-        <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
+        <img src="{{ url_for('static', filename='img/logo/logo_sirius.png') }}" alt="Logo Sirius" />
     </div>
 
     <!-- CABEÇALHO MOBILE -->    
@@ -420,33 +420,31 @@
 
     <!-- SCRIPT --> 
     <!-- CONTAS AS MENSAGENS DO CHAT NAO LIDA -->
-    <script src="../static/js/geral/contador_novas_mensagens.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/contador_novas_mensagens.js') }}"></script>
 
     <!-- PARA CONTAR AS NOTIFICAÇÕES DO SISTEMA -->
-    <script src="../static/js/geral/contador_novas_notificacoes.js"></script> 
+    <script src="{{ url_for('static', filename='js/geral/contador_novas_notificacoes.js') }}"></script> 
 
     <!-- PARA NOTIFICAR NO NAVEGADOR -->
-    <script src="../static/js/notificacao/notificacao.js"></script> 
+    <script src="{{ url_for('static', filename='js/notificacao/notificacao.js') }}"></script> 
 
     <!-- PARA SAIR DA CONTA -->
-    <script src="../static/js/sweealert2/log_out.js"></script>
+    <script src="{{ url_for('static', filename='js/sweealert2/log_out.js') }}"></script>
 
     <!-- PARA O MENU LATERAL ESQUERDO MOBILE -->
-    <script src="../static/js/geral/menu_toggle.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/menu_toggle.js') }}"></script>
 
     <!-- FORMATA A HASHTAG -->
-    <script src="../static/js/geral/hashtag.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/hashtag.js') }}"></script>
 
     <!-- PARA SALVAR AS PESQUISA -->
-    <script src="../static/js/salvar_historico_pesquisa_usuario.js"></script>
+    <script src="{{ url_for('static', filename='js/salvar_historico_pesquisa_usuario.js') }}"></script>
 
     <!-- FORÇAR O SCROLL -->
-    <script src="../static/js/geral/forca_scroll.js"></script>
+    <script src="{{ url_for('static', filename='js/geral/forca_scroll.js') }}"></script>
 
     <!-- LOADING DA PAGINA -->
-    <script src="../static/js/carregamento/loading.js"></script>
-
-    <!-- PARA CHECAR SE A NOTIFICACAO PUSH ESTA ATIVADO -->
-    <script src="../static/js/notificacao/check.js"></script>
+    <script src="{{ url_for('static', filename='js/carregamento/loading.js') }}"></script>
 
 </body>
+</html>

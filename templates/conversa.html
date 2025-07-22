@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- LOADING DA PAGINA -->
-    <script src="../static/js/carregamento/loading.js"></script>
+    <script src="{{ url_for('static', filename='js/carregamento/loading.js') }}"></script>
     <!-- TITULO DA PAGINA -->
     <title>{% if destinatario_username %}Chat com {{ destinatario_username }}{% else %}Chat{% endif %}</title>
     <!-- ICONES -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="../static/img/logo/logo_sirius.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="../static/img/logo/logo_sirius.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../static/css/sweealert2.css">
     <!-- BOXICONS PARA ICONES -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> 
     <!-- ESTILO DA PAGINA -->
-    <link rel="stylesheet" href="../static/css/chat.css">
-    <link rel="stylesheet" href="../static/css/loading.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loading.css') }}">
 </head>
 <body class="{{ tema }}">
     <div class="container">
 
         <!-- TELA DE CARREGAMENTO -->
         <div id="loadingScreen">
-            <img src="../static/img/logo/logo_sirius.png" alt="Logo Sirius" />
+            <img src="{{ url_for('static', filename='img/logo/logo_sirius.png') }}" alt="Logo Sirius" />
         </div>
 
         <!-- MENU LATERAL DESKTOP E MOBILE INFERIOR -->
@@ -412,8 +412,8 @@
     </div>
 
     {% if audio_notificacoes_mensagem %}
-    <!-- AUDIO DE NOTIFICAÇÃO -->
-    <audio id="badge-audio" src="../static/mp3/notificacao_1.mp3" preload="auto"></audio>
+        <!-- AUDIO DE NOTIFICAÇÃO -->
+        <audio id="badge-audio" src="{{ url_for('static', filename='mp3/notificacao_1.mp3') }}" preload="auto"></audio>
     {% endif %}
 
     <!-- SCRIPT - JS -->
@@ -421,58 +421,55 @@
     <script src="../static/js/chat/geral.js" data-user-id="{{ usuario_id }}"></script>
 
     <!-- ATUALIZAR MSG -->
-    <script src="../static/js/chat/atualizar_mensagem.js" ></script>
+    <script src="{{ url_for('static', filename='js/chat/atualizar_mensagem.js') }}"></script>
 
     <!-- FORMULARIO DO CHAT -->
-    <script src="../static/js/chat/formulario.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/formulario.js') }}"></script>
 
     <!-- LAYOUT PARA O MOBILE -->
-    <script src="../static/js/chat/chat-layout-mobile.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/chat-layout-mobile.js') }}"></script>
 
     <!-- DROPDOWN DO CHAT -->
-    <script src="../static/js/chat/menu-dropdown.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/menu-dropdown.js') }}"></script>
 
     <!-- PREVIEW DE MIDIA -->
-    <script src="../static/js/chat/preview_chat.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/preview_chat.js') }}"></script>
 
     <!-- PARA EXCLUIR MSG -->
-    <script src="../static/js/chat/excluir_mensagem.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/excluir_mensagem.js') }}"></script>
 
     <!-- VARIAVEL DO USUARIO DA CONVERSA -->
     <script> window.destinatarioId = "{{ destinatario_id }}";</script>
 
     <!-- PARA DEIXAR ONLINE OU OFF -->
-    <script src="../static/js/status_on_off.js"></script>
+    <script src="{{ url_for('static', filename='js/status_on_off.js') }}"></script>
 
     <!-- SEARCH DA LISTA DE USUARIO -->
-    <script src="../static/js/chat/search.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/search.js') }}"></script>
 
     <!-- NOTIFICAÇÃO DO CHAT -->
-    <script src="../static/js/chat/notificacao.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/notificacao.js') }}"></script>
 
     <!-- PARA MOSTRAR A ULTIMA MSG NA LISTA -->
-    <script src="../static/js/chat/ultima_mensagem_lista_contato.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/ultima_mensagem_lista_contato.js') }}"></script>
 
     <!-- CARACTERES LIMITE FORM ENVIAR MSG -->
-    <script src="../static/js/chat/limite_caractere_form.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/limite_caractere_form.js') }}"></script>
 
     <!-- PARA DAR NOTIFICAÇÃO NO NAVEGADOR -->
-    <script src="../static/js/notificacao/notificacao.js"></script> 
+    <script src="{{ url_for('static', filename='js/notificacao/notificacao.js') }}"></script>  
 
     <!-- PARA DAR LOGOUT -->
-    <script src="../static/js/sweealert2/log_out.js"></script>
+    <script src="{{ url_for('static', filename='js/sweealert2/log_out.js') }}"></script>
 
     <!-- MARCA MSG COMO VISTO -->
-    <script src="../static/js/chat/mensagem_vista.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/mensagem_vista.js') }}"></script>
 
     <!-- PARA BUSCAR AS MSG DO CHAT -->
-    <script src="../static/js/chat/search_mensagem_chat.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/search_mensagem_chat.js') }}"></script>
     
     <!-- ALERT DE INFORMAÇÃO E AMIGO -->
-    <script src="../static/js/chat/alert.js"></script>
-
-    <!-- DENUNCIAR MENSAGEM -->
-    <script src="../static/js/denuncia/denunciar_mensagem.js"></script>
+    <script src="{{ url_for('static', filename='js/chat/alert.js') }}"></script>
     
 </body>
 </html>

@@ -45,7 +45,7 @@
     }
 
     body.claro .crop-modal-content {
-        background: var(--white);
+        background: var(--roxo);
         border: 1px solid var(--cinza-light);
     }
 
@@ -134,7 +134,7 @@
 
     .crop-btn-apply {
         color: var(--white);
-        background: var(--roxo);
+        background: var(--roxo-light);
         box-shadow: 0 4px 6px rgba(138, 77, 158, 0.2);
     }
 

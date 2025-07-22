@@ -18,12 +18,6 @@ def logout():
 
                 # Marca usuário como offline
                 cursor.execute("UPDATE users SET online = 0 WHERE id = %s", (usuario_id,))
-                
-                # Remove o dispositivo atual da tabela
-                cursor.execute("""
-                    DELETE FROM usuarios_dispositivos
-                    WHERE usuario_id = %s AND token_sessao = %s
-                """, (usuario_id, token_sessao))
 
                 conexao.commit()
             conexao.close()

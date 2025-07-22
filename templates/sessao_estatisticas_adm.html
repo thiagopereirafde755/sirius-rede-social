@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Pagina administrador - Sirius</title>
     <!-- ICONES -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/logo/logo_sirius.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/logo/logo_sirius.png') }}" />
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- ESTILO DA PAGINA -->
-    <link rel="stylesheet" href="../static/css/administrador.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/administrador.css') }}" />
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -164,8 +164,8 @@
 	<!-- CONTENT -->
 	
     <!-- SCRIPT -->
-    <script src="../static/js/administrador/menu.js"></script>
-    <script src="../static/js/administrador/log_out.js"></script>
+    <script src="{{ url_for('static', filename='js/administrador/menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/administrador/log_out.js') }}"></script>
 
 </body>
 </html>

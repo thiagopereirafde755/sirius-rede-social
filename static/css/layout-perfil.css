@@ -841,3 +841,7 @@ body.escuro .cookie_centra_ajuda {
   opacity: 1;
   color: #000;
 }
+
+.dropdown-menu-ajustada {
+    margin-top: -40px !important
+}
