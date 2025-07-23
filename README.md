@@ -57,5 +57,13 @@ Git: Sistema de controle de versão distribuído usado para gerenciar o históri
 
 GitHub: Plataforma online para hospedagem do repositório Git, permitindo versionamento, backup, colaboração em equipe e exibição pública do código-fonte.
 
+🛠️ Ambientes de Desenvolvimento (IDEs):
+
+PyCharm: IDE poderosa e especializada para desenvolvimento em Python, com suporte a depuração, autocompletar inteligente, integração com Git e ferramentas para testes e deploy.
+
+Visual Studio Code (VSCode): Editor de código leve e extensível, com suporte para múltiplas linguagens, plugins para Python, Git integrado e personalização avançada da interface.
+
+
+
 ---
 
