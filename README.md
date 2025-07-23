@@ -1,6 +1,8 @@
 # Sirius Rede Social
 
-Sirius é uma rede social desenvolvida para um trabalho de tcc.
+Sirius é uma rede social desenvolvida como parte de um projeto de Trabalho de Conclusão de Curso (TCC), com o objetivo de aplicar conhecimentos práticos em desenvolvimento web, banco de dados e interação social digital.
+
+
 
 ## Funcionalidades
 
