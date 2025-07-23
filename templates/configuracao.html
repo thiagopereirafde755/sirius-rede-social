@@ -44,21 +44,17 @@
 
     <!-- CABEÇALHO MOBILE -->
     <div class="pesquisa-para-mobile">
-        <a href="/inicio">
         <div class="logo" id="logo-no-mobile">
             <i class='bx bxs-dog'></i>
         </div>
-        </a>
     </div>
 
     <!-- CABEÇALHO DESKTOP -->
     <header class="header">
         <div class="logoSearch">
-                <a href="/inicio">
-                <div class="logo" id="logo">
-                    <i class='bx bxs-dog'></i>
-                </div>
-            </a>
+            <div class="logo" id="logo">
+                <i class='bx bxs-dog'></i>
+            </div>
         </div>
 
         <!-- OPÇOES NA PARTE INFERIOR DO MOBILE -->
@@ -66,7 +62,7 @@
 
             <!-- MINHA FOTO -->
             <div class="minha-foto-mobile">
-                <a href="/inicio">
+                <a href="">
                     <img src="{{foto_perfil}}" id="foto-mobile-header" alt="my-photo">
                 </a>
             </div>
@@ -602,13 +598,16 @@
                                     <label for="novaSenha" class="form-label">Nova Senha</label>
                                     <div class="input-with-icon">
                                         <input type="password" class="form-control" minlength="6" maxlength="12" id="novaSenha" required>
-                                        <i class='bx bx-show eye-icon' id="toggleNovaSenha"></i>
+                                        <i class='bx bx-show eye-icon' id="toggleNovaSenha1"></i>
                                     </div>
                                     <div class="form-text">Mínimo de 6 caracteres</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="confirmarSenha" class="form-label">Confirmar Nova Senha</label>
-                                    <input type="password" class="form-control" minlength="6" maxlength="12" id="confirmarSenha" required >
+                                    <div class="input-with-icon">
+                                        <input type="password" class="form-control" minlength="6" maxlength="12" id="confirmarSenha" id="confirmarSenha" required >
+                                        <i class='bx bx-show eye-icon' id="toggleNovaSenha2"></i>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -646,7 +645,10 @@
                             </div>
                             <div class="mb-3">
                                 <label for="confirmarSenhaExcluir" class="form-label">Confirme sua senha</label>
-                                <input type="password" class="form-control" id="confirmarSenhaExcluir" required minlength="6" maxlength="12">
+                                <div class="input-with-icon">
+                                    <input type="password" class="form-control" id="confirmarSenhaExcluir" required minlength="6" maxlength="12">
+                                    <i class='bx bx-show eye-icon' id="toggleSenhaExcluir2"></i>
+                                </div>
                             </div>
                         </form>
                     </div>

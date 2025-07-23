@@ -222,12 +222,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const userCharCount = document.getElementById('user-char-count');
     const userAtual = novoUserInput.value.trim();
 
-    // Inicializa o contador de caracteres ao carregar
+    // Contador de caracteres
     if (novoUserInput && userCharCount) {
         userCharCount.textContent = novoUserInput.value.length + '/12';
         novoUserInput.addEventListener('input', function() {
-            userCharCount.textContent = this.value.length + '/12';
-            // Limita caracteres especiais ao digitar (opcional)
             this.value = this.value.replace(/[^a-zA-Z0-9_]/g, "");
             userCharCount.textContent = this.value.length + '/12';
         });
@@ -239,47 +237,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const novoUser = novoUserInput.value.trim();
 
-            // Verifica se contém caracteres especiais proibidos
+            // Validações locais
             if (/[^a-zA-Z0-9_]/.test(novoUser)) {
                 Swal.fire({
                     title: 'Caracteres inválidos',
-                    text: 'O nome de usuário não pode conter caracteres especiais como - @ * # $. Use apenas letras, números ou _ (underline)',
+                    text: 'O nome de usuário não pode conter caracteres especiais como - @ * # $. Use apenas letras, números ou _ (underline).',
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
                 return;
             }
-
             if (!novoUser) {
                 Swal.fire({
                     title: 'Campo vazio',
-                    text: 'Por favor, digite um novo nome de usuário',
+                    text: 'Por favor, digite um novo nome de usuário.',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                 });
                 return;
             }
-
             if (novoUser === userAtual) {
                 Swal.fire({
                     title: 'Nenhuma alteração',
-                    text: 'O nome de usuário digitado é igual ao atual',
+                    text: 'O nome de usuário digitado é igual ao atual.',
                     icon: 'info',
                     confirmButtonText: 'OK'
                 });
                 return;
             }
-
-            if (novoUser.length < 3) {
+            if (novoUser.length < 6) {
                 Swal.fire({
                     title: 'Nome muito curto',
-                    text: 'O nome de usuário deve ter pelo menos 3 caracteres',
+                    text: 'O nome de usuário deve ter pelo menos 6 caracteres.',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                 });
                 return;
             }
 
+            // Confirma alteração
             Swal.fire({
                 title: 'Confirmar alteração',
                 html: `Você está alterando seu nome de usuário de <strong>${userAtual}</strong> para <strong>${novoUser}</strong>`,
@@ -291,8 +287,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 cancelButtonColor: '#d33'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    alterarUserForm.removeEventListener('submit', arguments.callee);
-                    alterarUserForm.submit();
+                    // Enviar via fetch AJAX
+                    fetch(alterarUserForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: new URLSearchParams(new FormData(alterarUserForm))
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Sucesso',
+                                text: data.msg,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                window.location.href = '/inicio';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Erro',
+                                text: data.msg,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            title: 'Erro',
+                            text: 'Erro ao comunicar com o servidor.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
                 }
             });
         });

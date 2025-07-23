@@ -79,7 +79,7 @@ linkReenviar.addEventListener('click', function (e) {
                 }
             });
 
-            fetch('/reenviar_codigo', {
+            fetch('/reenviar_codigo_confirmar_conta', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1051,12 +1051,12 @@ body.escuro .hashtag-nome {
 body.claro .toggle-sidebar-right {
   background: var(--roxo);
   color: var(--white);
-  border: 3px solid, var(--roxo2);
+  border: 2px solid, var(--roxo2);
 }
 body.escuro .toggle-sidebar-right {
   background: var(--roxo2);
   color: var(--white);
-  border: 3px solid, var(--roxo);
+  border: 2px solid, var(--roxo);
 }
 .aside-direito-mobile {
   position: fixed;

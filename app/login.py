@@ -17,6 +17,24 @@ login_bp = Blueprint('login', __name__)
 CONFIRMACAO_SESSION_LIFETIME = timedelta(minutes=15)
 
 # =============================================================
+#  APAGAR CONTA NAO CONFIRMADA
+# =============================================================
+def excluir_contas_nao_confirmadas():
+    conexao = criar_conexao()
+    if conexao:
+        cursor = conexao.cursor()
+        uma_semana_atras = datetime.now() - timedelta(weeks=1)
+
+        cursor.execute("""
+            DELETE FROM users 
+            WHERE conta_confirmada = 0 
+              AND codigo_user_gerado_em <= %s
+        """, (uma_semana_atras,))
+        
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+# =============================================================
 #  EMAIL EM SEGUNDO PLANO EM LOGIN
 # =============================================================
 def enviar_email_login_background(email, username, regiao, data_hora, dispositivo):
@@ -55,6 +73,7 @@ def get_location(ip):
 # =============================================================
 @login_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    excluir_contas_nao_confirmadas()
     if request.method == 'POST':
         email = request.form['email']
         senha = request.form['senha']

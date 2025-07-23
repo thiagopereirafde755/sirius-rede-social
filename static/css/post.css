@@ -366,9 +366,7 @@ a {
     transition: filter 0.3s ease;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
-.curtir-icon.curtido {
-    filter: brightness(0) invert(1);
-}
+
 .salvos{
     cursor: pointer;
 }
@@ -1063,28 +1061,27 @@ body.escuro #pesquisaUsuarioChat {
 }
 body.claro .sugestoes-lista {
     background: #fff;
-    border: 2px solid var(--cor-primaria);
+    border: 2px solid var(--roxo2);
     color: black;
 }
 body.escuro .sugestoes-lista {
     background: #222024; 
-    border: 2px solid var(--roxo2);
+    border: 2px solid var(--cor-primaria);
     color: white;
 }
 .sugestoes-lista li {
     padding: 12px 15px;
     cursor: pointer;
     white-space: normal;
-word-break: break-word;
-
+    word-break: break-word;
     font-size: 14px;
     transition: background 0.2s ease;
 }
 body.claro .sugestoes-lista li {
- border-bottom: 2px solid var(--cor-primaria);
+    border-bottom: 2px solid var(--roxo2);
 }
 body.escuro .sugestoes-lista li {
-    border-bottom: 2px solid var(--roxo2);
+    border-bottom: 2px solid var(--cor-primaria);
 }
 body.claro .sugestoes-lista li:hover {
     background-color: #f8f8f8;

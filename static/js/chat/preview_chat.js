@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 previewContainer.style.display = 'none';
                 return;
             }
-            if (file.type.startsWith('video/') && file.size > 20 * 1024 * 1024) {
-                mostrarErro('Arquivo muito grande', 'O vídeo deve ter no máximo 20MB.');
+            if (file.type.startsWith('video/') && file.size > 10 * 1024 * 1024) {
+                mostrarErro('Arquivo muito grande', 'O vídeo deve ter no máximo 10MB.');
                 if (tipoInput === 'foto') fotoInput.value = '';
                 if (tipoInput === 'video') videoInput.value = '';
                 previewContainer.style.display = 'none';

@@ -170,9 +170,19 @@ def info_user(id_usuario):
             cursor.execute("""
                 SELECT u.id, u.nome, u.username, u.fotos_perfil
                 FROM users u
-                JOIN seguindo s1 ON s1.id_seguidor = %s AND s1.id_seguindo = u.id
-                JOIN seguindo s2 ON s2.id_seguidor = %s AND s2.id_seguindo = u.id
-            """, (usuario_id, id_usuario))
+                WHERE u.id IN (
+                    SELECT s1.id_seguindo
+                    FROM seguindo s1
+                    JOIN seguindo s2 ON s1.id_seguindo = s2.id_seguidor
+                    WHERE s1.id_seguidor = %s AND s2.id_seguindo = %s
+                )
+                AND u.id IN (
+                    SELECT s1.id_seguindo
+                    FROM seguindo s1
+                    JOIN seguindo s2 ON s1.id_seguindo = s2.id_seguidor
+                    WHERE s1.id_seguidor = %s AND s2.id_seguindo = %s
+                )
+            """, (usuario_id, usuario_id, id_usuario, id_usuario))
             amigos_mutuos = cursor.fetchall()
             amigos_mutuos_count = len(amigos_mutuos)
 

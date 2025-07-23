@@ -289,12 +289,18 @@ def replace_mentions(text):
 # Função replace_mentions_com_id que recebe texto e mapa_mencoes
 def replace_mentions_com_id(text, mapa_mencoes):
     mention_pattern = re.compile(r'(?<!\w)@([A-Za-z0-9_.-]+)')
+    
     def replace_match(match):
-        username = match.group(1).lower()
-        user_id = mapa_mencoes.get(username)
+        original_username = match.group(1)          # Como aparece no texto (com maiúsculas/minúsculas)
+        lookup_username = original_username.lower() # Para busca case insensitive no mapa
+        
+        user_id = mapa_mencoes.get(lookup_username)
         if user_id:
-            return f'<a href="/info-user/{user_id}" class="mention-link" data-id="{user_id}">@{username}</a>'
-        return f'@{username}'
+            # Retorna link mantendo a capitalização original
+            return f'<a href="/info-user/{user_id}" class="mention-link" data-id="{user_id}">@{original_username}</a>'
+        # Se não achar no mapa, retorna texto original
+        return f'@{original_username}'
+
     safe_text = Markup.escape(text or "")
     return Markup(mention_pattern.sub(replace_match, safe_text))
 # =============================================================
@@ -512,6 +518,9 @@ def verificar_seguindo_postindividual(cursor, id_seguidor, id_seguindo):
 # =============================================================
 #  BUSCAR POST
 # =============================================================
+import re
+from datetime import datetime
+
 def processar_posts(posts, usuario_id, cursor):
     # BUSCAR TOP HASHTAGS
     cursor.execute("""
@@ -528,7 +537,7 @@ def processar_posts(posts, usuario_id, cursor):
 
     for post in posts:
         post_id = post['id']
-        post['data_postagem'] = formatar_data(post['data_postagem']) 
+        post['data_postagem'] = formatar_data(post['data_postagem'])
 
         # CALCULA O TEMPO DA POSTAGEM
         cursor.execute("SELECT data_postagem FROM posts WHERE id = %s", (post_id,))
@@ -541,25 +550,25 @@ def processar_posts(posts, usuario_id, cursor):
         post['top_hashtag'] = any(h in top_hashtag_ids for h in hashtags_post)
 
         # CONTA A CURTIDA
-        post['curtidas'] = buscar_total_curtidas(cursor, post['id'])
+        post['curtidas'] = buscar_total_curtidas(cursor, post_id)
 
         # CONTA AS REPUBLICAÇÕES
-        post['posts_republicados'] = buscar_total_republicados(cursor, post['id'])
+        post['posts_republicados'] = buscar_total_republicados(cursor, post_id)
 
         # CONTA OS SALVOS
-        post['posts_salvos'] = buscar_total_salvos(cursor, post['id'])
+        post['posts_salvos'] = buscar_total_salvos(cursor, post_id)
 
         # CONTA AS VISUALIZAÇÕES
         post['visualizacoes'] = buscar_total_visualizacoes(cursor, post_id)
 
         # SE O USER CURTIU
-        post['curtido_pelo_usuario'] = verificar_curtida(cursor, post['id'], usuario_id)
+        post['curtido_pelo_usuario'] = verificar_curtida(cursor, post_id, usuario_id)
 
         # SE O USER REPUBLICOU
-        post['republicado_pelo_usuario'] = verificar_republicado(cursor, post['id'], usuario_id)
+        post['republicado_pelo_usuario'] = verificar_republicado(cursor, post_id, usuario_id)
 
         # SE O USER SALVOU
-        post['salvo_pelo_usuario'] = verificar_salvos(cursor, post['id'], usuario_id)
+        post['salvo_pelo_usuario'] = verificar_salvos(cursor, post_id, usuario_id)
 
         # SE OS COMENTÁRIOS SÃO PÚBLICOS
         post['comentarios_publicos'] = buscar_config_comentarios_usuario(cursor, post['users_id'])
@@ -588,15 +597,16 @@ def processar_posts(posts, usuario_id, cursor):
         # COMENTÁRIOS
         post['comentarios'] = buscar_comentarios_post(cursor, post_id)
 
-        # ======= SUBSTITUIR MENÇÕES PELO LINK COM ID FIXO =======
-        cursor.execute("""
-            SELECT u.username, pm.user_mencionado_id
-            FROM post_mencoes pm
-            JOIN users u ON u.id = pm.user_mencionado_id
-            WHERE pm.post_id = %s
-        """, (post_id,))
-        mencoes = cursor.fetchall()
-        mapa_mencoes = {m['username']: m['user_mencionado_id'] for m in mencoes}
+        # Extrair menções do texto do post
+        todas_mencoes = list(set(re.findall(r'(?<!\w)@([A-Za-z0-9_.-]+)', post['conteudo'])))
+
+        mapa_mencoes = {}
+        if todas_mencoes:
+            formato = ','.join(['%s'] * len(todas_mencoes))
+            cursor.execute(f"SELECT id, username FROM users WHERE username IN ({formato})", tuple(todas_mencoes))
+            resultados = cursor.fetchall()
+            for row in resultados:
+                mapa_mencoes[row['username'].lower()] = row['id']
 
         post['conteudo_com_mencoes'] = replace_mentions_com_id(post['conteudo'], mapa_mencoes)
 

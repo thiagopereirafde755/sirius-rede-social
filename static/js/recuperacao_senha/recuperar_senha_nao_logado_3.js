@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('formRecuperarSenha');
-  const senhaInput = document.getElementById('nova_senha');       // Ajustei para "nova_senha" conforme o segundo script usa FormData
+  const senhaInput = document.getElementById('senha');
   const confirmarInput = document.getElementById('confirmar_senha');
 
   const senhaError = document.getElementById('senha-error');
@@ -9,10 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function validarSenha() {
     const senha = senhaInput.value;
     const confirmar = confirmarInput.value;
-
     let valid = true;
 
-    // Valida tamanho da senha
     if (senha.length < 6 || senha.length > 12) {
       senhaError.textContent = 'A senha deve ter entre 6 e 12 caracteres';
       senhaError.style.display = 'block';
@@ -24,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
       senhaInput.parentElement.classList.remove('invalid');
     }
 
-    // Valida se senhas batem (apenas se confirmar não vazio)
     if (confirmar !== '') {
       if (senha !== confirmar) {
         confirmarError.textContent = 'As senhas não coincidem';
@@ -36,10 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmarError.style.display = 'none';
         confirmarInput.parentElement.classList.remove('invalid');
       }
-    } else {
-      confirmarError.textContent = '';
-      confirmarError.style.display = 'none';
-      confirmarInput.parentElement.classList.remove('invalid');
     }
 
     return valid;
@@ -55,16 +48,15 @@ document.addEventListener('DOMContentLoaded', function () {
       Swal.fire({
         icon: 'error',
         title: 'Erro no formulário',
-        text: 'Por favor, corrija os erros antes de enviar o formulário.',
+        text: 'Por favor, corrija os erros antes de enviar.',
         confirmButtonColor: '#a76ab6'
       });
       return;
     }
 
-    // Mostra SweetAlert de carregando
     Swal.fire({
       title: 'Aguarde...',
-      text: 'Redefinindo sua senha',
+      text: 'Redefinindo sua senha...',
       allowOutsideClick: false,
       showConfirmButton: false,
       background: '#2d2a32',
@@ -86,29 +78,43 @@ document.addEventListener('DOMContentLoaded', function () {
         body: JSON.stringify({ nova_senha, confirmar_senha })
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (err) {
+        return Swal.fire({
+          icon: 'error',
+          title: 'Erro inesperado',
+          text: 'Resposta inválida do servidor.',
+          confirmButtonColor: '#a76ab6',
+          background: '#2d2a32',
+          color: '#e0e0e0'
+        });
+      }
 
       if (!response.ok || !data.success) {
         Swal.fire({
           icon: 'error',
           title: 'Erro',
-          text: data.error || 'Erro desconhecido',
+          text: data.error || 'Erro ao redefinir a senha.',
           confirmButtonColor: '#a76ab6',
           background: '#2d2a32',
           color: '#e0e0e0'
         });
-      } else {
-        Swal.fire({
-          icon: 'success',
-          title: 'Sucesso',
-          text: data.message || 'Senha alterada com sucesso!',
-          confirmButtonColor: '#a76ab6',
-          background: '#2d2a32',
-          color: '#e0e0e0'
-        }).then(() => {
-          window.location.href = data.redirect || '/';
-        });
+        return;
       }
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Sucesso',
+        text: data.message || 'Senha redefinida com sucesso!',
+        confirmButtonColor: '#a76ab6',
+        background: '#2d2a32',
+        color: '#e0e0e0'
+      }).then(() => {
+        window.location.href = data.redirect || '/';
+      });
+
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -121,4 +127,36 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error('Erro na requisição:', error);
     }
   });
+
+  // Mostrar/ocultar senha - senha principal
+  const toggleSenha1 = document.getElementById('toggleSenha1');
+  if (toggleSenha1 && senhaInput) {
+    toggleSenha1.addEventListener('click', () => {
+      if (senhaInput.type === 'password') {
+        senhaInput.type = 'text';
+        toggleSenha1.classList.remove('bx-show');
+        toggleSenha1.classList.add('bx-hide');
+      } else {
+        senhaInput.type = 'password';
+        toggleSenha1.classList.remove('bx-hide');
+        toggleSenha1.classList.add('bx-show');
+      }
+    });
+  }
+
+  // Mostrar/ocultar senha - confirmação
+  const toggleSenha2 = document.getElementById('toggleSenha2');
+  if (toggleSenha2 && confirmarInput) {
+    toggleSenha2.addEventListener('click', () => {
+      if (confirmarInput.type === 'password') {
+        confirmarInput.type = 'text';
+        toggleSenha2.classList.remove('bx-show');
+        toggleSenha2.classList.add('bx-hide');
+      } else {
+        confirmarInput.type = 'password';
+        toggleSenha2.classList.remove('bx-hide');
+        toggleSenha2.classList.add('bx-show');
+      }
+    });
+  }
 });

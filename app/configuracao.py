@@ -702,7 +702,7 @@ def alterar_senha():
 #  APAGAR CONTA
 # =============================================================
 @configuracao_bp.route('/excluir_conta', methods=['POST'])
-def excluir_conta():
+def excluir_conta():  
     if 'usuario_id' not in session:
         return jsonify(success=False, message="Usuário não autenticado."), 401
 
@@ -726,7 +726,7 @@ def excluir_conta():
         with conexao.cursor(dictionary=True) as cursor:
             cursor.execute("SELECT senha FROM users WHERE id = %s", (usuario_id,))
             user = cursor.fetchone()
-            
+
             if not user or not check_password_hash(user['senha'], senha):
                 return jsonify(success=False, message="Senha incorreta."), 400
 
@@ -737,15 +737,20 @@ def excluir_conta():
                 'mensagens': ['id_remetente', 'id_destinatario'],
                 'notificacoes': ['usuario_id', 'origem_usuario_id'],
                 'pedidos_seguir': ['id_solicitante', 'id_destino'],
+                'historico_pesquisa_post': ['usuario_id'],
                 'historico_pesquisa_procurar_usuarios': ['usuario_id', 'usuario_pesquisado_id'],
-                'post_mencoes': ['user_mencionado_id'],
+                'recuperacao_senha': ['user_id'],
                 'posts_republicados': ['usuario_id'],
                 'posts_salvos': ['usuario_id'],
-                'posts': ['users_id'],
-                'seguindo': ['id_seguidor', 'id_seguindo']
+                'visualizacoes': ['usuario_id'],
+                'visualizacoes_perfis': ['usuario_id'],
+                'seguindo': ['id_seguidor', 'id_seguindo'],
+                'pesquisas': ['usuario_id'],
+                'denuncias': ['id_denunciante'],
+                # posts será tratado depois
             }
 
-            # Deleta registros relacionados ao usuário
+            # APAGA OS REGISTRO DO USER
             for tabela, colunas in tabelas_colunas.items():
                 for coluna in colunas:
                     try:
@@ -753,11 +758,34 @@ def excluir_conta():
                     except Exception as e:
                         print(f"Erro ao deletar {tabela}.{coluna}: {e}")
 
-            # Deleta o próprio usuário
-            cursor.execute("DELETE FROM users WHERE id = %s", (usuario_id,))
-            conexao.commit()
+            # APAGA AS MENÇOES ONDE O USER E MENCIONADO
+            try:
+                cursor.execute("DELETE FROM post_mencoes WHERE user_mencionado_id = %s", (usuario_id,))
+            except Exception as e:
+                print(f"Erro ao deletar post_mencoes (user_mencionado_id): {e}")
 
+            # APAGA AS MENÇOES DO POST
+            try:
+                cursor.execute("""
+                    DELETE pm FROM post_mencoes pm
+                    JOIN posts p ON pm.post_id = p.id
+                    WHERE p.users_id = %s
+                """, (usuario_id,))
+            except Exception as e:
+                print(f"Erro ao deletar post_mencoes ligados aos posts: {e}")
+
+            # APAGA OS POST
+            try:
+                cursor.execute("DELETE FROM posts WHERE users_id = %s", (usuario_id,))
+            except Exception as e:
+                print(f"Erro ao deletar posts do usuário: {e}")
+
+            # APAGA O USER
+            cursor.execute("DELETE FROM users WHERE id = %s", (usuario_id,))
+
+            conexao.commit()
             session.clear()
+
             return jsonify(success=True, message="Sua conta foi excluída com sucesso.")
 
     except Exception as e:

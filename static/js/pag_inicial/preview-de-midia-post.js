@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 input.value = '';
                 return;
             }
-            if (type === 'video' && file.size > 20 * 1024 * 1024) { // 20MB
-                mostrarErro('Arquivo muito grande', 'O vídeo deve ter no máximo 20MB.');
+            if (type === 'video' && file.size > 10 * 1024 * 1024) { // 10MB
+                mostrarErro('Arquivo muito grande', 'O vídeo deve ter no máximo 10MB.');
                 input.value = '';
                 return;
             }

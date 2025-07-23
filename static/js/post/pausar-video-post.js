@@ -9,14 +9,14 @@ $(document).ready(function () {
     /* -----------------------------
      * 2. Pausar vídeo ao clicar em outro post
      * ----------------------------- */
-$('.post').on('click', function () {
-    const $postClicado = $(this);
+    $('.post').on('click', function () {
+        const $postClicado = $(this);
 
-    // Pausa todos os vídeos que NÃO estão dentro do post clicado
-    $('video').not($postClicado.find('video')).each(function () {
-        this.pause();
+        // Pausa todos os vídeos que NÃO estão dentro do post clicado
+        $('video').not($postClicado.find('video')).each(function () {
+            this.pause();
+        });
     });
-});
 
     /* -----------------------------
      * 3. Pausar vídeo ao mudar slide do carrossel
@@ -101,6 +101,15 @@ $('.post').on('click', function () {
                 video.volume = 1;
             }
         });
+    /* -----------------------------
+     * 8. Repetir vídeo automaticamente ao terminar
+     * ----------------------------- */
+    videos.forEach(video => {
+        video.addEventListener('ended', () => {
+            video.currentTime = 0;
+            video.play().catch(() => {});
+        });
+    });
         // Remove os listeners após a primeira interação
         window.removeEventListener('click', enableAudio);
         window.removeEventListener('touchstart', enableAudio);

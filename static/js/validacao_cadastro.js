@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    
     const form = document.getElementById('formCadastro');
     const campos = {
         nome: {
@@ -146,4 +147,39 @@ document.addEventListener('DOMContentLoaded', function () {
             el.parentElement.classList.add('invalid');
         }
     });
+
+    const senhaInput = campos.senha.input;
+    const confirmarInput = campos.confirmar_senha.input;
+
+    // Mostrar/ocultar senha - senha principal
+    const toggleSenha1 = document.getElementById('toggleSenha1');
+    if (toggleSenha1 && senhaInput) {
+        toggleSenha1.addEventListener('click', () => {
+        if (senhaInput.type === 'password') {
+            senhaInput.type = 'text';
+            toggleSenha1.classList.remove('bx-show');
+            toggleSenha1.classList.add('bx-hide');
+        } else {
+            senhaInput.type = 'password';
+            toggleSenha1.classList.remove('bx-hide');
+            toggleSenha1.classList.add('bx-show');
+        }
+        });
+    }
+
+    // Mostrar/ocultar senha - confirmação
+    const toggleSenha2 = document.getElementById('toggleSenha2');
+    if (toggleSenha2 && confirmarInput) {
+        toggleSenha2.addEventListener('click', () => {
+        if (confirmarInput.type === 'password') {
+            confirmarInput.type = 'text';
+            toggleSenha2.classList.remove('bx-show');
+            toggleSenha2.classList.add('bx-hide');
+        } else {
+            confirmarInput.type = 'password';
+            toggleSenha2.classList.remove('bx-hide');
+            toggleSenha2.classList.add('bx-show');
+        }
+        });
+    }
 });

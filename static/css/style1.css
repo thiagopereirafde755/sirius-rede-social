@@ -795,7 +795,7 @@ form {
     left: 90%;
     top: 50%;
     transform: translateY(-50%);
-    color: #888;
+    color: #888 !important;
     user-select: none;
 }
 .senha-group .olho-senha:hover {
@@ -932,4 +932,31 @@ form {
   .footer-links {
     margin-top: 10px;
   }
+}
+
+.input-group {
+  position: relative;
+}
+.olho-senha {
+  position: absolute;
+  left: 90% !important;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  z-index: 2;
+}
+.olho-senha:hover {
+  color: var(--roxo);
+}
+.input-group input[type="password"],
+.input-group input[type="text"] {
+  padding-right: 40px; 
+}
+.bx-show, .bx-hide{
+    color: #888 !important;
+}
+.bx-show:hover, .bx-hide:hover{
+    color: #333 !important;
 }

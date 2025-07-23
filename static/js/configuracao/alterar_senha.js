@@ -19,9 +19,14 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleSenha('senhaAtual', 'toggleSenhaAtual');
     });
 
-    document.getElementById('toggleNovaSenha').addEventListener('click', function () {
-        toggleSenha('novaSenha', 'toggleNovaSenha');
+    document.getElementById('toggleNovaSenha1').addEventListener('click', function () {
+        toggleSenha('novaSenha', 'toggleNovaSenha1');
     });
+
+    document.getElementById('toggleNovaSenha2').addEventListener('click', function () {
+        toggleSenha('confirmarSenha', 'toggleNovaSenha2');
+    });
+    
 
     if (btnSalvarSenha) {
         btnSalvarSenha.addEventListener('click', function() {

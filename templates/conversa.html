@@ -378,24 +378,23 @@
                 
         <div class="input-wrapper">
             <div class="input-icons">
-            <label for="foto" class="icon-button">
-                <i class='bx bxs-camera'></i>
-                <input type="file" id="foto" name="foto" accept="image/*">
-            </label>
-                        
-            <label for="video" class="icon-button">
-                <i class='bx bxs-videos'></i>
-                <input type="file" id="video" name="video" accept="video/*">
-            </label>
-                        
-            <textarea id="mensagem" name="mensagem" placeholder="Digite sua mensagem..." rows="1" maxlength="300"></textarea>
-            <span id="char-count">0/300</span>
-                        
-            <button type="submit" class="send-button" id="send-button" style="display: none;">
-                <i class='bx bxs-send'></i>
-            </button>
+                <label for="foto" class="icon-button">
+                    <i class='bx bxs-camera'></i>
+                    <input type="file" id="foto" name="foto" accept="image/*">
+                </label>
+                            
+                <label for="video" class="icon-button">
+                    <i class='bx bxs-videos'></i>
+                    <input type="file" id="video" name="video" accept="video/*">
+                </label>
+                            
+                <textarea id="mensagem" name="mensagem" placeholder="Digite sua mensagem..." rows="1" maxlength="300"></textarea>
+                            
+                <button type="submit" class="send-button" id="send-button" style="display: none;">
+                    <i class='bx bxs-send'></i>
+                </button>
+            </div>
         </div>
-    </div>
 
     <!-- PARA O PREVIEW DE FOTO OU VIDEO -->
     <div id="preview-container" ></div>
@@ -428,6 +427,7 @@
 
     <!-- LAYOUT PARA O MOBILE -->
     <script src="{{ url_for('static', filename='js/chat/chat-layout-mobile.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat/fullscreen_mobile.js') }}"></script>
 
     <!-- DROPDOWN DO CHAT -->
     <script src="{{ url_for('static', filename='js/chat/menu-dropdown.js') }}"></script>
@@ -470,6 +470,9 @@
     
     <!-- ALERT DE INFORMAÇÃO E AMIGO -->
     <script src="{{ url_for('static', filename='js/chat/alert.js') }}"></script>
-    
+
+    <!-- DENUNCIAR MENSAGEM -->
+    <script src="{{ url_for('static', filename='js/denuncia/denunciar_mensagem.js') }}"></script>
+
 </body>
 </html>

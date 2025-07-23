@@ -16,7 +16,6 @@
     <!-- ESTILO DA PAGINA -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/loading.css') }}">
-
 </head>
 <body>
 
@@ -72,6 +71,7 @@
                 <div class="error-message" id="senha-error" style="display: none;">
                     {% if erros and erros.get('senha') %}{{ erros['senha'] }}{% endif %}
                 </div>
+                <i class="bx bx-show olho-senha" id="toggleSenha1" style="cursor: pointer;"></i>
             </div>
 
             <!-- SENHA -->
@@ -79,6 +79,7 @@
                 <i class='bx bx-lock'></i>
                 <input type="password" placeholder="Confirmar Senha" name="confirmar_senha" id="confirmar_senha" required />
                 <div class="error-message" id="confirmar-error" style="display: none;"></div>
+                <i class="bx bx-show olho-senha" id="toggleSenha2" style="cursor: pointer;"></i>
             </div>
 
             <button type="submit" class="login-btn">Cadastrar</button>
@@ -129,6 +130,24 @@
     <script src="{{ url_for('static', filename='js/validacao_cadastro.js') }}"></script>
     <script src="{{ url_for('static', filename='js/carregamento/loading.js') }}"></script>
 
+    <script>
+        document.getElementById("formCadastro").addEventListener("submit", function (e) {
+            e.preventDefault(); 
+
+            Swal.fire({
+                title: 'Cadastrando...',
+                html: 'Aguarde...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            setTimeout(() => {
+                e.target.submit(); 
+            }, 500);
+        });
+    </script>
 
 </body>
 </html>

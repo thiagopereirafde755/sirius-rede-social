@@ -26,28 +26,29 @@
         <img src="{{ url_for('static', filename='img/logo/logo_sirius.png') }}" alt="Logo Sirius" />
     </div>
 
-    <div class="confirma-conta recuperar-senha"> 
+    <div class="confirma-conta recuperar-senha "> 
         <h2>Recuperar senha</h2>
         <p>Digite e confirme sua nova senha</p>
         <form method="post" action="{{ url_for('recuperar_senha.recuperar_senha_part3') }}" id="formRecuperarSenha">
            
-            <div class="input-group">
+            <div class="input-group senha-group">
                 <i class='bx bx-lock'></i>
                 <input type="password" id="senha" name="nova_senha" placeholder="Digite a nova senha" required />
                 <div class="error-message" id="senha-error" style="display: none;"></div>
+                <i class="bx bx-show olho-senha" id="toggleSenha1" style="cursor: pointer;"></i>
             </div>
 
-            <div class="input-group">
+            <div class="input-group senha-group">
                 <i class='bx bx-lock'></i>
                 <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a nova senha" required />
                 <div class="error-message" id="confirmar-error" style="display: none;"></div>
+                <i class="bx bx-show olho-senha" id="toggleSenha2" style="cursor: pointer;"></i>
             </div>
 
             <button type="submit">Alterar senha</button>
         </form>
 
         <div class="links">
-
             <!-- PARA PODER VOLTAR AO LOGIN -->
             <p>Se lembrou da senha? <a href="/">Entrar agora</a></p>
         </div>
@@ -86,9 +87,9 @@
         </div>
     </footer>
 
-  <!-- SCRIPT -->
-  <script src="{{ url_for('static', filename='js/recuperacao_senha/recuperar_senha_nao_logado_3.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/carregamento/loading.js') }}"></script>
+    <!-- SCRIPT -->
+    <script src="{{ url_for('static', filename='js/recuperacao_senha/recuperar_senha_nao_logado_3.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/carregamento/loading.js') }}"></script>
 
 </body>
 </html>

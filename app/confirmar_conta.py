@@ -107,7 +107,7 @@ def refresh_sessao_confirmacao():
 # =============================================================
 #  REENVIAR O CODIGO DE CONFIRMAÇÃO DE CONTA
 # =============================================================   
-@confirmar_bp.route('/reenviar_codigo', methods=['POST'])
+@confirmar_bp.route('/reenviar_codigo_confirmar_conta', methods=['POST'])
 def reenviar_codigo():
     if 'email_confirmacao' not in session:
         return jsonify({'success': False, 'message': 'Sessão expirada'})
