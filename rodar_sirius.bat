@@ -1,6 +1,6 @@
 @echo off
 title Iniciando o Sirius com Flask + Cloudflare Tunnel
-cd /d E:\EU\TCC\SIRIUS 2.0
+cd /d "LOCAL DA PASTA"
 
 :: Inicia o Flask
 start "" python run.py
